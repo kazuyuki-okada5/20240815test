@@ -28,19 +28,20 @@
           </ul>
     </div>
   </div>
-  <div class="attendance-table">
-    <table class="attendance-table__inner">
-      <tr class="attendance-table__row">
-        <th class="attendance-table__header">名前</th>
-        <th class="attendance-table__header">開始時間</th>
-        <th class="attendance-table__header">終了時間</th>
-      </tr>
-      <tr class="attendance-table__row">
-        <td class="attendance-table__item">サンプル太郎</td>
-        <td class="attendance-table__item">サンプル</td>
-        <td class="attendance-table__item">サンプル</td>
-      </tr>
-    </table>
+  <div class="item-container">
+    <h2>アイテム一覧</h2>
+    <ul>
+      @foreach($items as $item)
+        <li>
+          <form action="{{ route('item.show', ['item_id' => $item->id]) }}" method="get">
+            <button type="submit" class="button">
+              <img src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image" style="max-width: 150px;">
+            </button>
+          </form>
+          <p>価格: {{ $item->price }}円</p>
+        </li>
+      @endforeach
+    </ul>
   </div>
 </div>
 @endsection
