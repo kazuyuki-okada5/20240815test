@@ -28,12 +28,12 @@
     </div>
   </div>
   <div class="item-container">
-    <h2>アイテム詳細</h2>
+    <h1>アイテム詳細</h1>
         <div class="item-image">
             <img src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image" style="max-width: 300px;">
         </div>
         <div class="item-info">
-            <h3>商品名:{{ $item->name }}</h3>
+            <h2>商品名:{{ $item->name }}</h2>
             <p>ブランド名:{{ $item->brand }}</p>
             <p>￥{{ $item->price }}（税込）送料込み</p>
             <button>お気に入り</button>
