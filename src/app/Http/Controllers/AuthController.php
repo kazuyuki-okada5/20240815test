@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Like;
 
 class AuthController extends Controller
 {
@@ -16,5 +18,12 @@ class AuthController extends Controller
     {
         return view('auth.register');
     }
+
+        public function mypage()
+        {
+            $user = Auth::user();
+
+            return view('Auth.mypage', compact('user'));
+        }
 
 }

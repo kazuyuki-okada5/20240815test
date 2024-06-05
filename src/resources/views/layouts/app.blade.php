@@ -18,6 +18,13 @@
         <a class="header__logo" href="/">
           Flea Market App
         </a>
+        <!-- 検索フォームをフレックスボックスで設置　-->
+        <div class="header__search">
+          <form class="form" action="{{ route('items.search') }}" method="get">
+            <input type="text" name="query" placeholder="なにをお探しですか？">
+            <button class="header-nav__button">検索</button>
+          </form>
+        </div>
         <nav>
           <ul class="header-nav">
 
@@ -32,9 +39,11 @@
               </form>
             </li>{{-- 出品画面ページルートとコントローラー未作成 --}}
 
-
             <li class="header-nav__item">
-              <a class="header-nav__link" href="/mypage">マイページ</a>
+              <a class="header-nav__link" href="/">トップページ</a>
+            </li>
+            <li class="header-nav__item">
+              <a class="header-nav__link" href="{{ route('mypage') }}">マイページ</a>
             </li>
             <li class="header-nav__item">
               <form class="form" action='/logout' method="post">
@@ -43,6 +52,10 @@
               </form>
             </li>
             }@else{
+            <li class="header-nav__item">
+              <a class="header-nav__link" href="/">トップページ</a>
+            </li>
+            
             <li class="header-nav__item">
               <a class="header-nav__link" href="/login">ログイン</a>
             </li>

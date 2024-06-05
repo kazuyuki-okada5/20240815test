@@ -45,6 +45,11 @@ class Item extends Model
         return $this->hasMany(Like::class);
     }
 
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes');
+    }
+
         //　Commentsテーブルにidカラムを取得させItemsテーブルのレコードを参照させる
     public function Comments()
     {

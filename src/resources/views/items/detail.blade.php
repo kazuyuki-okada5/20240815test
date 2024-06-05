@@ -36,7 +36,15 @@
             <h2>商品名:{{ $item->name }}</h2>
             <p>ブランド名:{{ $item->brand }}</p>
             <p>￥{{ $item->price }}（税込）送料込み</p>
-            <button>お気に入り</button>
+    <form method="POST" action="{{ route('likes.like', $item->id) }}">
+        @csrf
+        <button type="submit" class="btn btn-primary">お気に入りに追加</button>
+    </form>
+
+    <form method="POST" action="{{ route('likes.unlike', $item->id) }}">
+        @csrf
+        <button type="submit" class="btn btn-danger">お気に入り解除</button>
+    </form>
             <p>お気に入り登録者数</p>
             <button>コメント</button>
             <p>コメント数</p>
@@ -45,7 +53,7 @@
                 {{ $item->comment }}</p>
             <p>商品の情報</p>
             <p>カテゴリー;</p>
-            <p>商品の状態:{{ $item->condition_id}}</p>
+            <p>商品の状態:{{ $item->condition_id }}</p>
             <p>出品者:{{ $user }}</p>
         </div>
   </div>

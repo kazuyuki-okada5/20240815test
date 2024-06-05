@@ -21,6 +21,14 @@ class ItemController extends Controller
         return view('items.item', ['items' => $items]);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $items = Item::where('name', 'like', '%' . $query . '%')->get();
+
+        return view('items.search_results', ['items' => $items]);
+    }
+
     public function show($item_id)
     {
         // IDでアイテムを取得
@@ -81,5 +89,22 @@ class ItemController extends Controller
 
         //　成功した場合はリダイレクトなどを行う
         return redirect()->route('items.create')->with('success', 'アイテムが追加されました');
+    }
+
+    //　出品商品一覧ページを処理するメソッド
+    public function selling()
+    {
+        $user = Auth::user();
+        $items = Item::where('user_id', $user->id)->get();
+
+        return view('items.selling', ['items' => $items]);
+    }
+    //　購入商品一覧ページを処理するメソッド
+    public function purchased()
+    {
+        $user = Auth::user();
+        $items = Item::where('sold_user_id', $user->id)->get();
+
+        return view('items.purchased', ['items' => $items]);
     }
 }

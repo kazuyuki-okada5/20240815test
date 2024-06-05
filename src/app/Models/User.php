@@ -52,6 +52,16 @@ class User extends Authenticatable
         //　Profilesテーブルにidカラムを取得させUsersテーブルのレコードを参照させる
     public function profiles()
     {
-        return $this->hasOne(profile::class);
+        return $this->hasOne(Profile::class);
+    }
+
+    public function Likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function LikedItems()
+    {
+        return $this->belongsToMany(Item::class, 'likes');
     }
 }
