@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Like;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Models\CategoryItem;
@@ -12,13 +13,31 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-    public function items()
+    public function showItems()
     {
-        // Itemテーブルから画像と価格だけ取得
-        $items = Item::select('id', 'image_url', 'price')->get();
+        $items = Item::all(); // すべてのアイテムを取得
 
-        //　items.itemビューを表示し、$items変数を渡す
-        return view('items.item', ['items' => $items]);
+        $likes = collect(); // 空のコレクションを初期化
+        if (Auth::check()) {
+            $user = Auth::user();
+            $likes = Like::where('user_id', $user->id)->with('item')->get(); // ユーザーのお気に入り
+        }
+
+        return view('items.item', compact('items', 'likes'));
+    }
+
+    public function mypage()
+    {
+        $items = Item::all();
+
+        if(Auth::check()) {
+            $user =Auth::user();
+            $items = Item::all(); // すべてのアイテム
+            $likes = Like::where('user_id', $user->id)->get();
+            return view('auth.mypage', compact('user', 'items', 'likes'));
+        }else{
+            return view('auth.mypage', compact('items'));
+        }
     }
 
     public function search(Request $request)
@@ -40,6 +59,7 @@ class ItemController extends Controller
         return view('items.detail', ['item' => $item, 'user' => $user]);
     }
 
+    //　出品ページの表示
     public function showCreateForm()
     {
         $conditions = Condition::all();
@@ -48,6 +68,7 @@ class ItemController extends Controller
         return view('items.create', compact('conditions', 'categories'));
     }
 
+    //　出品処理
     public function create(Request $request)
     {
         //　フォームからの入力を取得

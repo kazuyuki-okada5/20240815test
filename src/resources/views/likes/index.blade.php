@@ -9,8 +9,8 @@
     </div>
 
     <div class="item-history">
-        <a href="{{ route('items.selling') }}" class="btn btn-secondary">出品した商品</a>
-        <a href="{{ route('items.purchased') }}" class="btn btn-secondary">購入した商品</a>
+        <button class="btn btn-secondary" id="show-selling">出品した商品</button>
+        <button class="btn btn-secondary" id="show-purchased">購入した商品</button>
     </div>
 
     <h1>お気に入りリスト</h1>

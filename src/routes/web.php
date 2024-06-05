@@ -25,10 +25,11 @@ Route::get('/register', [AuthController::class, 'register']);
 //　アイテム詳細ページ
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show');
 //　トップページに戻る
-Route::get('/', [ItemController::class, 'items'])->name('items.index');
+Route::get('/', [ItemController::class, 'showItems'])->name('items.index');
 
 //　検索用ルート
 Route::get('items/search', [ItemController::class, 'search'])->name('items.search');
+
 
 //　プロフィール画面表示ページ(ユーザー認証ミドルウェア後表示)
 Route::middleware('auth')->group(function () {
@@ -43,14 +44,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item}/like', [LikeController::class, 'like'])->name('likes.like');
     Route::post('/items/{item}/unlike', [LikeController::class, 'unlike'])->name('likes.unlike');
 
-    //　お気に入りページの表示
-    Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
-    Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
-
-    //　出品商品一覧ページ
-    //Route::get('/items/selling', [ItemController::class, 'selling'])->name('items.selling');
-    //　購入商品一覧ページ
-    //Route::get('/items/purchased', [ItemController::class, 'purchased'])->name('items.purchased');
     //　マイページの表示
     Route::get('/mypage', [likeController::class, 'mypage'])->name('mypage');
+    //Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
+    Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
+
+    
 });

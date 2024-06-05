@@ -33,11 +33,9 @@
             @if (Auth::check()){
             <li class="header-nav__item">
 
-              <form class="form" action='/item/{item_id}' method="get">
-                @csrf
-                <button class="header-nav__button">出品</button>
+              <a class="header-nav__link" href="{{ route('items.create') }}">出品</a>
               </form>
-            </li>{{-- 出品画面ページルートとコントローラー未作成 --}}
+            </li>
 
             <li class="header-nav__item">
               <a class="header-nav__link" href="/">トップページ</a>
