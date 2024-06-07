@@ -9,25 +9,31 @@
     <h1>コメント一覧</h1>
     @foreach($comments as $comment)
         <div class="comment">
-            @if($comment->user_id === $item->user_id)
-                <!-- 出品者がコメントした場合 -->
-                <div class="comment-right">
-                    <img src="{{ asset('storage/' . $comment->user->img_url) }}" style="max-width: 50px;">
-                    <p><strong>{{ $comment->user->name }}</strong></p>
-                </div>
-                <div class="comment-text">
-                    <p>{{ $comment->comment }}</p>
+            @if($comment->userProfile)
+                @if($comment->user_id === $item->user_id)
+                    <div class="commet-right">
+                @else
+                    <div class="comment-left">
+                @endif
+                    @if($comment->userProfile->img_url)
+                        <img src="{{ asset('storage/' . $comment->userProfile->img_url) }}" style="max-width: 50px">
+                    @else
+                        <div class="default-avatar">
+                            <i class="fas fa-user-circle"></i><!-- 代替えアイコン -->
+                        </div>
+                    @endif
+                    <p><strong>{{ $comment->userProfile->name }}</strong></p>
                 </div>
             @else
-                <!-- ユーザーがコメントした場合 -->
                 <div class="comment-left">
-                    <img src="{{ asset('storage/' . $comment->user->img_url) }}" style="max-width: 50px;">
-                    <p><strong>{{ $comment->user->name }}</strong></p>
-                </div>
-                <div class="comment-text">
-                    <p>{{ $comment->comment }}</p>
+                    <div class="default-avatar">
+                        <i class="fas fa-user-circle"></i><!-- 代替えアイコン -->
+                    </div>
                 </div>
             @endif
+            <div class="comment-text">
+                <p>{{ $comment->comment }}</p>
+            </div>
         </div>
     @endforeach
 

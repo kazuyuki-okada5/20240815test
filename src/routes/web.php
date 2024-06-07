@@ -34,6 +34,12 @@ Route::get('/', [ItemController::class, 'showItems'])->name('items.index');
 //　検索用ルート
 Route::get('items/search', [ItemController::class, 'search'])->name('items.search');
 
+//　コメントページ表示
+Route::get('/items/{item}/comment', [CommentController::class, 'showCommentForm'])->name('comments.show');
+
+//　コメント投稿
+Route::post('/items/{item}/comment', [CommentController::class, 'storeComment'])->name('comments.store')->middleware('auth');
+
 
 //　ユーザー認証ミドルウェア
 Route::middleware('auth')->group(function () {
@@ -50,19 +56,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/create', [ItemController::class, 'create'])->name('items.create');
 
     //　お気に入り登録/削除機能
-    Route::post('/items/{item}/like', [LikeController::class, 'like'])->name('likes.like');
-    Route::post('/items/{item}/unlike', [LikeController::class, 'unlike'])->name('likes.unlike');
+    Route::post('/likes/{item_id}', [LikeController::class, 'like'])->name('likes.like');
+    Route::delete('/likes/{item_id}', [LikeController::class, 'unlike'])->name('likes.unlike');
 
     //　マイページの表示
     Route::get('/mypage', [likeController::class, 'mypage'])->name('mypage');
     //Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
     Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
 
-    //　コメントページ表示
-    Route::get('/items/{item}/comment', [CommentController::class, 'showCommentForm'])->name('comments.show');
 
-    //　コメント投稿
-    Route::post('/items/{item}/comment', [CommentController::class, 'storeComment'])->name('comments.store');
 
     //　購入手続きページの表示
     Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');

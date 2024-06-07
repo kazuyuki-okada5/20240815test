@@ -11,8 +11,10 @@ class LikeController extends Controller
 {
     public function like($itemId)
     {
+        $userId = Auth::id();
+
         $like = new Like([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'item_id' => $itemId,
         ]);
         $like->save();
@@ -20,22 +22,22 @@ class LikeController extends Controller
         return redirect()->back()->with('success', 'お気に入りに追加しました');
     }
 
-public function unlike($itemId)
-{
-    $userId = auth()->id();
+    public function unlike($itemId)
+    {
+        $userId = Auth::id();
 
-    // itemId が定義されていることを確認し、関数内で使用されていることを確認します
-    $like = Like::where('user_id', $userId)
-                ->where('item_id', $itemId)
-                ->first();
+        $like = Like::where('user_id', $userId)
+                    ->where('item_id', $itemId)
+                    ->first();
 
-    if ($like) {
-        $like->delete();
-        return redirect()->back()->with('success', 'お気に入りを削除しました');
-    } else {
-        return redirect()->back()->with('success', 'いいねが見つかりませんでした');
+        if ($like) {
+            $like->delete();
+            return redirect()->back()->with('success', 'お気に入りを削除しました');
+        } else {
+            return redirect()->back()->with('error', 'いいねが見つかりませんでした');
+        }
     }
-}
+
 
 
     public function index()

@@ -59,6 +59,6 @@ class Item extends Model
         //　Category_Itemsテーブルにidカラムを取得させItemsテーブルのレコードを参照させる
     public function categories()
     {
-        return $this->belongsToMany(Item::class, 'category_items');
+        return $this->belongsToMany(Category::class, 'category_items', 'item_id', 'category_id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
+use App\Models\Profile;
 use App\Models\Item;
 
 class CommentController extends Controller
@@ -24,7 +25,7 @@ class CommentController extends Controller
 
         Comment::create([
             'user_id' => Auth::id(),
-            'item_id' => $itemid,
+            'item_id' => $itemId,
             'comment' => $request->input('comment'),
         ]);
 
@@ -36,6 +37,11 @@ class CommentController extends Controller
     {
         $item = Item::findOrFail($item_id);
         $comments = Comment::where('item_id', $item_id)->with('user')->get();
+
+        //　ユーザーのプロフィール情報を取得
+        foreach ($comments as $comment) {
+            $comment->userProfile = Profile::where('user_id', $comment->user_id)->first();
+        }
 
         return view('items.comment', compact('item', 'comments'));
     }

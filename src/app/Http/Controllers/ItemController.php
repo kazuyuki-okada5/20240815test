@@ -8,6 +8,7 @@ use App\Models\Like;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Models\CategoryItem;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,12 +53,18 @@ class ItemController extends Controller
     public function show($item_id)
     {
         // IDでアイテムを取得
-        $item = Item::findOrFail($item_id);
+        $item = Item::with('categories', 'condition')->findOrFail($item_id);
         // IDでアイテムを出品したユーザーのnameを取得する
         $user = User::findOrFail($item->user_id)->name;
+        //　現在のユーザーがこのアイテムをお気に入りにしているかをチェック
+        $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item->id)->exists();
+        //　ユーザーが何人お気に入りしているかカウント
+        $likeCount = Like::where('item_id', $item_id)->count();
+        //　コメント数をカウント
+        $commentCount = Comment::where('item_id',$item_id)->count();
 
         // items.detailビューを表示し、$item変数を渡す
-        return view('items.detail', ['item' => $item, 'user' => $user]);
+        return view('items.detail', ['item' => $item, 'user' => $user, 'isLiked' => $isLiked, 'likeCount' => $likeCount, 'commentCount' => $commentCount ]);
     }
 
     //　出品ページの表示
