@@ -51,13 +51,13 @@ class Item extends Model
     }
 
         //　Commentsテーブルにidカラムを取得させItemsテーブルのレコードを参照させる
-    public function Comments()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
     }
 
         //　Category_Itemsテーブルにidカラムを取得させItemsテーブルのレコードを参照させる
-    public function Categories()
+    public function categories()
     {
         return $this->belongsToMany(Item::class, 'category_items');
     }

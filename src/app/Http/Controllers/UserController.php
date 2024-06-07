@@ -28,6 +28,4 @@ class UserController extends Controller
             return view('auth.mypage', compact('items', 'likes'));
         }
     }
-
-    
 }

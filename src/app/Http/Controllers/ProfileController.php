@@ -6,6 +6,7 @@ use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -45,17 +46,65 @@ class ProfileController extends Controller
         $user->name = $request->name; //　フォームからの入力でユーザー名を更新
         $user->save(); //　ユーザー情報を保存
 
+        //　画像がアップロードされている場合の処理
+        if($request->hasFile('img_url')) {
+            //　古い画像のパス取得
+            $oldImagePath = $profile->img_url;
+
+            $file = $request->file('img_url');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/profiles', $filename);
+            $newImagePath = 'profiles/' . $filename;
+
+            $profile->img_url = $newImagePath;
+
+            $profile->save();
+
+            //　古いファイルを削除
+            if ($oldImagePath) {
+                Storage::delete('public/' . $oldImagePath);
+            }
+
+        }
+
         // フォームからの入力を更新
-        $profile->update([
-            'img_url' => $request->img_url,
-            'post_code' => $request -> post_code,
-            'address' => $request -> address,
-            'building' => $request -> building,
-        ]);
+        $profile->post_code = $request->post_code;
+        $profile->address = $request->address;
+        $profile->building = $request->building;
+        $profile->save();
 
         //　プロフィール更新後にプロフィール詳細ページにリダイレクトし、成功メッセージを表示
         return redirect()->route('profile.show')->with('success', 'プロフィールが更新されました');
 
+    }
+
+        // プロフィールを新規作成するフォームを表示するメソッド
+    public function create()
+    {
+        return view('profiles.create');
+    }
+
+    // プロフィールを新規作成するメソッド
+    public function store(Request $request)
+    {
+        // リクエストからデータを受け取り、新しいプロフィールを作成する
+        $profile = new Profile();
+        $profile->user_id = Auth::id();
+        $profile->post_code = $request->post_code;
+        $profile->address = $request->address;
+        $profile->building = $request->building;
+
+        //　画像がアップロードされている場合の処理
+        if ($request->hasFile('img_url')) {
+            $imagePath = $request->file('img_url')->store('profiles', 'public');
+            $profile->img_url = $imagePath;
+        }
+
+        // プロフィールを保存する
+        $profile->save();
+
+        // プロフィール作成後にリダイレクトするなどの処理を行う
+        return redirect()->route('profile.show')->with('success', 'プロフィールが作成されました');
     }
 
 }

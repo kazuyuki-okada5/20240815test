@@ -15,4 +15,10 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function profileImage()
+    {
+        // プロフィール画像の URL を返す
+        return $this->img_url ? asset('storage/' . $this->img_url) : null;
+    }
 }

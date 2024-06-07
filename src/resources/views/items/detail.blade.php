@@ -6,7 +6,6 @@
 
 @section('content')
 
-
 <div class="listtype__content">
   <div class="listtype__list">
           <ul class="listtype-nav">
@@ -40,15 +39,17 @@
         @csrf
         <button type="submit" class="btn btn-primary">お気に入りに追加</button>
     </form>
-
     <form method="POST" action="{{ route('likes.unlike', $item->id) }}">
         @csrf
         <button type="submit" class="btn btn-danger">お気に入り解除</button>
     </form>
             <p>お気に入り登録者数</p>
-            <button>コメント</button>
+            <a href="{{ route('comments.show', ['item' => $item->id]) }}" class="btn btn-secondary">コメント</a>
             <p>コメント数</p>
-            <button>購入する</button>
+            <form method="POST" action="{{ route('items.buy', $item->id) }}">
+              @csrf
+            <button type="submit" class="btn btn-primary">購入する</button>
+            </form>
             <p>商品説明<br>
                 {{ $item->comment }}</p>
             <p>商品の情報</p>

@@ -40,6 +40,7 @@ class ItemController extends Controller
         }
     }
 
+    //　アイテム名を検索
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -120,6 +121,7 @@ class ItemController extends Controller
 
         return view('items.selling', ['items' => $items]);
     }
+
     //　購入商品一覧ページを処理するメソッド
     public function purchased()
     {
@@ -127,5 +129,12 @@ class ItemController extends Controller
         $items = Item::where('sold_user_id', $user->id)->get();
 
         return view('items.purchased', ['items' => $items]);
+    }
+
+    //　購入手続きページを処理するメソッド
+    public function showBuyForm($item_id)
+    {
+        $item = Item::findOrFail($item_id);
+        return view('items.buy', compact('item'));
     }
 }

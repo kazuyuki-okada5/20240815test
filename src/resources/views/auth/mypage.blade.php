@@ -3,9 +3,17 @@
 @section('content')
 <div class="container">
     <div class="profile-header">
-        <img src="{{ asset('storage/' . $user->profile_image) }}" alt="{{ $user->name }}" class="profile-image">
+        <img src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}" style="max-width: 400px;">
+
         <h2>{{ $user->name }}</h2>
+    @if (!$user->profile)
+        <div class="alert alert-warning" role="alert">
+            プロフィールが存在しません。プロフィールを作成してください。
+        </div>
+        <a href="{{ route('profile.create') }}" class="btn btn-primary">プロフィールを作成</a>
+    @else
         <a href="{{ route('profile.show') }}" class="btn btn-secondary">プロフィールを表示</a>
+    @endif
     </div>
 
     <div class="item-history">

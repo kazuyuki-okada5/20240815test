@@ -8,7 +8,14 @@
         @method('PUT')
         <div class="form-group">
             <label for="img_url">プロフィール画像</label>
-            <input type="file" class="form-cotrol-file" id="img_url" name="img_url">
+            <div class="profile-image-container" style="margin-bottom: 10px">
+                @if ($profile->img_url)
+                    <img src="{{ asset('storage/' .$profile->img_url) }}" alt="Profile Image" style="max-width: 200px;">
+                @else
+                    <div style="width: 200px; height: 200px; background-color: gray;"></div>
+                @endif
+            </div>
+            <input type="file" class="form-control-file" id="img_url" name="img_url">
         </div>
         <div class="form-group">
             <label for="name">ユーザー名</label>
