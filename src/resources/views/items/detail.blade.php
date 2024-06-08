@@ -45,12 +45,12 @@
     <form id="unlike-form" method="POST" action="{{ route('likes.unlike', $item->id) }}" style="display: {{ $isLiked ? 'inline' : 'none' }}">
       @csrf
       @method('DELETE')
-      <button type="submit" class="btn btn-link p-0">
+      <button type="submit" class="btn btn-link p-0" {{ Auth::check() ? '' : 'disabled' }}>
         <i class="fas fa-star" style="font-size: 2rem;"></i>
       </button>
     </form>
             <p>{{ $likeCount }}</p>
-    <a href="{{ route('comments.show', ['item' => $item->id]) }}" class="btn btn-link p-0">
+    <a href="{{ route('comments.show', ['item' => $item->id]) }}" class="btn btn-link p-0" {{ Auth::check() ? '' : 'disabled' }}>
       <i class="fas fa-comment" style="font-size: 2rem;"></i>
     </a>
             <p>{{ $commentCount ?? '' }}</p>
@@ -80,6 +80,12 @@
     var unlikeForm = document.getElementById('unlike-form');
 
     likeForm.addEventListener('submit', function(e) {
+      if (!@json(Auth::check())) {
+        e.preventDefault();
+        alert('この操作を行うにはログインが必要です。');
+        return false;
+      }
+
       e.preventDefault();
       if (!isLiked) {
         likeForm.submit();
@@ -90,6 +96,12 @@
     });
 
     unlikeForm.addEventListener('submit', function(e) {
+      if (!@json(Auth::check())) {
+        e.preventDefault();
+        alert('この操作を行うにはログインが必要です。');
+        return false;
+      }
+
       e.preventDefault();
       if (isLiked) {
         unlikeForm.submit();

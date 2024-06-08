@@ -23,6 +23,15 @@ class ProfileController extends Controller
         return view('profiles.show', ['profile' => $profile]);
     }
 
+    //　マイページ表示用のメゾット
+    public function showMypage()
+    {
+        $user = Auth::user();
+        $profile = Profile::where('user_id', $user->id)->first();
+        
+        return view('auth.maypage' , compact('user', 'profile'));
+    }
+
     // プロフィール編集表示用のメゾット
     public function edit()
     {

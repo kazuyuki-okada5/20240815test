@@ -3,7 +3,13 @@
 @section('content')
 <div class="container">
     <div class="profile-header">
-        <img src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}" style="max-width: 400px;">
+        @if ($user->profile && $user->profile->img_url)
+            <img src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}"  style="max-width: 200px; border-radius: 50%">
+        @else
+            <div class="default-avater">
+                <i class="fas fa-user-circle" style="font-size: 100px";></i>
+            </div>
+        @endif
 
         <h2>{{ $user->name }}</h2>
     @if (!$user->profile)
