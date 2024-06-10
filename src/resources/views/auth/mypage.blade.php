@@ -4,7 +4,7 @@
 <div class="container">
     <div class="profile-header">
         @if ($user->profile && $user->profile->img_url)
-            <img src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}"  style="max-width: 200px; border-radius: 50%">
+            <img src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}"  style="max-width: 200px;">
         @else
             <div class="default-avater">
                 <i class="fas fa-user-circle" style="font-size: 100px";></i>
@@ -32,11 +32,12 @@
         @foreach ($itemsSelling as $item)
             <div class="col-mb-4">
                 <div class="card mb-4">
-                    <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                    <a href="{{ route('items.show', $item->id) }}">
+                        <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                    </a>
                     <div class="card-body">
                         <h5 class="card-title">{{ $item->name }}</h5>
                         <p class="card-text">{{ $item->price }}円</p>
-                        <a href="{{ route('items.show', $item->id) }}" class="btn btn-primary">詳細を見る</a>
                     </div>
                 </div>
             </div>

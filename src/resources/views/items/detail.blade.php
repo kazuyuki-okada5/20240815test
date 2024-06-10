@@ -2,11 +2,9 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/items/detail.css') }}">
-
 @endsection
 
 @section('content')
-
 <div class="listtype__content">
   <div class="listtype__list">
           <ul class="listtype-nav">

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 use App\Models\Profile;
 use App\Models\Item;
+use App\Models\Like;
 
 class CommentController extends Controller
 {
@@ -43,7 +44,12 @@ class CommentController extends Controller
             $comment->userProfile = Profile::where('user_id', $comment->user_id)->first();
         }
 
-        return view('items.comment', compact('item', 'comments'));
+        //　お気に入り情報とコメント数を取得
+        $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item_id)->exists();
+        $likeCount = Like::where('item_id', $item_id)->count();
+        $commentCount = Comment::where('item_id', $item_id)->count();
+
+        return view('items.comment', compact('item', 'comments', 'isLiked', 'likeCount', 'commentCount'));
     }
 
     public function storeComment(Request $request, $item_id)
