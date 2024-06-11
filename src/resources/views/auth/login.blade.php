@@ -1,10 +1,27 @@
-@extends('layouts.app')
-
-@section('css')
-<link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
-@endsection
-
-@section('content')
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flea Market App</title>
+    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    @yield('css')
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <img src="{{ asset('storage/logo (1).svg') }}" alt="Flea Market App Logo" class="logo">
+                </div>
+            </div>
+        </header>
+    </div>
+</body>
 <div class="login__content">
   <div class="login-form__heading">
     <h2>ログイン</h2>
@@ -42,11 +59,10 @@
       </div>
     </div>
     <div class="form__button">
-      <button class="form__button-submit" type="submit">ログイン</button>
+      <button class="form__button-submit" type="submit">ログインする</button>
     </div>
   </form>
   <div class="register__link">
-    <a class="register__button-submit" href="/register">会員登録の方はこちら</a>
+    <a class="register__button-submit" href="/register">会員登録はこちら</a>
   </div>
 </div>
-@endsection

@@ -1,0 +1,134 @@
+.item-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* 中央揃えにする */
+    gap: 20px;
+    /* アイテム画像と情報の間のスペースを調整 */
+    margin-top: 30px;
+    /* アイテムコンテナ自体を中央に配置 */
+}
+
+.item-image {
+    margin: 20px 10px 0px 25px;
+    max-width: 300px;
+}
+
+.item-info {
+    width: 310px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    margin: 19px 0px 0px 0px;
+    font-size: 30px;
+    /* 文字サイズを変更 */
+    font-weight: bold;
+    /* 文字の太さを変更 */
+}
+
+.explanation {
+    height: 200px;
+}
+
+.brand {
+    height: 25px;
+    margin: 0px 0px 0px 0px;
+    font-size: 15px;
+}
+
+.price {
+    height: 25px;
+    margin: 0px 0px 20px 0px;
+    font-size: 25px;
+}
+
+.count{
+    margin-top: 5px;
+    /* 数字とアイコンの間にスペースを追加 */
+    text-align: center;
+}
+
+
+.buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: 210px;
+    /* ボタン間のスペースを調整 */
+}
+
+.like-container,
+.comment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-link i {
+    color: #000;
+    /* 必要に応じてアイコンの色を変更 */
+}
+
+/* 購入するボタンのスタイル */
+.btn-primary {
+    width: 300px;
+    font-size: 20px;
+    /* 文字サイズを変更 */
+    color: #fff;
+    /* 文字色を変更 */
+    background-color: #ff8400;
+    /* 塗り潰し色を変更 */
+    border: none;
+    /* 枠線を無しに */
+    padding: 10px 20px;
+    /* ボタンの内側の余白を設定 */
+    border-radius: 5px;
+    /* ボタンの角を丸くする */
+    cursor: pointer;
+    /* マウスポインタを手の形にする */
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: #bd7812;
+    /* ホバー時の塗り潰し色を変更 */
+}
+.item-category {
+    height: 20px;
+    margin: 15px 0px 0px 0px;
+    font-size: 15px;
+}
+
+.category-parts {
+    margin: 5px 0px 0px 0px;
+}
+
+.category-parts span {
+    width: auto;
+    border: 1px solid #ccc;
+    /* 枠線の色と太さ */
+    background-color: #f0f0f0;
+    /* 塗り潰しの色 */
+    padding: 5px;
+    /* 内側の余白 */
+    border-radius: 20px;
+    /* 角を丸くする */
+    display: inline-block;
+    /* インラインブロック表示 */
+    margin-left: 20px;
+    margin-right: 5px;
+    /* スパンタグ同士の間隔 */
+}

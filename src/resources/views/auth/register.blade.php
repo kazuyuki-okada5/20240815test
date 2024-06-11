@@ -1,10 +1,28 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flea Market App</title>
+    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    @yield('css')
+</head>
+  <body>
+      <div class="page-wrapper">
+          <header class="header">
+              <div class="header__inner">
+                  <div class="header__logo">
+                    <img src="{{ asset('storage/logo (1).svg') }}" alt="Flea Market App Logo" class="logo">
+                  </div>
+              </div>
+          </header>
+      </div>
+  </body>
 
-@section('css')
-<link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
-@endsection
-
-@section('content')
 <div class="register__content">
   <div class="register-form__heading">
     <h2>会員登録</h2>
@@ -74,4 +92,3 @@
     <a class="login__button-submit" href="/login">ログインの方はこちら</a>
   </div>
 </div>
-@endsection
