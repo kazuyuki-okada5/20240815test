@@ -117,7 +117,7 @@ class ItemController extends Controller
         ]);
 
         //　成功した場合はリダイレクトなどを行う
-        return redirect()->route('items.create')->with('success', 'アイテムが追加されました');
+        return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
     }
 
     //　出品商品一覧ページを処理するメソッド
