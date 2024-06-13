@@ -2,8 +2,6 @@
     width: 100%;
     max-width: 1600px;
     margin: auto;
-    border-bottom: 3px solid #000;
-    height: 30px;
 }
 
 .listtype__content {
@@ -17,6 +15,11 @@
     margin: 0;
     outline: none;
     list-style: none;
+    cursor: pointer;
+}
+
+.listtype-nav {
+    margin-bottom: 0px;
 }
 
 .listtype-nav__item {
@@ -37,23 +40,25 @@
     padding: 0 5px;
 }
 
-.hidden {
-    display: none;
-}
-
-.item {
-    display: inline-block;
-    width: calc(215px);
-    overflow: hidden;
-    border-radius: 3px;
-}
-
 .item .card-img-top {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    margin: 0;
     border: 1px solid #000000;
+}
+
+.item {
+    display: inline-block;
+    width: 180px;
+    height: 225px;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 2px solid #000000;
+    margin: 0px 20px 10px 0px;
+}
+
+.hidden {
+    display: none;
 }
 
 .card-text {
@@ -71,18 +76,26 @@
     border-radius: 10px;
 }
 
-.card-body {
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 2%;
-    margin: 0;
-    border: 1px solid #000000;
-    height: 34px;
-    margin: -24px 0px 0px 0px;
-}
-
 .card-title {
-    margin: 0 2px 2px 2px;
+    margin: -25px 2px 2px 2px;
     text-align: center;
     font-size: 18px;
+}
+
+.listtype__content {
+    position: relative;
+    padding-bottom: 10px;
+    /* アンダーバーのための余白 */
+    margin-bottom: 20px;
+    /* アンダーバーのための余白 */
+}
+
+.listtype__content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
 }

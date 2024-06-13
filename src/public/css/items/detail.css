@@ -21,6 +21,11 @@
     flex-direction: column;
 }
 
+.img {
+    width: 300px;
+    height: 300px;
+}
+
 .name {
     margin: 19px 0px 0px 0px;
     font-size: 30px;

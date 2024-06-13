@@ -24,15 +24,13 @@
     <!--アイテム一覧-->
     <div id="item-list" class="item-container">
         @foreach($items as $item)
-        <div class="item card-img-top">
+        <div class="card-img-top">
             <div class="item">
                 <a href="{{ route('items.show', $item->id )}}">
                     <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
                 </a>
                 <p class="card-text"><span>{{ $item->price }}円</span></p>
-                <div class="card-body">
-                    <h2 class="card-title">{{ $item->name }}</h2>
-                </div>
+                <p class="card-title">{{ $item->name }}</p>
             </div>
         </div>
         @endforeach
@@ -42,15 +40,13 @@
     <!-- お気に入り一覧 -->
     <div id="likes-list" class="item-container hidden">
         @foreach ($likes as $like)
-        <div class="item card-img-top">
+        <div class="card-img-top">
             <div class="item">
                 <a href="{{ route('items.show', $like->item->id )}}">
                     <img src="{{ asset('storage/' . $like->item->image_url) }}" class="card-img-top" alt="{{ $like->item->name }}">
                 </a>
                 <p class="card-text"><span>{{ $like->item->price }}円</span></p>
-                <div class="card-body">
-                    <h2 class="card-title">{{ $like->item->name }}</h2>
-                </div>
+                <p class="card-title">{{ $like->item->name }}</p>
             </div>
         </div>
         @endforeach
@@ -60,18 +56,18 @@
 
 <script>
     document.getElementById('show-items').addEventListener('click', function(){
-        document.getElementById('item-list').style.display = 'block';
+        document.getElementById('item-list').classList.remove('hidden');
         if (document.getElementById('likes-list')) {
-            document.getElementById('likes-list').style.display = 'none';
+            document.getElementById('likes-list').classList.add('hidden');
         }
         document.getElementById('show-items').classList.add('selected');
         document.getElementById('show-likes').classList.remove('selected');
     });
 
     document.getElementById('show-likes').addEventListener('click', function(){
-        document.getElementById('item-list').style.display = 'none';
+        document.getElementById('item-list').classList.add('hidden');
         if (document.getElementById('likes-list')) {
-            document.getElementById('likes-list').style.display = 'block';
+            document.getElementById('likes-list').classList.remove('hidden');
         }
         document.getElementById('show-items').classList.remove('selected');
         document.getElementById('show-likes').classList.add('selected');

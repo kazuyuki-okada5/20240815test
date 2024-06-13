@@ -8,7 +8,7 @@
 <div class="listtype__content"></div>
 <div class="item-container">
     <div class="item-image">
-        <img src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image">
+        <img class="img" src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image">
     </div>
     <div class="item-info">
         <h2 class="name">{{ $item->name }}</h2>
