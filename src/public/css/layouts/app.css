@@ -1,6 +1,6 @@
 .page-wrapper {
     width: 100%;
-    max-width: 1680px;
+    max-width: 1480px;
     margin: 20px auto;
     padding: 20px;
 }
@@ -17,7 +17,7 @@
     margin: 0 auto;
     margin-left: 120px;
     padding: 5px 15px;
-    max-width: 1680px;
+    max-width: 1480px;
 }
 
 .header__logo {

@@ -1,0 +1,131 @@
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.fa-user-circle {
+    font-size: 90px;
+    margin-top: 20px;
+    /* これは意図的に重複しているのでそのまま残しています */
+}
+
+.name {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.alert-warning {
+    margin-top: 20px;
+    color: red;
+    font-weight: bold;
+    margin: 20px 15px 0px 15px;
+    /* この記述も意図的に重複しているのでそのまま残しています */
+}
+
+.item-history {
+    max-width: 1440px;
+    margin-bottom: 20px;
+    padding-left:  60px;
+    padding-bottom: 10px;
+    position: relative;
+        /* 相対位置指定 */
+    }
+    
+.item-history::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    /* ボタンの下に配置 */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+}
+
+
+.item-history .btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    padding-right: 40px;
+}
+
+.item-box {
+    display: flex;
+    justify-content: center;
+}
+
+.item-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+    padding-left: 40px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border: 1px solid black;
+}
+
+.card-text {
+    position: relative;
+    margin: 0;
+    bottom: 30px;
+    left: 5px;
+    width: 100%;
+    text-align: left;
+}
+
+.card-text span {
+    background-color: #d5d5d5;
+    padding: 3px 6px;
+    border-radius: 10px;
+}
+
+.card-title {
+    margin: -20px 0px 0px 0px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.item-history .btn.active {
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
