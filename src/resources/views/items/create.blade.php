@@ -23,50 +23,71 @@
                         <h2 class="item-font">商品画像</h2>
                         <div class="form-group image-preview-container">
                             <label for="image_url" class="image-upload" id="image-label">画像を選択する</label>
-                            <input type="file" class="form-control-file" id="image_url" name="image_url" onchange="previewImage(event)">
+                            <input type="file" class="form-control-file @error('image_url') is-invalid @enderror" id="image_url" name="image_url" onchange="previewImage(event)">
                             <img id="image_preview" class="image-preview" src="#" alt="Image Prev
                             iew" style="display: none;">
+                            @error('image_url')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <h2 class="sub">商品の詳細</h2>
                         <div class="item-detail">
                             <div class="form-group">
                                 <label class="item-font" for="category">カテゴリー</label>
-                                <select class="form-control" id="category" name="category" required>
-                                    <option value=" disabled selected ">選択してください</option>
+                                <select class="form-control @error('category') is-invalid @enderror" id="category" name="category" required>
+                                    <option value="" disabled selected>選択してください</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->category }}">{{ $category->category }}</option>
+                                        <option value="{{ $category->category }}" {{ old('category') == $category->category ? 'selected' : ''}}>{{ $category->category }}</option>
                                     @endforeach
                                 </select>
+                                @error('category')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label class="item-font" for="condition">商品の状態</label>
-                                <select class="form-control" id="condition" name="condition" required>
-                                    <option value=" disabled selected ">選択してください</option>
+                                <select class="form-control @error('condition') is-invalid @enderror" id="condition" name="condition" required>
+                                    <option value="" disabled selected>選択してください</option>
                                     @foreach($conditions as $condition)
-                                        <option value="{{ $condition->condition }}">{{ $condition->condition }}</option>
+                                        <option value="{{ $condition->condition }}" {{ old('condition') == $condition->condition ? 'selected' : '' }}>{{ $condition->condition }}</option>
                                     @endforeach
                                 </select>
+                                @error('condition')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <h2 class="sub">商品名と説明</h2>
                         <div class="item-detail">
                             <div class="form-group">
                                 <label class="item-font" for="name">商品名</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label class="item-font" for="brand">ブランド</label>
-                                <input type="text" class="form-control" id="brand" name="brand">
+                                <input type="text" class="form-control @error('brand') is-invalid @enderror" id="brand" name="brand" value="{{ old('brand') }}">
+                                @error('brand')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label class="item-font" for="comment">商品の説明</label>
-                                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                                <textarea class="form-control @error('comment') is-invalid @enderror" id="comment" name="comment" rows="3">{{ old('comment') }}</textarea>
+                                @error('comment')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <h2 class="sub">販売価格</h2>
                         <div class="form-group">
                             <label class="item-font" for="price">価格</label>
-                            <input type="text" class="form-control" id="price" name="price" required value="¥">
+                            <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}" required>
+                            @error('price')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">出品する</button>
                     </form>

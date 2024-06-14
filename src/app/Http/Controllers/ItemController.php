@@ -11,6 +11,7 @@ use App\Models\CategoryItem;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ItemCreateRequest;
 
 class ItemController extends Controller
 {
@@ -77,23 +78,27 @@ class ItemController extends Controller
     }
 
     //　出品処理
-    public function create(Request $request)
+    public function create(ItemCreateRequest $request)
     {
-        //　フォームからの入力を取得
-        $input = $request->all();
+        //　バリデーションを通過したデータを取得
+        $input = $request->validated();
 
         //　ユーザーIDを取得
         $userId = Auth::id();
 
-        //　コンディション名からコンディションレコードを取得
+        //　コンディションとカテゴリの取得（存在しない場合は null にする）
         $condition = Condition::where('condition', $input['condition'])->first();
         $category = Category::where('category', $input['category'])->first();
 
+        if (!$condition || !$category) {
+            // エラー処理:条件またはカテゴリが存在しない場合の対応
+            return back()->withInput()->withErrors(['error' => '選択された条件またはカテゴリが無効です']);
+        }
+
         //　画像ファイルの処理
+        $imagePath = null;
         if ($request->hasFile('image_url')) {
             $imagePath = $request->file('image_url')->store('images', 'public');
-        } else {
-            $imagePath = null;
         }
 
         //　アイテムを作成
