@@ -1,0 +1,81 @@
+.profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.profile-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-control-file,
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.profile-image-parent {
+    width: 150px;
+    /* サイズは適宜調整してください */
+    height: 150px;
+    /* サイズは適宜調整してください */
+    overflow: hidden;
+}
+
+.profile-image-container {
+    width: 100%;
+    /* 親要素に合わせて */
+    height: 100%;
+    /* 親要素に合わせて */
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-image {
+    width: 100%;
+    /* コンテナに合わせて画像を拡大 */
+    height: 100%;
+    /* コンテナに合わせて画像を拡大 */
+    object-fit: cover;
+}
+
+.default-image {
+    width: 200px;
+    height: 200px;
+    background-color: gray;
+    border-radius: 50%;
+}
+
+.btn-primary {
+    background-color: #ff5a5f;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #ff787b;
+}

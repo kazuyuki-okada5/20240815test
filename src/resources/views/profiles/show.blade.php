@@ -1,19 +1,30 @@
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/profiles/show.css') }}">
+@endsection
+
 @section('content')
-<div class="container">
+<div class="profile-container">
     @if ($profile)
-        <h1>{{ $profile->user->name }}のプロフィール</h1>
+        <h1 class="profile-title">{{ $profile->user->name }}のプロフィール</h1>
         <div class="profile">
-            <!-- プロフィール画像を表示 -->
-            <img src="{{ asset('storage/' . $profile->img_url) }}" alt="Profile Image" style="max-width: 200px;">
-            <!-- ユーザーのプロフィール情報を表示 -->
-            <p>郵便番号: {{ $profile->post_code }}</p>
-            <p>住所: {{ $profile->address }}</p>
-            <p>建物名: {{ $profile->building }}</p>
+<div class="profile-image-parent">
+    <div class="profile-image-container">
+        @if ($profile->img_url)
+            <img id="profile-image-preview" src="{{ asset('storage/' . $profile->img_url) }}" alt="Profile Image" class="profile-image">
+        @else
+            <img id="profile-image-preview" class="profile-image" style="display: none;">
+            <div class="default-image" id="default-image"></div>
+        @endif
+    </div>
+</div>
+            <p class="profile-item">郵便番号: {{ $profile->post_code }}</p>
+            <p class="profile-item">住所: {{ $profile->address }}</p>
+            <p class="profile-item">建物名: {{ $profile->building }}</p>
         </div>
     @else
-        <p>プロフィール情報がありません。</p>
+        <p class="no-profile">プロフィール情報がありません。</p>
     @endif
         <a href="{{ route('profile.edit')}}" class="btn btn-primary">プロフィールを編集する</a>
 </div>
