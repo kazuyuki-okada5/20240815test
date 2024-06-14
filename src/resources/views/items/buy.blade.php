@@ -5,9 +5,7 @@
 @endsection
 
 @section('content')
-
 <div class="buy-container">
-    <h1>商品購入</h1>
     <div class="item-image">
         <img src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image" style="max-width: 300px">
     </div>
