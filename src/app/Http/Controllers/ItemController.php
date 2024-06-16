@@ -95,11 +95,14 @@ class ItemController extends Controller
             return back()->withInput()->withErrors(['error' => '選択された条件またはカテゴリが無効です']);
         }
 
-        //　画像ファイルの処理
-        $imagePath = null;
-        if ($request->hasFile('image_url')) {
-            $imagePath = $request->file('image_url')->store('images', 'public');
-        }
+     // 画像ファイルの処理
+    $imagePath = null;
+    if ($request->hasFile('image_url')) {
+        $imagePath = $request->file('image_url')->store('images', 'public');
+    } elseif ($request->session()->has('image_url')) {
+        // バリデーションエラーからのリダイレクト時にセッションに保存された画像パスを使用
+        $imagePath = $request->session()->get('image_url');
+    }
 
         //　アイテムを作成
         $item = new Item([
@@ -108,7 +111,7 @@ class ItemController extends Controller
             'price' => $input['price'],
             'comment' => $input['comment'],
             'image_url' => $imagePath,
-            'brand' => $input['brand'],
+            'brand' => $input['brand'] ?? null,
             'condition_id' => $condition->id,
         ]);
 

@@ -21,7 +21,7 @@ class CreateItemsTable extends Migration
             $table->integer('price');
             $table->text('comment');
             $table->string('image_url' , 255);
-            $table->string('brand' ,255);
+            $table->string('brand' ,255)->nullable();
             $table->foreignId('sold_user_id')->nullable()->constrained('users');
             $table->timestamps();
         });

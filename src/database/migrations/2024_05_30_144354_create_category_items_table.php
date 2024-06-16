@@ -15,8 +15,8 @@ class CreateCategoryItemsTable extends Migration
     {
         Schema::create('category_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories');
-            $table->foreignId('item_id')->constrained('items');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->timestamps();
         });
     }

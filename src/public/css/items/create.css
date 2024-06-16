@@ -4,17 +4,17 @@
     align-items: center;
     height: 100vh;
     margin-top: 60px;
-    height: 780px;
 }
 
 .justify-content-center {
     width: 600px;
+    margin-top: 10px;
 }
 
 .card {
     width: 100%;
     max-width: 600px;
-    margin: 20px;
+    margin: 180px 20px 20px 20px;
     padding: 20px;
 }
 
@@ -31,6 +31,7 @@
 
 .main {
     font-size: 30px;
+    margin-top: 0px;
 }
 
 .image-preview-container {
@@ -39,13 +40,15 @@
     padding: 10px;
     cursor: pointer;
     position: relative;
+    height: 230px;
 }
 
 .image-upload {
     border: 1px solid red;
     color: red;
     border-radius: 10px;
-    padding: 10px;
+    padding: 0px 5px 0px 5px;
+    margin-bottom: 5px;
     display: inline-block;
 }
 
@@ -62,10 +65,10 @@
 
 .image-preview {
     max-width: 100%;
-    margin-top: 10px;
-    max-height: 300px;
+    max-height: 170px;
     display: block;
     margin: 0 auto;
+    object-fit: cover;
 }
 
 .sub {
@@ -100,4 +103,9 @@
 .btn-primary:hover {
     background-color: #ff8400;
     border-color: #bd7812;
+}
+
+.invalid-feedback {
+    color: red;
+    font-weight: bold;
 }

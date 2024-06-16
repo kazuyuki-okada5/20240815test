@@ -24,8 +24,7 @@
                         <div class="form-group image-preview-container">
                             <label for="image_url" class="image-upload" id="image-label">画像を選択する</label>
                             <input type="file" class="form-control-file @error('image_url') is-invalid @enderror" id="image_url" name="image_url" onchange="previewImage(event)">
-                            <img id="image_preview" class="image-preview" src="#" alt="Image Prev
-                            iew" style="display: none;">
+                            <img id="image_preview" class="image-preview" src="{{ session('image_url', '#') }}" alt="Image Preview" style="{{ session('image_url') ? '' : 'display: none;' }}">
                             @error('image_url')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
