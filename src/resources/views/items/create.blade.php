@@ -32,16 +32,34 @@
                         <h2 class="sub">商品の詳細</h2>
                         <div class="item-detail">
                             <div class="form-group">
-                                <label class="item-font" for="category">カテゴリー</label>
-                                <select class="form-control @error('category') is-invalid @enderror" id="category" name="category" required>
+                                <label class="item-font" for="category1">カテゴリー1</label>
+                                <select class="form-control @error('category1') is-invalid @enderror" id="category1" name="category1" required>
                                     <option value="" disabled selected>選択してください</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->category }}" {{ old('category') == $category->category ? 'selected' : ''}}>{{ $category->category }}</option>
+                                        <option value="{{ $category->id }}" {{ old('category1') == $category->id ? 'selected' : ''}}>{{ $category->category }}</option>
                                     @endforeach
                                 </select>
-                                @error('category')
+                                @error('category1')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="item-font" for="category2">カテゴリー2</label>
+                                <select class="form-control" id="category2" name="category2">
+                                    <option value="" disabled selected>選択してください</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category2') == $category->id ? 'selected' : ''}}>{{ $category->category }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="item-font" for="category3">カテゴリー3</label>
+                                <select class="form-control" id="category3" name="category3">
+                                    <option value="" disabled selected>選択してください</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category3') == $category->id ? 'selected' : ''}}>{{ $category->category }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label class="item-font" for="condition">商品の状態</label>

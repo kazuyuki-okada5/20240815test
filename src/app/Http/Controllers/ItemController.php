@@ -12,6 +12,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ItemCreateRequest;
+use Illuminate\Validation\ValidationException;
 
 class ItemController extends Controller
 {
@@ -79,54 +80,66 @@ class ItemController extends Controller
 
     //　出品処理
     public function create(ItemCreateRequest $request)
-    {
-        //　バリデーションを通過したデータを取得
-        $input = $request->validated();
+{
+    $input = $request->validated();
+    $userId = Auth::id();
 
-        //　ユーザーIDを取得
-        $userId = Auth::id();
+    $condition = Condition::where('condition', $input['condition'])->first();
 
-        //　コンディションとカテゴリの取得（存在しない場合は null にする）
-        $condition = Condition::where('condition', $input['condition'])->first();
-        $category = Category::where('category', $input['category'])->first();
+    if (!$condition) {
+        return back()->withInput()->withErrors(['error' => '選択された条件が無効です']);
+    }
 
-        if (!$condition || !$category) {
-            // エラー処理:条件またはカテゴリが存在しない場合の対応
-            return back()->withInput()->withErrors(['error' => '選択された条件またはカテゴリが無効です']);
-        }
+    // カテゴリーの選択を確認
+    $categories = array_filter([
+        $input['category1'],
+        $input['category2'] ?? null,
+        $input['category3'] ?? null,
+    ]);
 
-     // 画像ファイルの処理
+    if (empty($categories)) {
+        return back()->withInput()->withErrors(['error' => '少なくとも1つのカテゴリーを選択してください。']);
+    }
+
+    // カテゴリーの重複チェック
+    if ($this->hasDuplicateCategories($categories)) {
+        return back()->withInput()->withErrors(['error' => 'カテゴリーは重複して選択できません。']);
+    }
+
     $imagePath = null;
     if ($request->hasFile('image_url')) {
         $imagePath = $request->file('image_url')->store('images', 'public');
     } elseif ($request->session()->has('image_url')) {
-        // バリデーションエラーからのリダイレクト時にセッションに保存された画像パスを使用
         $imagePath = $request->session()->get('image_url');
     }
 
-        //　アイテムを作成
-        $item = new Item([
-            'user_id' => $userId,
-            'name' => $input['name'],
-            'price' => $input['price'],
-            'comment' => $input['comment'],
-            'image_url' => $imagePath,
-            'brand' => $input['brand'] ?? null,
-            'condition_id' => $condition->id,
-        ]);
+    $item = new Item([
+        'user_id' => $userId,
+        'name' => $input['name'],
+        'price' => $input['price'],
+        'comment' => $input['comment'],
+        'image_url' => $imagePath,
+        'brand' => $input['brand'] ?? null,
+        'condition_id' => $condition->id,
+    ]);
 
-        //　アイテムを保存
-        $item->save();
+    $item->save();
 
-        // 中間テーブルの　category_items　テーブルに新しいデータを追加
+    foreach ($categories as $category) {
         CategoryItem::create([
             'item_id' => $item->id,
-            'category_id' => $category->id,
+            'category_id' => $category,
         ]);
-
-        //　成功した場合はリダイレクトなどを行う
-        return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
     }
+
+    return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
+}
+
+// カテゴリーの重複チェックメソッド
+private function hasDuplicateCategories($categories)
+{
+    return count($categories) !== count(array_unique($categories));
+}
 
     //　出品商品一覧ページを処理するメソッド
     public function selling()
