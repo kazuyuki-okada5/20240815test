@@ -26,6 +26,10 @@
     @else
         <p class="no-profile">プロフィール情報がありません。</p>
     @endif
+    <div class="button-container">
         <a href="{{ route('profile.edit')}}" class="btn btn-primary">プロフィールを編集する</a>
+        <br>
+        <a href="{{ route('mypage') }}" class="btn btn-primary">マイページに戻る</a>
+    </div>
 </div>
 @endsection
