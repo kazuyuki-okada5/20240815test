@@ -2,6 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/items/create.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 @endsection
 
 @section('content')
@@ -24,7 +25,7 @@
                         <div class="form-group image-preview-container">
                             <label for="image_url" class="image-upload" id="image-label">画像を選択する</label>
                             <input type="file" class="form-control-file @error('image_url') is-invalid @enderror" id="image_url" name="image_url" onchange="previewImage(event)">
-                            <img id="image_preview" class="image-preview" src="{{ session('image_url', '#') }}" alt="Image Preview" style="{{ session('image_url') ? '' : 'display: none;' }}">
+                            <img id="image_preview" class="image-preview" src="{{ $imageUrl ? asset('storage/' . $imageUrl) : '#' }}" alt="Image Preview" style="{{ $imageUrl ? 'display: block;' : 'display: none;' }}">
                             @error('image_url')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -32,34 +33,15 @@
                         <h2 class="sub">商品の詳細</h2>
                         <div class="item-detail">
                             <div class="form-group">
-                                <label class="item-font" for="category1">カテゴリー1</label>
-                                <select class="form-control @error('category1') is-invalid @enderror" id="category1" name="category1" required>
-                                    <option value="" disabled selected>選択してください</option>
+                                <label class="item-font" for="categories">カテゴリー（最大3つまで選択可能）</label>
+                                <select class="form-control @error('categories.*') is-invalid @enderror" id="categories" name="categories[]" multiple required>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category1') == $category->id ? 'selected' : ''}}>{{ $category->category }}</option>
+                                        <option value="{{ $category->id }}" {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>{{ $category->category }}</option>
                                     @endforeach
                                 </select>
-                                @error('category1')
+                                @error('categories.*')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="item-font" for="category2">カテゴリー2</label>
-                                <select class="form-control" id="category2" name="category2">
-                                    <option value="" disabled selected>選択してください</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category2') == $category->id ? 'selected' : ''}}>{{ $category->category }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="item-font" for="category3">カテゴリー3</label>
-                                <select class="form-control" id="category3" name="category3">
-                                    <option value="" disabled selected>選択してください</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category3') == $category->id ? 'selected' : ''}}>{{ $category->category }}</option>
-                                    @endforeach
-                                </select>
                             </div>
                             <div class="form-group">
                                 <label class="item-font" for="condition">商品の状態</label>
@@ -114,18 +96,26 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('#categories').select2({
+            placeholder: 'カテゴリーを選択してください（最大3つまで選択可能）',
+            maximumSelectionLength: 3
+        });
+    });
+
     function previewImage(event) {
         var reader = new FileReader();
-        reader.onload = function(){
+        reader.onload = function() {
             var output = document.getElementById('image_preview');
-            output.src =reader.result;
+            output.src = reader.result;
             output.style.display = 'block';
         };
         reader.readAsDataURL(event.target.files[0]);
-
-        var imageLabel = document.getElementById('image-label');
-        imageLabel.textContent = '画像を変更する';
     }
 </script>
 @endsection
+
+

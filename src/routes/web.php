@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    
 
     // アイテム作成フォームの表示
     Route::get('/items/create', [ItemController::class, 'showCreateForm'])->name('items.create_form');
