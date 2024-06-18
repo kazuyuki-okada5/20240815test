@@ -26,7 +26,7 @@ class ItemCreateRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0|max:9999999999',
-            'comment' => 'required|string|min:20',
+            'comment' => 'required|string|min:20|max:255',
             'brand' => 'nullable|string|max:255',
             'condition' => 'required|string|exists:conditions,condition',
             'categories' => 'required|array|min:1|max:3',
@@ -47,6 +47,7 @@ class ItemCreateRequest extends FormRequest
             'price.max' => '価格は9999999999以下で入力してください。',
             'comment.required' => '商品の説明は必須です。',
             'comment.string' => '商品の説明は文字列で入力してください。',
+            'comment.max' => 'コメントは255文字以内で入力してください。',
             'comment.min' => '商品の説明は20文字以上で入力してください。',
             'brand.string' => 'ブランドは文字列で入力してください。',
             'brand.max' => 'ブランドは255文字以内で入力してください。',

@@ -8,6 +8,7 @@ use App\Models\Comment;
 use App\Models\Profile;
 use App\Models\Item;
 use App\Models\Like;
+use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
 {
@@ -18,19 +19,16 @@ class CommentController extends Controller
         return view('items.comment', compact('item'));
     }
 
-    public function store(Request $request, $itemId)
+    public function store(CommentRequest $request, Item $item)
     {
-        $request->validate([
-            'comment' => 'required|string|max:255',
-        ]);
+        $comment = new Comment();
+        $comment->user_id = auth()->id();
+        $comment->item_id = $item->id;
+        $comment->comment = $request->comment;
+        $comment->save();
 
-        Comment::create([
-            'user_id' => Auth::id(),
-            'item_id' => $itemId,
-            'comment' => $request->input('comment'),
-        ]);
-
-        return redirect()->route('items.show', $itemId)->with('success', 'コメントが追加されました');
+        return redirect()->route('comments.show', ['item' => $item->id])
+                         ->with('success', 'コメントが投稿されました。');
     }
 
     //　コメント表示

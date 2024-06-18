@@ -93,9 +93,14 @@
         @csrf
         <div class="form-group">
             <label for="comment">商品へのコメント</label>
-            <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">コメントを投稿</button>
+            <textarea name="comment" id="comment" class="form-control" rows="3" required>{{ old('comment') }}</textarea>
+                @if ($errors->has('comment'))
+                    <div class="alert alert-danger">
+                        <span class="error-message">{{ $errors->first('comment') }}</span>
+                    </div>
+                @endif
+            </div>
+            <button type="submit" class="btn btn-primary">コメントを投稿</button>
         </form>
     </div>
 </div>

@@ -9,7 +9,7 @@
 .item-info {
     flex: 1;
     text-align: center;
-    margin-right: 15px;
+    margin-right: 25px;
 }
 
 .name {
@@ -39,7 +39,7 @@
 }
 
 .like-container {
-    margin-left: 180px;
+    margin-left: 0px;
 }
 
 .comment-list {
@@ -82,13 +82,15 @@
 .date-right {
     display: inline-block;
     width: 175px;
-    margin: 0px 100px 0px 0px;
+    margin: 0px 0px 0px 125px;
+    font-size: 10px;
 }
 
 .date-left {
     display: inline-block;
     width: 175px;
-    margin: 0px 0px 0px 100px;
+    margin: 0px 0px 0px 25px;
+    font-size: 10px;
 }
 
 .comment-text-right {
@@ -160,4 +162,9 @@
 .comment-button i {
     font-size: 2rem;
     color: #000000;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
 }
