@@ -22,8 +22,22 @@ use App\Http\Controllers\CommentController;
 */
 // ログインユーザールート
 Route::get('/', [ItemController::class, 'items']);
-Route::get('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'register']);
+
+// ログイン画面表示
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');  // ここで 'login' という名前を付ける
+
+// ログイン処理
+Route::post('/login', [AuthController::class, 'login']);
+
+// 会員登録画面表示
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+// 会員登録処理
+Route::post('/register', [AuthController::class, 'register']);
 
 //　アイテム詳細ページ
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show');
@@ -67,15 +81,15 @@ Route::middleware('auth')->group(function () {
 
 
 
-    //　購入手続きページの表示
+    // 購入手続きページの表示
     Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
 
-    //　支払い方法変更先ページの表示
-    Route::post('/payment/{item_id}/update', [PaymentController::class, 'update'])->name('payment.update');
+    // 支払い方法変更ページの表示
+    Route::put('/payment/{item_id}/update', [PaymentController::class, 'update'])->name('payment.update');
 
-    //　配送先変更ページの表示
-    Route::post('/shipping/{item_id}/update', [ShippingController::class, 'update'])->name('shipping.update');
+    // 配送先変更ページの表示
+    Route::put('/shipping/{item_id}/update', [ShippingController::class, 'update'])->name('shipping.update');
 
-    //　購入完了ページの表示
-    Route::get('/purchase/complete', [PurchaseController::class, 'complete'])->name('purchase.complete');
+    // 購入完了ページの表示
+    Route::post('/purchase/complete/{item_id}', [PurchaseController::class, 'complete'])->name('purchase.complete');
 });
