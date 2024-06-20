@@ -168,3 +168,38 @@
     color: red;
     font-weight: bold;
 }
+
+/* comment.css */
+
+.login-required-message {
+    color: #000000;
+    /* テキストの色を赤に設定 */
+    font-size: 1.2em;
+    /* フォントサイズを設定 */
+    margin-top: 20px;
+    /* 上部に余白を追加 */
+    text-align: center;
+    /* テキストを中央揃えに設定 */
+    background-color: #f9f9f9;
+    /* 背景色を設定 */
+    padding: 10px;
+    /* 内部余白を追加 */
+    border-radius: 5px;
+    /* 角を丸くする */
+    border: 1px solid #ccc;
+    /* 枠線を追加 */
+}
+
+.login-required-message .login-link {
+    color: #007bff;
+    /* リンクの色を設定 */
+    font-weight: bold;
+    /* リンクの太さを設定 */
+    text-decoration: underline;
+    /* 下線を追加 */
+}
+
+.login-required-message .login-link:hover {
+    color: #0056b3;
+    /* リンクのホバー時の色を設定 */
+}

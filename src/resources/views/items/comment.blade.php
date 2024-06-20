@@ -88,7 +88,7 @@
     </div>
 @endforeach
 
-
+@auth
     <form method="POST" action="{{ route('comments.store', ['item' => $item->id]) }}" class="comment-form">
         @csrf
         <div class="form-group">
@@ -102,6 +102,9 @@
             </div>
             <button type="submit" class="btn btn-primary">コメントを投稿</button>
         </form>
+    @else
+       <p class="login-required-message">コメントを投稿するには<a href="{{ route('login') }}" class="login-link">ログイン</a>が必要です</p>
+    @endauth
     </div>
 </div>
 @endsection
