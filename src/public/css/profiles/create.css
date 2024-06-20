@@ -48,3 +48,8 @@
 .btn-primary:hover {
     background-color: #ff787b;
 }
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ProfileRequest;
 
 class ProfileController extends Controller
 {
@@ -45,7 +46,7 @@ class ProfileController extends Controller
         return view('profiles.edit', ['profile' => $profile]);
     }
 
-    public function update(Request $request)
+    public function update(ProfileRequest $request)
     {
         $userId = Auth::id();
         $profile = Profile::where('user_id', $userId)->firstOrFail();
@@ -64,7 +65,6 @@ class ProfileController extends Controller
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/profiles', $filename);
             $newImagePath = 'profiles/' . $filename;
-
             $profile->img_url = $newImagePath;
 
             $profile->save();
@@ -94,7 +94,7 @@ class ProfileController extends Controller
     }
 
     // プロフィールを新規作成するメソッド
-    public function store(Request $request)
+    public function store(ProfileRequest $request)
     {
         // リクエストからデータを受け取り、新しいプロフィールを作成する
         $profile = new Profile();
@@ -115,5 +115,4 @@ class ProfileController extends Controller
         // プロフィール作成後にリダイレクトするなどの処理を行う
         return redirect()->route('profile.show')->with('success', 'プロフィールが作成されました');
     }
-
 }
