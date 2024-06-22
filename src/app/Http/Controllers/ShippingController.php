@@ -7,6 +7,8 @@ use App\Models\Item;
 use App\Models\Profile;
 use App\Models\ShippingChange;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ShippingChangeRequest;
+use Illuminate\Support\Facades\DB;  // ← これを追加します
 
 class ShippingController extends Controller
 {
@@ -28,38 +30,31 @@ class ShippingController extends Controller
     }
 
     // 配送先情報の更新処理
-public function update(Request $request, $item_id)
-{
-    $request->validate([
-        'post_code' => 'required|string|max:255',
-        'address' => 'required|string|max:255',
-        'building' => 'nullable|string|max:255',
-    ]);
+ // 配送先情報の更新処理
+    public function update(ShippingChangeRequest $request, $item_id)
+    {
+        $user = Auth::user();
 
-    $user = Auth::user();
+        // 同じ住所と郵便番号が既に存在するか確認
+        $existingShipping = ShippingChange::where('user_id', $user->id)
+                                          ->where('address', $request->address)
+                                          ->where('post_code', $request->post_code)
+                                          ->first();
 
-    // 同じ住所が既に存在するか確認
-    $existingShipping = ShippingChange::where('user_id', $user->id)
-                                      ->where('address', $request->address)
-                                      ->first();
+        if ($existingShipping) {
+            return redirect()->back()->withErrors(['address' => 'この配送先は既に登録されています。']);
+        }
 
-    if ($existingShipping) {
-        // 既に同じ住所が存在する場合の処理
-        // 適切なエラーメッセージを設定してリダイレクトするなど
-        return redirect()->back()->withErrors(['address' => 'この住所は既に登録されています。']);
+        // 新しい配送先情報を作成
+        $shippingChange = new ShippingChange([
+            'user_id' => $user->id,
+            'item_id' => $item_id,
+            'post_code' => $request->post_code,
+            'address' => $request->address,
+            'building' => $request->building,
+        ]);
+        $shippingChange->save();
+
+        return redirect()->route('items.buy', $item_id)->with('success', '配送先を追加しました。');
     }
-
-    // 新しい配送先情報を作成
-    $shippingChange = new ShippingChange([
-        'user_id' => $user->id,
-        'item_id' => $item_id, // ここで item_id を設定する
-        'post_code' => $request->post_code,
-        'address' => $request->address,
-        'building' => $request->building,
-    ]);
-    $shippingChange->save();
-
-    return redirect()->route('items.buy', $item_id)->with('success', '配送先を追加しました。');
-}
-
 }

@@ -79,7 +79,7 @@ Route::middleware('auth')->group(function () {
 //Route::prefix('')->group(function () {
     // 購入手続きフォームの表示と購入処理
     Route::get('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
-Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy.post');
+    Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy.post');
 
     // 支払い方法変更ページの表示
     Route::put('/payment/{item_id}/update', [PaymentController::class, 'update'])->name('payment.update');
