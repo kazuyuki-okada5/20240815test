@@ -38,10 +38,10 @@
                 <p class="count">{{ $commentCount ?? '' }}</p>
             </div>
         </div>
-        <form method="POST" action="{{ route('items.buy', $item->id) }}">
-            @csrf
-            <button type="submit" class="btn btn-primary">購入する</button>
-        </form>
+<form method="POST" action="{{ route('items.buy', $item->id) }}">
+    @csrf
+    <button type="submit" class="btn btn-primary">購入手続きへ</button>
+</form>
         <p class="name">商品説明</p>
         <p class="explanation">{{ $item->comment }}</p>
         <p class="name">商品の情報</p>

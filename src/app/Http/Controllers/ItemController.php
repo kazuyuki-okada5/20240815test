@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemCreateRequest;
+use App\Models\ShippingChange;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Like;
+use App\Models\Profile;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Models\CategoryItem;
@@ -152,9 +154,53 @@ private function hasDuplicateCategories($categories)
     }
 
     //　購入手続きページを処理するメソッド
-    public function showBuyForm($item_id)
-    {
-        $item = Item::findOrFail($item_id);
-        return view('items.buy', compact('item'));
+public function showBuyForm($id)
+{
+    $item = Item::findOrFail($id);
+    $user = auth()->user();
+
+    // ユーザーがプロフィール情報を持っているか確認
+    if ($user->profile) {
+        $profile = [
+            'post_code' => $user->profile->post_code,
+            'address' => $user->profile->address,
+            'building' => $user->profile->building
+        ];
+    } else {
+        // プロフィール情報が存在しない場合の処理
+        $profile = [
+            'post_code' => '',
+            'address' => '',
+            'building' => ''
+        ];
     }
+
+    // `shipping_changes`テーブルからユーザーの追加した配送先を取得
+    $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
+
+    return view('items.buy', compact('item', 'profile', 'shippingChanges'));
+}
+
+    public function showAddress($item_id)
+    {
+        $item = Item::find($item_id);
+        $user = auth()->user();
+        $profile = $user->profile;
+        $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
+
+        return view('items.buy', [
+            'item' => $item,
+            'profile' => $profile,
+            'shippingChanges' => $shippingChanges,
+        ]);
+    }
+    public function showShippingChangeForm($item_id)
+{
+    $item = Item::findOrFail($item_id);
+    $user = auth()->user();
+    $shipping = new ShippingChange(); // 新しいShippingChangeモデルを作成
+
+    return view('items.shipping_change', compact('item', 'shipping'));
+}
+
 }

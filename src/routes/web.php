@@ -20,8 +20,8 @@ use App\Http\Controllers\CommentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// ログインユーザールート
-Route::get('/', [ItemController::class, 'items']);
+// トップページ
+Route::get('/', [ItemController::class, 'showItems'])->name('items.index');
 
 // ログイン画面表示
 Route::get('/login', function () {
@@ -40,10 +40,7 @@ Route::get('/register', function () {
 Route::post('/register', [AuthController::class, 'register']);
 
 //　アイテム詳細ページ
-Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show');
-
-//　トップページに戻る
-Route::get('/', [ItemController::class, 'showItems'])->name('items.index');
+Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
 
 //　検索用ルート
 Route::get('items/search', [ItemController::class, 'search'])->name('items.search');
@@ -77,19 +74,29 @@ Route::middleware('auth')->group(function () {
     //　マイページの表示
     Route::get('/mypage', [likeController::class, 'mypage'])->name('mypage');
     //Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
-    Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
+    //Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
 
-
-
-    // 購入手続きページの表示
-    Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
+//Route::prefix('')->group(function () {
+    // 購入手続きフォームの表示と購入処理
+    Route::get('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
+Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy.post');
 
     // 支払い方法変更ページの表示
     Route::put('/payment/{item_id}/update', [PaymentController::class, 'update'])->name('payment.update');
 
     // 配送先変更ページの表示
-    Route::put('/shipping/{item_id}/update', [ShippingController::class, 'update'])->name('shipping.update');
+    Route::get('/items/{item_id}/shipping/change', [ShippingController::class, 'edit'])->name('shipping.change.show');
+    Route::put('/items/{item_id}/update-shipping', [ShippingController::class, 'update'])->name('shipping.update');
+
+    // 商品の配送先変更フォームを表示
+    //Route::get('/items/{item}/edit-shipping', [ShippingController::class, 'edit'])
+      //  ->name('shipping.edit')
+        //->middleware('auth');
+
+    //Route::put('/items/{item}/update-shipping', [ShippingController::class, 'update'])
+      //  ->name('shipping.update');
 
     // 購入完了ページの表示
     Route::post('/purchase/complete/{item_id}', [PurchaseController::class, 'complete'])->name('purchase.complete');
+//});
 });
