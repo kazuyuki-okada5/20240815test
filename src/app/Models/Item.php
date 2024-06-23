@@ -14,11 +14,11 @@ class Item extends Model
     public static $rules = [
         'user_id' => 'required',
         'condition_id' => 'required',
-        'name' => 'required|max:255',
+        'name' => 'required|max:50',
         'price' => 'required|integer',
         'comment' => 'required',
         'image_url' => 'required|max:255',
-        'brand' => 'nullable|max:255',
+        'brand' => 'nullable|max:50',
         'sold_user_id' => 'nullable',
     ];
         //　Itemsテーブルのuser_idカラムを使用しUsersテーブルのレコードを参照
@@ -65,5 +65,10 @@ class Item extends Model
     public function shippingChange()
     {
         return $this->hasOne(Shippingchange::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }
