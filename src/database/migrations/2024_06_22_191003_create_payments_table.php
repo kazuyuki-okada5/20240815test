@@ -15,7 +15,11 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('payment' , 20);
+            $table->foreignId('item_id')->constrained('items');
+            $table->dateTime('date');
+            $table->integer('amount');
+            $table->string('method' , 20);
+            $table->string('status' , 20);
             $table->timestamps();
         });
     }
