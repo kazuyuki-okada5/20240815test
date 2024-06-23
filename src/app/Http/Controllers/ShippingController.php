@@ -48,7 +48,6 @@ class ShippingController extends Controller
         // 新しい配送先情報を作成
         $shippingChange = new ShippingChange([
             'user_id' => $user->id,
-            'item_id' => $item_id,
             'post_code' => $request->post_code,
             'address' => $request->address,
             'building' => $request->building,

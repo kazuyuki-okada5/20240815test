@@ -214,8 +214,14 @@ public function buy(Request $request, $item_id)
     $paymentMethod = $request->input('payment_method');
     $shippingAddress = $request->input('shipping_address');
 
-    // ここで購入処理を行います
-    // 例: 在庫の確認、購入履歴の保存、支払い処理など
+    // 支払い方法に応じた処理
+    if ($paymentMethod === 'credit_card') {
+        // クレジットカードの処理
+    } elseif ($paymentMethod === 'convenience_store') {
+        // コンビニ決済処理
+    } elseif ($paymentMethod === 'bank_transfer'){
+        // 銀行振込
+    }
 
     // 購入処理後のリダイレクト
     return redirect()->route('items.index')->with('success', '購入が完了しました。');

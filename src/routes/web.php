@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/likes/{item_id}', [LikeController::class, 'unlike'])->name('likes.unlike');
 
     //　マイページの表示
-    Route::get('/mypage', [likeController::class, 'mypage'])->name('mypage');
+    Route::get('/mypage', [LikeController::class, 'mypage'])->name('mypage');
     //Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
     //Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
 
@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy.post');
 
     // 支払い方法変更ページの表示
+    Route::get('/payment/{item_id}/update', [PaymentController::class, 'showUpdateForm'])->name('payment.update.show');
     Route::put('/payment/{item_id}/update', [PaymentController::class, 'update'])->name('payment.update');
 
     // 配送先変更ページの表示
@@ -97,6 +98,7 @@ Route::middleware('auth')->group(function () {
       //  ->name('shipping.update');
 
     // 購入完了ページの表示
-    Route::post('/purchase/complete/{item_id}', [PurchaseController::class, 'complete'])->name('purchase.complete');
-//});
+    //Route::post('/purchase/complete/{item_id}', [PurchaseController::class, 'complete'])->name('purchase.complete');
+
+    Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');
 });

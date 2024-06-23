@@ -10,11 +10,16 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'item_id', 'date', 'amount', 'method', 'status',
+        'user_id', 'item_id', 'amount', 'method', 'status',
     ];
 
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
