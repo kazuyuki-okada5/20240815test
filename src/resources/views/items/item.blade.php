@@ -15,8 +15,8 @@
                 @if (Auth::check())
                 <li class="listtype-nav__item">
                     <button class="listtype-nav__button" id="show-likes">マイリスト</button>
-                </li>
                 @endif
+                </li>
             </ul>
         </div>
     </div>
@@ -24,14 +24,21 @@
     <!--アイテム一覧-->
     <div id="item-list" class="item-container">
         @foreach($items as $item)
-        <div class="card-img-top">
-            <div class="item">
-                <a href="{{ route('items.show', $item->id )}}">
-                    <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
-                </a>
-                <p class="card-text"><span>{{ $item->price }}円</span></p>
-                <p class="card-title">{{ $item->name }}</p>
-            </div>
+        <div class="item">
+            <a href="{{ route('items.show', $item->id )}}">
+                <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                @if($item->sold_user_id)
+                <div class="sold-out">SOLD-OUT</div>
+                @endif
+            </a>
+            <p class="card-text">
+                @if($item->sold_user_id)
+                    <span>売り切れ</span>
+                @else
+                    <span>{{ $item->price }}円</span>
+                @endif
+            </p>
+            <p class="card-title">{{ $item->name }}</p>
         </div>
         @endforeach
     </div>
@@ -40,14 +47,21 @@
     <!-- お気に入り一覧 -->
     <div id="likes-list" class="item-container hidden">
         @foreach ($likes as $like)
-        <div class="card-img-top">
-            <div class="item">
-                <a href="{{ route('items.show', $like->item->id )}}">
-                    <img src="{{ asset('storage/' . $like->item->image_url) }}" class="card-img-top" alt="{{ $like->item->name }}">
-                </a>
-                <p class="card-text"><span>{{ $like->item->price }}円</span></p>
-                <p class="card-title">{{ $like->item->name }}</p>
-            </div>
+        <div class="item">
+            <a href="{{ route('items.show', $like->item->id )}}">
+                <img src="{{ asset('storage/' . $like->item->image_url) }}" class="card-img-top" alt="{{ $like->item->name }}">
+                @if($like->item->sold_user_id)
+                <div class="sold-out">SOLD-OUT</div>
+                @endif
+            </a>
+            <p class="card-text">
+                @if($like->item->sold_user_id)
+                    <span>売り切れ</span>
+                @else
+                    <span>{{ $like->item->price }}円</span>
+                @endif
+            </p>
+            <p class="card-title">{{ $like->item->name }}</p>
         </div>
         @endforeach
     </div>
@@ -74,6 +88,7 @@
     });
 </script>
 @endsection
+
 
 
 

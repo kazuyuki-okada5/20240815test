@@ -48,6 +48,8 @@
 }
 
 .item {
+    position: relative;
+    /* これを追加 */
     display: inline-block;
     width: 180px;
     height: 225px;
@@ -85,9 +87,7 @@
 .listtype__content {
     position: relative;
     padding-bottom: 10px;
-    /* アンダーバーのための余白 */
     margin-bottom: 20px;
-    /* アンダーバーのための余白 */
 }
 
 .listtype__content::after {
@@ -98,4 +98,20 @@
     width: 100%;
     height: 2px;
     background-color: #000;
+}
+
+/* 新しいスタイルの追加 */
+.sold-out {
+    position: absolute;
+    width: 130px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 5px;
+    border-radius: 5px;
+    text-align: center;
 }
