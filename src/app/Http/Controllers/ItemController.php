@@ -202,5 +202,22 @@ public function showBuyForm($id)
 
     return view('items.shipping_change', compact('item', 'shipping'));
 }
+public function buy(Request $request, $item_id)
+{
+    // バリデーション
+    $request->validate([
+        'payment_method' => 'required|string|in:credit_card,convenience_store,bank_transfer',
+        'shipping_address' => 'required|string',
+    ]);
 
+    // 支払い方法と配送先をセッションやDBに保存する処理
+    $paymentMethod = $request->input('payment_method');
+    $shippingAddress = $request->input('shipping_address');
+
+    // ここで購入処理を行います
+    // 例: 在庫の確認、購入履歴の保存、支払い処理など
+
+    // 購入処理後のリダイレクト
+    return redirect()->route('items.index')->with('success', '購入が完了しました。');
+}
 }

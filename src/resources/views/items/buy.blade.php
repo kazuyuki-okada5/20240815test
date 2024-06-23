@@ -20,6 +20,18 @@
         <h2>商品名: {{ $item->name }}</h2>
         <p>価格:￥{{ $item->price }}</p>
     </div>
+    <div class="payment-method">
+        <h2>支払い方法</h2>
+        <form action="{{ route('items.buy.post', $item->id) }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="payment_method">支払い方法を選択してください</label>
+                <select name="payment_method" id="payment_method" class="form-control">
+                    <option value="credit_card">クレジットカード</option>
+                    <option value="convenience_store">コンビニ</option>
+                    <option value="bank_transfer">銀行振込</option>
+                </select>
+            </div>
     <div class="shipping-address">
     <h2>配送先</h2>
     <!-- 配送先の選択肢リスト -->

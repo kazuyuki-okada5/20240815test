@@ -15,7 +15,7 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('category' , 255);
+            $table->string('category' , 20);
             $table->timestamps();
         });
     }
@@ -25,12 +25,17 @@ class CreateCategoriesTable extends Migration
      *
      * @return void
      */
-public function down()
-{
-    Schema::table('category_items', function (Blueprint $table) {
-        $table->dropForeign(['category_id']); // 外部キー制約を削除
-    });
+    public function down()
+    {
+        // category_items テーブルが存在する場合、外部キー制約を削除します
+        if (Schema::hasTable('category_items')) {
+            Schema::table('category_items', function (Blueprint $table) {
+                $table->dropForeign(['category_id']); // 外部キー制約を削除
+            });
 
-    Schema::dropIfExists('categories');
-}
+            Schema::dropIfExists('category_items');
+        }
+
+        Schema::dropIfExists('categories');
+    }
 }
