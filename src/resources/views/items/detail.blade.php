@@ -9,11 +9,18 @@
 <div class="item-container">
     <div class="item-image">
         <img class="img" src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image">
+        @if ($item->sold_user_id !== null)
+            <div class="sold-out-overlay">SOLD-OUT</div>
+        @endif
     </div>
     <div class="item-info">
         <h2 class="name">{{ $item->name }}</h2>
         <p class="brand">{{ $item->brand }}</p>
-        <p class="price">￥{{ $item->price }}（税込）送料込み</p>
+        @if ($item->sold_user_id !== null)
+            <p class="price">売り切れ</p>
+        @else
+            <p class="price">￥{{ $item->price }}（税込）送料込み</p>
+        @endif
         <div class="buttons-container">
             <div class="like-container">
                 <form id="like-form" method="POST" action="{{ route('likes.like', $item->id) }}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
@@ -38,10 +45,15 @@
                 <p class="count">{{ $commentCount ?? '' }}</p>
             </div>
         </div>
-<form method="POST" action="{{ route('items.buy', $item->id) }}">
-    @csrf
-    <button type="submit" class="btn btn-primary">購入手続きへ</button>
-</form>
+
+        @if ($item->sold_user_id === null)
+            <form method="POST" action="{{ route('items.buy', $item->id) }}">
+                @csrf
+                <button type="submit" class="btn btn-primary">購入手続きへ</button>
+            </form>
+        @else
+            <button class="btn btn-secondary" disabled>売り切れました</button>
+        @endif
         <p class="name">商品説明</p>
         <p class="explanation">{{ $item->comment }}</p>
         <p class="name">商品の情報</p>

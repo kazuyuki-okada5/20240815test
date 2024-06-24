@@ -12,6 +12,7 @@
 .item-image {
     margin: 20px 10px 0px 25px;
     max-width: 300px;
+    position: relative;
 }
 
 .item-info {
@@ -136,4 +137,32 @@
     margin-left: 20px;
     margin-right: 5px;
     /* スパンタグ同士の間隔 */
+}
+
+.sold-out-overlay {
+    position: absolute;
+    top: 120px;
+    left: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgb(255, 0, 0);
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0px 15px;
+    border-radius: 20px;
+}
+
+.btn-secondary {
+    width: 300px;
+    font-size: 20px;
+    /* 文字サイズを変更 */
+    color: #000000;
+    /* 文字色を変更 */
+    background-color: #b3b3b3;
+    /* 塗り潰し色を変更 */
+    border: none;
+    /* 枠線を無しに */
+    padding: 10px 20px;
+    /* ボタンの内側の余白を設定 */
+    border-radius: 5px;
+    /* ボタンの角を丸くする */
 }
