@@ -10,6 +10,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes

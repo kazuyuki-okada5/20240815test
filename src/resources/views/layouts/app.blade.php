@@ -26,6 +26,11 @@
                 <nav class="header-nav">
                     <ul class="header-nav__list">
                         @if (Auth::check())
+                        @if (Auth::user()->role == 0)
+                        <li class="header-nav__item">
+                            <a class="header-nav__link" href="{{ route('admin.users') }}">管理者ページ</a>
+                        </li>
+                        @endif
                         <li class="header-nav__item">
                             <a class="header-nav__link" href="{{ route('items.create') }}">出品</a>
                         </li>
