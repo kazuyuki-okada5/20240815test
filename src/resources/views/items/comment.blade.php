@@ -57,6 +57,13 @@
                     </div>
                     <div class="comment-text-right">
                         <p class="comment">{{ $comment->comment }}</p>
+                        @if(Auth::check() && Auth::user()->role == 0)
+                            <form method="POST" action="{{ route('admin.comments.delete', $comment->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">削除</button>
+                            </form>
+                        @endif
                     </div>
                 @else
                     <div class="comment-left">
@@ -71,6 +78,13 @@
                     </div>
                     <div class="comment-text-left">
                         <p class="comment">{{ $comment->comment }}</p>
+                        @if(Auth::check() && Auth::user()->role == 0)
+                            <form method="POST" action="{{ route('admin.comments.delete', $comment->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">削除</button>
+                            </form>
+                        @endif
                     </div>
                 @endif
             </div>

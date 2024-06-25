@@ -50,7 +50,7 @@
     display: flex;
     align-items: center;
     margin-top: 5px;
-    margin-bottom: 25px;
+    margin-bottom: 0px;
     max-width: 500px;
 }
 
@@ -103,6 +103,9 @@
 
 .comment-text-right {
     margin-left: 80px;
+    text-align: left; /* テキストを左揃え */
+    flex-grow: 1; /* テキストエリアを拡大 */
+        /* テキストを左揃え */
 }
 
 .comment-text-left {
@@ -110,11 +113,6 @@
     text-align: left;
     max-width: 70%;
     margin-bottom: 5px;
-}
-
-.comment-text-right {
-    order: 1;
-    text-align: right;
 }
 
 .default-avatar {
@@ -252,6 +250,15 @@
             /* 角を丸くする */
             border: 1px solid #ccc;
             /* 枠線を追加 */
+}
+
+.btn-danger {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: rgb(255, 0, 0);
+            font-size: 10px;
+            font-weight: bold;
+            padding: 0px 10px;
+            border-radius: 20px;
 }
 
 @media (max-width: 980px) {

@@ -108,4 +108,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'checkrole:0'])->group(function() {
     Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
     Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
+    // コメント削除用のルート
+    Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
 });

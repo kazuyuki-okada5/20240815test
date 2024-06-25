@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Comment;
 
 class AdminController extends Controller
 {
@@ -25,4 +26,13 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admin.users')->with('succes', 'ユーザーが削除されました。');
     }
+
+    public function deleteComment($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+
+        return back()->with('success', 'コメントを削除しました。');
+    }
+
 }
