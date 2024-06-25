@@ -1,0 +1,95 @@
+/* コンテナのスタイル */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 見出しのスタイル */
+.title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* アラートのスタイル */
+.alert {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* テーブルのスタイル */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table-header-row {
+    background-color: #007bff;
+    color: white;
+}
+
+.table-header,
+.table-cell {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.table-striped tbody .table-row:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+/* テーブル行のスタイル */
+.table-row {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table-row:hover {
+    background-color: #f1f1f1;
+}
+
+/* フォームのスタイル */
+.delete-form {
+    display: inline;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.table-cell-id,
+.table-cell-button {
+    display: flex;
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center; /* 縦方向の中央揃え */
+    height: 100%; /* 高さを枠内に合わせる場合 */
+}
+
+.table-cell-id {
+    margin-top: 12px;
+}
