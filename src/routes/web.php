@@ -102,3 +102,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');
 });
+
+// 管理者のみアクセス可能なルート
+Route::middleware(['auth', 'checkrole:0'])->group(function() {
+    Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
+    Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
+});

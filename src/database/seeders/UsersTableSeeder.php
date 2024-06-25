@@ -16,30 +16,54 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $users = [
+            // 管理者ユーザー
+            [
+                'name' => '管理者太郎',
+                'email' => 'aa@ne.jp',
+                'password' => bcrypt('12345678'),
+                'role' => 0,
+            ],
+
+            [
+                'name' => '管理者次郎',
+                'email' => 'bb@ne.jp',
+                'password' => bcrypt('23456789'),
+                'role' => 0,
+            ],
+            
+            // 一般ユーザー
             [
                 'name' => '一郎',
                 'email' => 'a@ne.jp',
                 'password' => bcrypt('11111111'),
+                'role' => 1,
             ],
+
             [
                 'name' => '二郎',
                 'email' => 'b@ne.jp',
                 'password' => bcrypt('22222222'),
+                'role' => 1,
             ],
             [
                 'name' => '三郎',
                 'email' => 'c@ne.jp',
                 'password' => bcrypt('33333333'),
+                'role' => 1,
             ],
+
             [
                 'name' => '四郎',
                 'email' => 'd@ne.jp',
                 'password' => bcrypt('44444444'),
+                'role' => 1,
             ],
+
             [
                 'name' => '五郎',
                 'email' => 'e@ne.jp',
-                'password' => bcrypt('44444444'),
+                'password' => bcrypt('55555555'),
+                'role' => 1,
             ],
         ];
 

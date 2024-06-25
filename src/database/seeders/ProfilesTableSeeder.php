@@ -15,8 +15,8 @@ class ProfilesTableSeeder extends Seeder
     public function run()
     {
         Profile::create([
-            'user_id' => 1,
-            'img_url' => '/profiles/スクリーンショット 2024-06-16 11.42.23.png',
+            'user_id' => 3,
+            'img_url' => '/profiles/1719109715_スクリーンショット 2024-06-16 11.47.26.png',
             'post_code' => 1234567,
             'address' => 'Tokyo',
             'building' => 'Example Building',
