@@ -93,3 +93,19 @@
 .table-cell-id {
     margin-top: 12px;
 }
+
+@media (max-width: 980px) {
+    .item-detail {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .item-info {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .item-comments {
+        max-width: 500px;;
+    }
+}
