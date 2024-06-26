@@ -206,8 +206,8 @@ public function buy(Request $request, $item_id)
 {
     // バリデーション
     $request->validate([
-        'payment_method' => 'required|string|in:credit_card,convenience_store,bank_transfer',
-        'shipping_address' => 'required|string',
+        'payment_method' => 'required',
+        'shipping_address' => 'required',
     ]);
 
     // 支払い方法と配送先をセッションやDBに保存する処理

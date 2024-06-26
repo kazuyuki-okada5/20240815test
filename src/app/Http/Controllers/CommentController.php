@@ -56,6 +56,16 @@ class CommentController extends Controller
             'comment' => 'required|string|max:255',
         ]);
 
+        // 直近のコメントを取得
+        $lastComment = Comment::where('user_id', Auth::id())
+                              ->orderBy('created_at', 'desc')
+                              ->first();
+
+        // 直近のコメントがあり、かつ30秒以内ならエラーを返す
+        if ($lastComment && $lastComment->created_at->diffInSeconds(now()) < 3) {
+            return redirect()->back()->withErrors(['comment' => '短時間での連続投稿はできません。']);
+        }
+
         $comment = new Comment();
         $comment->user_id = auth()->id();
         $comment->item_id = $item_id;
