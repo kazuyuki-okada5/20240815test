@@ -25,14 +25,14 @@
             <div class="like-container">
                 <form id="like-form" method="POST" action="{{ route('likes.like', $item->id) }}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
                     @csrf
-                    <button type="submit" class="btn btn-link">
+                    <button type="submit" class="btn btn-link like-button">
                         <i class="far fa-star" style="font-size: 2rem;"></i>
                     </button>
                 </form>
                 <form id="unlike-form" method="POST" action="{{ route('likes.unlike', $item->id) }}" style="display: {{ $isLiked ? 'inline' : 'none' }}">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-link" {{ Auth::check() ? '' : 'disabled' }}>
+                    <button type="submit" class="btn btn-link like-button" {{ Auth::check() ? '' : 'disabled' }}>
                         <i class="fas fa-star" style="font-size: 2rem;"></i>
                     </button>
                 </form>
@@ -68,43 +68,5 @@
         <p class="item-category">出品者:{{ $user }}</p>
     </div>
 </div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var isLiked = @json($isLiked);
-    var likeForm = document.getElementById('like-form');
-    var unlikeForm = document.getElementById('unlike-form');
-
-    likeForm.addEventListener('submit', function(e) {
-        if (!@json(Auth::check())) {
-            e.preventDefault();
-            alert('この操作を行うにはログインが必要です。');
-            return false;
-        }
-
-        e.preventDefault();
-        if (!isLiked) {
-            likeForm.submit();
-            likeForm.style.display = 'none';
-            unlikeForm.style.display = 'inline';
-            isLiked = true;
-        }
-    });
-
-    unlikeForm.addEventListener('submit', function(e) {
-        if (!@json(Auth::check())) {
-            e.preventDefault();
-            alert('この操作を行うにはログインが必要です。');
-            return false;
-        }
-
-        e.preventDefault();
-        if (isLiked) {
-            unlikeForm.submit();
-            unlikeForm.style.display = 'none';
-            likeForm.style.display = 'inline';
-            isLiked = false;
-        }
-    });
-});
-</script>
 @endsection
+

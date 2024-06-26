@@ -13,13 +13,22 @@ class LikeController extends Controller
     {
         $userId = Auth::id();
 
-        $like = new Like([
-            'user_id' => $userId,
-            'item_id' => $itemId,
-        ]);
-        $like->save();
+        // ユーザーが既にお気に入りに追加しているか確認する
+        $existingLike = Like::where('user_id', $userId)
+                            ->where('item_id', $itemId)
+                            ->first();
 
-        return redirect()->back()->with('success', 'お気に入りに追加しました');
+        if (!$existingLike) {
+            $like = new Like([
+                'user_id' => $userId,
+                'item_id' => $itemId,
+            ]);
+            $like->save();
+
+            return redirect()->back()->with('success', 'お気に入りに追加しました');
+        } else {
+            return redirect()->back()->with('error', 'すでにお気に入りに追加されています');
+        }
     }
 
     public function unlike($itemId)
