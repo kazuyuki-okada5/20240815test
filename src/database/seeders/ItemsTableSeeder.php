@@ -17,7 +17,7 @@ class ItemsTableSeeder extends Seeder
     {
         $items = [
             [
-            'user_id' => 1,
+            'user_id' => 3,
             'condition_id' => 1,
             'name' => '青シャツ',
             'price' => 1000,
@@ -26,7 +26,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 3,
             'condition_id' => 2,
             'name' => '黒パンツ',
             'price' => 1000,
@@ -44,7 +44,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 4,
+            'user_id' => 3,
             'condition_id' => 4,
             'name' => 'メガネ',
             'price' => 200,
@@ -53,7 +53,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 5,
+            'user_id' => 3,
             'condition_id' => 5,
             'name' => 'ネックレス',
             'price' => 20,
@@ -62,7 +62,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' =>1,
+            'user_id' => 3,
             'condition_id' => 1,
             'name' => '紺ワンピース',
             'price' => 2000,
@@ -71,7 +71,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 3,
             'condition_id' => 2,
             'name' => '柄スカート',
             'price' => 1500,
@@ -80,7 +80,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 3,
+            'user_id' => 4,
             'condition_id' => 3,
             'name' => '白ワンピース',
             'price' => 400,
@@ -98,7 +98,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 5,
+            'user_id' => 4,
             'condition_id' => 4,
             'name' => '帽子',
             'price' => 400,
@@ -107,7 +107,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 1,
+            'user_id' => 4,
             'condition_id' => 4,
             'name' => '靴',
             'price' => 400,
@@ -116,7 +116,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 4,
             'condition_id' => 4,
             'name' => 'おもちゃ',
             'price' => 400,
@@ -125,7 +125,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 3,
+            'user_id' => 4,
             'condition_id' => 1,
             'name' => '飲料水',
             'price' => 300,
@@ -134,7 +134,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 4,
+            'user_id' => 5,
             'condition_id' => 1,
             'name' => '洋菓子',
             'price' => 700,
@@ -143,7 +143,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 1,
+            'user_id' => 5,
             'condition_id' => 1,
             'name' => 'コーヒー',
             'price' => 1200,
@@ -152,7 +152,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 5,
             'condition_id' => 2,
             'name' => '不揃いトマト',
             'price' => 1000,
@@ -161,7 +161,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 3,
+            'user_id' => 5,
             'condition_id' => 1,
             'name' => '洋菓子',
             'price' => 1600,
@@ -170,7 +170,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 3,
+            'user_id' => 5,
             'condition_id' => 1,
             'name' => '洋菓子',
             'price' => 1600,
@@ -179,7 +179,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 4,
+            'user_id' => 5,
             'condition_id' => 2,
             'name' => '訳ありスイカ',
             'price' => 1100,
@@ -188,7 +188,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 4,
+            'user_id' => 6,
             'condition_id' => 4,
             'name' => '小型犬服',
             'price' => 1100,
@@ -197,7 +197,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 1,
+            'user_id' => 6,
             'condition_id' => 1,
             'name' => '小型犬服',
             'price' => 2100,
@@ -206,7 +206,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 1,
+            'user_id' => 6,
             'condition_id' => 3,
             'name' => 'ケージ小',
             'price' => 1000,
@@ -215,7 +215,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 6,
             'condition_id' => 4,
             'name' => '鍋',
             'price' => 2100,
@@ -224,7 +224,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 6,
             'condition_id' => 4,
             'name' => '包丁',
             'price' => 2600,
@@ -233,7 +233,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 2,
+            'user_id' => 6,
             'condition_id' => 1,
             'name' => 'シャンプー',
             'price' => 2500,
@@ -242,7 +242,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 3,
+            'user_id' => 7,
             'condition_id' => 1,
             'name' => '急須',
             'price' => 500,
@@ -251,7 +251,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 5,
+            'user_id' => 7,
             'condition_id' => 3,
             'name' => '植物',
             'price' => 2500,
@@ -260,7 +260,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 5,
+            'user_id' => 7,
             'condition_id' => 3,
             'name' => '植物',
             'price' => 2900,
@@ -269,7 +269,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 1,
+            'user_id' => 7,
             'condition_id' => 3,
             'name' => '植物',
             'price' => 1300,
@@ -278,7 +278,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => 'ノーブランド',
             ],
             [
-            'user_id' => 1,
+            'user_id' => 7,
             'condition_id' => 3,
             'name' => '行者ニンニク苗',
             'price' => 400,

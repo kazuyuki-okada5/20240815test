@@ -26,4 +26,9 @@ class ShippingChange extends Model
     {
         return $this->belongsTo(item::class);
     }
+
+        public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

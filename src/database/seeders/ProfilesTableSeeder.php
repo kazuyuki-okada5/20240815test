@@ -14,12 +14,28 @@ class ProfilesTableSeeder extends Seeder
      */
     public function run()
     {
-        Profile::create([
-            'user_id' => 3,
-            'img_url' => '/profiles/1719109715_スクリーンショット 2024-06-16 11.47.26.png',
-            'post_code' => 1234567,
-            'address' => 'Tokyo',
-            'building' => 'Example Building',
+        Profile::insert([
+            [
+                'user_id' => 1,
+                'img_url' => '/profiles/1719109715_スクリーンショット 2024-06-16 11.47.26.png',
+                'post_code' => 1234567,
+                'address' => '東京都',
+                'building' => 'Example Building',
+            ],
+            [
+                'user_id' => 3,
+                'img_url' => '/profiles/1719030566_スクリーンショット 2024-06-16 11.49.28.png',
+                'post_code' => 1234567,
+                'address' => '大阪府',
+                'building' => 'Example Building',
+            ],
+            [
+                'user_id' => 4,
+                'img_url' => '/profiles/1719145582_スクリーンショット 2024-06-16 11.42.23.png',
+                'post_code' => 1234567,
+                'address' => '沖縄県',
+                'building' => 'Example Building',
+            ],
         ]);
     }
 }
