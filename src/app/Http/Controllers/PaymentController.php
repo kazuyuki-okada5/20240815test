@@ -7,6 +7,9 @@ use App\Models\Item;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ShippingChange;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
+use Stripe\Charge;
 
 class PaymentController extends Controller
 {
@@ -28,21 +31,89 @@ class PaymentController extends Controller
         $shippingChange = ShippingChange::where('user_id', $user_id)->latest()->first();
         $shipping_changes_id = $shippingChange ? $shippingChange->id : null;
 
-    // 支払い情報の保存
-    $payment = new Payment();
-    $payment->user_id = $user_id;
-    $payment->item_id = $item_id;
-    $payment->amount = $item->price; // ここではアイテムの価格を支払い金額とする
-    $payment->method = $request->input('payment_method');
-    $payment->status = 'completed'; // 支払いステータスを設定（例: 'completed'）
-    $payment->shipping_changes_id = $shipping_changes_id; // 住所変更テーブルのIDを設定する
-    $payment->save();
+        // 支払い情報の保存
+        $payment = new Payment();
+        $payment->user_id = $user_id;
+        $payment->item_id = $item_id;
+        $payment->amount = $item->price;
+        $payment->method = $request->input('payment_method');
+        $payment->status = 'completed'; // 支払いステータスを設定
+        $payment->shipping_changes_id = $shipping_changes_id;
+        $payment->save();
 
         // アイテムのステータス更新
-        $item->sold_user_id = $user_id; 
+        $item->sold_user_id = $user_id;
         $item->save();
 
-    // 処理が完了したらリダイレクトと成功メッセージの表示
-    return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
-}
+        // 処理が完了したらリダイレクトと成功メッセージの表示
+        return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
+    }
+
+    public function show()
+    {
+        return view('payment');
+    }
+
+    public function createKonbiniPaymentIntent(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $amount = 5000; // 商品の価格などを設定
+        $currency = 'jpy'; // 通貨を日本円に設定
+
+        try {
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $amount,
+                'currency' => $currency,
+                'payment_method_types' => ['konbini'],
+            ]);
+
+            return response()->json([
+                'clientSecret' => $paymentIntent->client_secret,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function createBankTransferPaymentIntent(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            $paymentIntent = PaymentIntent::create([
+                'amount' => 10000, // 金額を適切に設定
+                'currency' => 'jpy',
+                'payment_method_types' => ['jp_bank_transfer'],
+            ]);
+
+            return response()->json(['clientSecret' => $paymentIntent->client_secret]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function bankTransferReturn(Request $request)
+    {
+        // 銀行振込完了後の処理をここに記述
+        return view('payment-success');
+    }
+
+    public function charge(Request $request)
+    {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            \Stripe\Charge::create([
+                "amount" => 10000,
+                "currency" => "jpy",
+                "source" => $request->stripeToken,
+                "description" => "Test payment"
+            ]);
+
+            return back()->with('success_message', 'Payment successful!');
+        } catch (\Exception $e) {
+            return back()->with('error_message', 'Error: ' . $e->getMessage());
+        }
+    }
 }

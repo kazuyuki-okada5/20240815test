@@ -40,7 +40,7 @@ Route::get('/register', function () {
 // 会員登録処理
 Route::post('/register', [AuthController::class, 'register']);
 
-//　アイテム詳細ページ
+//　商品詳細ページ
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
 
 //　検索用ルート
@@ -57,12 +57,12 @@ Route::post('/items/{item}/comment', [CommentController::class, 'storeComment'])
 Route::middleware('auth')->group(function () {
     //　プロフィール画面表示
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
     //　プロフィール新規作成・更新ページ
     Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
     Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    
 
     // アイテム作成フォームの表示
     Route::get('/items/create', [ItemController::class, 'showCreateForm'])->name('items.create_form');
@@ -74,10 +74,7 @@ Route::middleware('auth')->group(function () {
 
     //　マイページの表示
     Route::get('/mypage', [LikeController::class, 'mypage'])->name('mypage');
-    //Route::get('/likes', [LikeController::class, 'index'])->name('likes.index');
-    //Route::get('/item/{id}', [ItemController::class, 'show'])->name('items.show');
 
-//Route::prefix('')->group(function () {
     // 購入手続きフォームの表示と購入処理
     Route::get('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
     Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy.post');
@@ -90,17 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/items/{item_id}/shipping/change', [ShippingController::class, 'edit'])->name('shipping.change.show');
     Route::put('/items/{item_id}/update-shipping', [ShippingController::class, 'update'])->name('shipping.update');
 
-    // 商品の配送先変更フォームを表示
-    //Route::get('/items/{item}/edit-shipping', [ShippingController::class, 'edit'])
-      //  ->name('shipping.edit')
-        //->middleware('auth');
-
-    //Route::put('/items/{item}/update-shipping', [ShippingController::class, 'update'])
-      //  ->name('shipping.update');
-
     // 購入完了ページの表示
-    //Route::post('/purchase/complete/{item_id}', [PurchaseController::class, 'complete'])->name('purchase.complete');
-
     Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');
 });
 
@@ -112,3 +99,9 @@ Route::middleware(['auth', 'checkrole:0'])->group(function() {
     // コメント削除用のルート
     Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
 });
+
+Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
+Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
+Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
+Route::post('/create-bank-transfer-payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
+Route::get('/bank-transfer-return', [PaymentController::class, 'bankTransferReturn'])->name('bank.transfer.return');
