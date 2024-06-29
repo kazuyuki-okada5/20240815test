@@ -17,7 +17,7 @@
             @endif
         </div>
          <div class="form-group">
-            <label for="post_code" class="form-label">郵便番号</label>
+            <label for="post_code" class="form-label">郵便番号（ハイフンなし）</label>
             <input type="text" class="form-control" id="post_code" name="post_code" value="{{ old('post_code') }}">
             @if ($errors->has('post_code'))
                 <div class="error-message">{{ $errors->first('post_code') }}</div>

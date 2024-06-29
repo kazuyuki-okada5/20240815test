@@ -29,7 +29,7 @@
             <input type="text" class="form-control" id="name" name="name" value="{{ $profile->user->name }}">
         </div>
         <div class="form-group">
-            <label for="post_code" class="form-label">郵便番号</label>
+            <label for="post_code" class="form-label">郵便番号（ハイフンなし）</label>
             <input type="text" class="form-control" id="post_code" name="post_code" value="{{ $profile->post_code }}">
         </div>
         <div class="form-group">

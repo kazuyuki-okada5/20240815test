@@ -12,7 +12,7 @@
         @method('PUT')
 
         <div class="form-group">
-            <label for="post_code">郵便番号</label>
+            <label for="post_code">郵便番号（ハイフンなし）</label>
             <input type="text" name="post_code" id="post_code" class="form-control" value="{{ old('post_code', $shipping->post_code ?? '') }}" required>
             @error('post_code')
                 <div class="alert alert-danger">{{ $message }}</div>
