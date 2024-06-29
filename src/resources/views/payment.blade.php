@@ -19,15 +19,10 @@
 
     <form action="{{ route('charge') }}" method="post" id="payment-form">
         @csrf
-        <div class="form-row">
-            <div id="card-errors" role="alert"></div>
-        </div>
-        <div style="border: 1px solid #000;">
             <div id="card-element">
                 <!-- A Stripe Element will be inserted here. -->
             </div>
         </div>
-
         <button class="btn btn-primary mt-3">Submit Payment</button>
     </form>
     <button id="konbini-button" class="btn btn-primary mt-3">Pay with Konbini</button>

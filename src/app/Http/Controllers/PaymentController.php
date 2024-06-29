@@ -58,7 +58,11 @@ class PaymentController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $amount = 5000; // 商品の価格などを設定
+        // リクエストからアイテムのIDを取得し、アイテムを取得する
+        $item = Item::findOrFail($request->item_id);
+
+        // アイテムの価格を計算
+        $amount = $item->price;
         $currency = 'jpy'; // 通貨を日本円に設定
 
         try {
@@ -80,16 +84,23 @@ class PaymentController extends Controller
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
+        // リクエストからアイテムのIDを取得し、アイテムを取得する
+        $item = Item::findOrFail($request->item_id);
+
+        // アイテムの価格を取得
+        $amount = $item->price;
+        $currency = 'jpy';
+
         try {
             $paymentIntent = PaymentIntent::create([
-                'amount' => 10000, // 金額を適切に設定
-                'currency' => 'jpy',
+                'amount' => $amount, // 金額を適切に設定
+                'currency' => $currency,
                 'payment_method_types' => ['jp_bank_transfer'],
             ]);
 
             return response()->json(['clientSecret' => $paymentIntent->client_secret]);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -104,11 +115,17 @@ class PaymentController extends Controller
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
+            // リクエストからアイテムのIDを取得し、アイテムを取得する
+            $item = Item::findOrFail($request->item_id);
+
+            // アイテムの価格をセント単位で計算
+            $amount = $item->price;
+
             \Stripe\Charge::create([
-                "amount" => 10000,
+                "amount" => $amount,
                 "currency" => "jpy",
                 "source" => $request->stripeToken,
-                "description" => "Test payment"
+                "description" => "購入処理: " . $item->name
             ]);
 
             return back()->with('success_message', 'Payment successful!');

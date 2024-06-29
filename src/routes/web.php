@@ -105,3 +105,4 @@ Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge']
 Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
 Route::post('/create-bank-transfer-payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
 Route::get('/bank-transfer-return', [PaymentController::class, 'bankTransferReturn'])->name('bank.transfer.return');
+Route::post('/confirm/konbini/payment', [PaymentController::class, 'confirmKonbiniPayment'])->name('confirm.konbini.payment');
