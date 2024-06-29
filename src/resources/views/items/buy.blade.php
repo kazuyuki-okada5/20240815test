@@ -11,6 +11,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('error'))
+    <div class="alert-danger-url">
+        {{ session('error') }}
+    </div>
+@endif
         <h1>商品購入</h1>
         <div class="content-container">
             <div class="left-container">

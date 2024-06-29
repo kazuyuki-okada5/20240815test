@@ -107,3 +107,13 @@
     font-weight: bold;
     margin-top: 5px;
 }
+
+.alert-danger-url {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    max-width: 650px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+}

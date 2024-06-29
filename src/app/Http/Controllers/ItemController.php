@@ -157,7 +157,15 @@ private function hasDuplicateCategories($categories)
     //　購入手続きページを処理するメソッド
 public function showBuyForm($id)
 {
+    // アイテムを取得します
     $item = Item::findOrFail($id);
+
+    // 売り切れている場合の処理
+    if ($item->sold_user_id !== null) {
+        return back()->with('error', 'URL上から移動しようとした商品は売り切れのため、購入フォームは表示できません。');
+    }
+
+    // ユーザー情報を取得します
     $user = auth()->user();
 
     // ユーザーがプロフィール情報を持っているか確認
@@ -175,6 +183,7 @@ public function showBuyForm($id)
             'building' => ''
         ];
     }
+
 
     // `shipping_changes`テーブルからユーザーの追加した配送先を取得
     $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
