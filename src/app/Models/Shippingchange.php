@@ -17,11 +17,6 @@ class ShippingChange extends Model
         'building',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(user::class);
-    }
-
     public function item()
     {
         return $this->belongsTo(item::class);

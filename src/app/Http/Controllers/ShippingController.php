@@ -21,7 +21,7 @@ class ShippingController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
 
         // ユーザーの登録した配送先情報を取得
-        $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
+        $shippingChanges = ShippingChange::where('item_id', $item_id)->get();
 
         // アイテム情報を取得
         $item = Item::findOrFail($item_id);
@@ -31,12 +31,13 @@ class ShippingController extends Controller
 
     // 配送先情報の更新処理
  // 配送先情報の更新処理
-    public function update(ShippingChangeRequest $request, $item_id)
+    public function update(Request $request, $item_id)
     {
-        $user = Auth::user();
+        // アイテム情報を取得
+        $item = Item::findOrFail($item_id);
 
         // 同じ住所と郵便番号が既に存在するか確認
-        $existingShipping = ShippingChange::where('user_id', $user->id)
+        $existingShipping = ShippingChange::where('item_id', $item->id)
                                           ->where('address', $request->address)
                                           ->where('post_code', $request->post_code)
                                           ->first();
@@ -47,7 +48,7 @@ class ShippingController extends Controller
 
         // 新しい配送先情報を作成
         $shippingChange = new ShippingChange([
-            'user_id' => $user->id,
+            'item_id' => $item->id,
             'post_code' => $request->post_code,
             'address' => $request->address,
             'building' => $request->building,

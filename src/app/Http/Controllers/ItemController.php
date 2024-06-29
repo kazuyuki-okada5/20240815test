@@ -186,7 +186,7 @@ public function showBuyForm($id)
 
 
     // `shipping_changes`テーブルからユーザーの追加した配送先を取得
-    $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
+    $shippingChanges = ShippingChange::where('item_id', $item->id)->get();
     
 
     return view('items.buy', compact('item', 'profile', 'shippingChanges'));
@@ -197,7 +197,7 @@ public function showBuyForm($id)
         $item = Item::find($item_id);
         $user = auth()->user();
         $profile = $user->profile;
-        $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
+        $shippingChanges = ShippingChange::where('item_id', $item->id)->get();
 
         return view('items.buy', [
             'item' => $item,

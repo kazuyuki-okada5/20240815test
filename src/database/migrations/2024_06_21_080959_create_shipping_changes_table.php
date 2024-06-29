@@ -15,7 +15,7 @@ class CreateShippingChangesTable extends Migration
     {
         Schema::create('shipping_changes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
             $table->string('post_code' , 10);
             $table->string('address' , 100);
             $table->string('building' , 100)->nullable();

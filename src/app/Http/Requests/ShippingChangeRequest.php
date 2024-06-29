@@ -43,7 +43,7 @@ class ShippingChangeRequest extends FormRequest
             $address = $this->input('address');
             $post_code = $this->input('post_code');
 
-            $existingShipping = ShippingChange::where('user_id', $user->id)
+            $existingShipping = ShippingChange::where('item_id', $item_id)
                                               ->where('address', $address)
                                               ->where('post_code', $post_code)
                                               ->first();

@@ -70,8 +70,4 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function shippingChanges()
-    {
-        return $this->hasMany(ShippingChange::class);
-    }
 }
