@@ -10,17 +10,12 @@ use App\Models\ShippingChange;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Stripe\Charge;
+use App\Http\Requests\PaymentRequest;
 
 class PaymentController extends Controller
 {
-    public function purchase(Request $request, $item_id)
+    public function purchase(PaymentRequest $request, $item_id)
     {
-        // バリデーション
-        $request->validate([
-            'payment_method' => 'required|string',
-            'shipping_address' => 'required|string',
-        ]);
-
         // ログインユーザーの取得
         $user_id = auth()->user()->id;
 

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+
 class ItemController extends Controller
 {
     public function showItems()
@@ -177,6 +178,7 @@ public function showBuyForm($id)
 
     // `shipping_changes`テーブルからユーザーの追加した配送先を取得
     $shippingChanges = ShippingChange::where('user_id', $user->id)->get();
+    
 
     return view('items.buy', compact('item', 'profile', 'shippingChanges'));
 }
@@ -202,28 +204,29 @@ public function showBuyForm($id)
 
     return view('items.shipping_change', compact('item', 'shipping'));
 }
-public function buy(Request $request, $item_id)
-{
-    // バリデーション
-    $request->validate([
-        'payment_method' => 'required',
-        'shipping_address' => 'required',
-    ]);
 
-    // 支払い方法と配送先をセッションやDBに保存する処理
-    $paymentMethod = $request->input('payment_method');
-    $shippingAddress = $request->input('shipping_address');
+// public function buy(PaymentRequest $request, $item_id)
+// {
 
-    // 支払い方法に応じた処理
-    if ($paymentMethod === 'credit_card') {
-        // クレジットカードの処理
-    } elseif ($paymentMethod === 'convenience_store') {
-        // コンビニ決済処理
-    } elseif ($paymentMethod === 'bank_transfer'){
-        // 銀行振込
-    }
 
-    // 購入処理後のリダイレクト
-    return redirect()->route('items.index')->with('success', '購入が完了しました。');
-}
+//     // 支払い方法と配送先をセッションやDBに保存する処理
+//     $paymentMethod = $request->input('payment_method');
+//     $shippingAddress = $request->input('shipping_address');
+
+//     // 支払い方法に応じた処理
+//     if ($paymentMethod === 'credit_card') {
+//         // クレジットカードの処理
+//         // Stripe決済処理の追加
+//         $this->processCreditCardPayment($item, $user);
+//     } elseif ($paymentMethod === 'convenience_store') {
+//         // コンビニ決済処理
+//         $this->processConvenienceStorePayment($item, $user);
+//     } elseif ($paymentMethod === 'bank_transfer'){
+//         // 銀行振込処理
+//         $this->processBankTransfer($item, $user);
+//     }
+
+//     // 購入処理後のリダイレクト
+//     return redirect()->route('items.index')->with('success', '購入が完了しました。');
+// }
 }

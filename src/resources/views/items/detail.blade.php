@@ -47,7 +47,7 @@
         </div>
 
         @if ($item->sold_user_id === null)
-            <form method="POST" action="{{ route('items.buy', $item->id) }}">
+            <form method="GET" action="{{ route('items.buy', $item->id) }}">
                 @csrf
                 <button type="submit" class="btn btn-primary">購入手続きへ</button>
             </form>

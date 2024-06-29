@@ -24,8 +24,23 @@ class PaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'payment_method' => 'required|string|in:credit_card,convenience_store,bank_transfer',
+            'payment_method' => 'required',
             'shipping_address' => 'required|string',
         ];
     }
+
+    /**
+     * Get the custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'payment_method.required' => '支払い方法は必ず指定してください。',
+            'shipping_address.required' => '配送先は必ず指定してください。',
+        ];
+    }
 }
+
+

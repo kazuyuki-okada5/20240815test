@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
 
     // 購入手続きフォームの表示と購入処理
     Route::get('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
-    Route::post('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy.post');
+    // Route::post('/items/{item_id}/buy', [ItemController::class, 'buy'])->name('items.buy.post');
 
     // 支払い方法変更ページの表示
     Route::get('/payment/{item_id}/update', [PaymentController::class, 'showUpdateForm'])->name('payment.update.show');

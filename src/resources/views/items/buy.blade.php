@@ -30,9 +30,9 @@
                             <option value="convenience_store">コンビニ</option>
                             <option value="bank_transfer">銀行振込</option>
                         </select>
-                        @if ($errors->has('payment_method'))
-                            <span class="text-danger">{{ $errors->first('payment_method') }}</span>
-                        @endif
+                @error('payment_method')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
                     </div>
                 </div>
                 <div class="shipping-address">
@@ -50,9 +50,9 @@
                                 </option>
                             @endforeach
                         </select>
-                        @if ($errors->has('shipping_address'))
-                            <span class="text-danger">{{ $errors->first('shipping_address') }}</span>
-                        @endif
+                @error('shipping_address')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
                     </div>
                     <!-- 配送先変更ボタン -->
                     <form action="{{ route('shipping.change.show', $item->id) }}" method="GET">
