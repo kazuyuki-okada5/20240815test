@@ -49,7 +49,7 @@
                                 郵便番号: {{ $profile['post_code'] }} - 住所: {{ $profile['address'] }} - 建物名: {{ $profile['building'] }}
                             </option>
                             <!-- 登録された配送先の選択肢 -->
-                            @foreach($shippingChanges as $shipping)
+                            @foreach($shippingAddresses as $shipping)
                                 <option value="{{ $shipping->post_code . ' ' . $shipping->address . ' ' . $shipping->building }}">
                                     郵便番号: {{ $shipping->post_code }} - 住所: {{ $shipping->address }} - 建物名: {{ $shipping->building }}
                                 </option>
@@ -60,7 +60,7 @@
                 @enderror
                     </div>
                     <!-- 配送先変更ボタン -->
-                    <form action="{{ route('shipping.change.show', $item->id) }}" method="GET">
+                    <form action="{{ route('shipping.address.show', $item->id) }}" method="GET">
                         @csrf
                         <button type="submit" class="btn btn-secondary">配送先を追加する</button>
                     </form>

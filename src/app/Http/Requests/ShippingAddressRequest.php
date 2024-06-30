@@ -4,9 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ShippingChange;
+use App\Models\ShippingAddress;
 
-class ShippingChangeRequest extends FormRequest
+class ShippingAddressRequest extends FormRequest
 {
     public function authorize()
     {
@@ -43,7 +43,7 @@ class ShippingChangeRequest extends FormRequest
             $address = $this->input('address');
             $post_code = $this->input('post_code');
 
-            $existingShipping = ShippingChange::where('item_id', $item_id)
+            $existingShipping = ShippingAddress::where('item_id', $item_id)
                                               ->where('address', $address)
                                               ->where('post_code', $post_code)
                                               ->first();

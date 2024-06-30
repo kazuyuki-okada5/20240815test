@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemCreateRequest;
-use App\Models\ShippingChange;
+use App\Models\ShippingAddress;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Like;
@@ -186,10 +186,10 @@ public function showBuyForm($id)
 
 
     // `shipping_changes`テーブルからユーザーの追加した配送先を取得
-    $shippingChanges = ShippingChange::where('item_id', $item->id)->get();
+    $shippingAddresses = ShippingAddress::where('item_id', $item->id)->get();
     
 
-    return view('items.buy', compact('item', 'profile', 'shippingChanges'));
+    return view('items.buy', compact('item', 'profile', 'shippingAddresses'));
 }
 
     public function showAddress($item_id)
@@ -197,21 +197,21 @@ public function showBuyForm($id)
         $item = Item::find($item_id);
         $user = auth()->user();
         $profile = $user->profile;
-        $shippingChanges = ShippingChange::where('item_id', $item->id)->get();
+        $shippingChanges = ShippingAddress::where('item_id', $item->id)->get();
 
         return view('items.buy', [
             'item' => $item,
             'profile' => $profile,
-            'shippingChanges' => $shippingChanges,
+            'shippingAddresses' => $shippingChanges,
         ]);
     }
-    public function showShippingChangeForm($item_id)
+    public function showShippingAddressForm($item_id)
 {
     $item = Item::findOrFail($item_id);
     $user = auth()->user();
-    $shipping = new ShippingChange(); // 新しいShippingChangeモデルを作成
+    $shipping = new ShippingAddress(); // 新しいShippingChangeモデルを作成
 
-    return view('items.shipping_change', compact('item', 'shipping'));
+    return view('items.shipping_address', compact('item', 'shipping'));
 }
 
 // public function buy(PaymentRequest $request, $item_id)

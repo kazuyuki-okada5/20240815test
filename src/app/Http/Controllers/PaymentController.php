@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ShippingChange;
+use App\Models\ShippingAddress;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 use Stripe\Charge;
@@ -23,8 +23,8 @@ class PaymentController extends Controller
         $item = Item::findOrFail($item_id);
 
         // 住所変更テーブルのデータがあればそのIDを取得
-        $shippingChange = ShippingChange::where('item_id', $item_id)->latest()->first();
-        $shipping_changes_id = $shippingChange ? $shippingChange->id : null;
+        $shippingAddress = ShippingAddress::where('item_id', $item_id)->latest()->first();
+        $shipping_addresses_id = $shippingAddress ? $shippingAddress->id : null;
 
         // 支払い情報の保存
         $payment = new Payment();

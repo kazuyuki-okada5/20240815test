@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/payment/{item_id}/update', [PaymentController::class, 'update'])->name('payment.update');
 
     // 配送先変更ページの表示
-    Route::get('/items/{item_id}/shipping/change', [ShippingController::class, 'edit'])->name('shipping.change.show');
+    Route::get('/items/{item_id}/shipping/address', [ShippingController::class, 'edit'])->name('shipping.address.show');
     Route::put('/items/{item_id}/update-shipping', [ShippingController::class, 'update'])->name('shipping.update');
 
     // 購入完了ページの表示
