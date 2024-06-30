@@ -10,7 +10,6 @@ class ShippingChange extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'item_id',
         'post_code',
         'address',
