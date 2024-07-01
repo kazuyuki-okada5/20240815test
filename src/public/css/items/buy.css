@@ -30,7 +30,9 @@
 
 .item-image-element {
 
-    height: auto;
+    max-width: 300px;
+    max-height: 300px;
+    display: flex;
 }
 
 .item-info {

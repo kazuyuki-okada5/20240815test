@@ -62,9 +62,9 @@ class Item extends Model
         return $this->belongsToMany(Category::class, 'category_items', 'item_id', 'category_id');
     }
 
-    public function shippingChange()
+    public function shippingAddress()
     {
-        return $this->hasOne(Shippingchange::class);
+        return $this->hasOne(ShippingAddress::class);
     }
 
     public function payment()
