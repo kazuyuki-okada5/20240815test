@@ -95,15 +95,18 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'checkrole:0'])->group(function() {
     Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
     Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
-
     // コメント削除用のルート
     Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+    Route::post('/admin/users/send-email', [AdminController::class, 'sendEmail'])->name('admin.users.sendEmail');
 });
 
 Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
 Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
+Route::post('/create-bank-payment-intent', [PaymentController::class, 'createBankPaymentIntent'])->name('create.bank.payment.intent');
 Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
-Route::post('/create-bank-transfer-payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
 
 // Route::get('/bank-transfer-return', [PaymentController::class, 'bankTransferReturn'])->name('bank.transfer.return');
 // Route::post('/confirm/konbini/payment', [PaymentController::class, 'confirmKonbiniPayment'])->name('confirm.konbini.payment');
+
+
+// Route::get('/send-test-mail', [AdminController::class, 'sendTestMail']);

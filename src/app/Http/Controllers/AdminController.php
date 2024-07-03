@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Comment;
+// use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BulkEmail;
 
 class AdminController extends Controller
 {
@@ -33,6 +36,21 @@ class AdminController extends Controller
         $comment->delete();
 
         return back()->with('success', 'コメントを削除しました。');
+    }
+
+    public function sendEmail(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $users = User::all();
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new BulkEmail($request->subject, $request->message));
+        }
+
+        return redirect()->back()->with('success', 'メールを送信しました。');
     }
 
 }
