@@ -18,14 +18,18 @@
 
 .confirmation-container {
     width: 300px;
-    max-width: 600px;;
-    max-height: 500px;
+    max-width: 600px;
+    max-height: 600px;
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 5px;
     background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 0px;
+
+}
+
+.form-list {
+    margin: 0px;
 }
 
 .item-image-element {
@@ -40,8 +44,7 @@
 }
 
 .payment-method,
-.shipping-address,
-.confirmation-container {
+.shipping-address {
     margin: 20px 0;
 }
 
@@ -51,8 +54,8 @@
 }
 
 .form-control {
-    width: 300px;
-    padding: 10px;
+    width: 260px;
+    padding: 1px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -118,4 +121,27 @@
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 5px;
+}
+
+.card-form-control {
+    width: 300px;
+    padding: 1px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    width: 260px;
+    background-color: #ff8400;
+    color: #fff;
+    border: 1px solid #000000;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #c16400;
+    border-color: #000000;
 }
