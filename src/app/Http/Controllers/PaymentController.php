@@ -8,14 +8,21 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ShippingAddress;
 use Stripe\Stripe;
+// use Stripe\Charge;
 use Stripe\PaymentIntent;
-use Stripe\Charge;
-use App\Http\Requests\PaymentRequest;
+
+
 
 class PaymentController extends Controller
 {
-    public function purchase(PaymentRequest $request, $item_id)
+    public function purchase(Request $request, $item_id)
     {
+        // バリデーション
+        $request->validate([
+            'payment_method' => 'required|string',
+            'shipping_address' => 'required|string',
+        ]);
+
         // ログインユーザーの取得
         $user_id = auth()->user()->id;
 
@@ -24,23 +31,23 @@ class PaymentController extends Controller
 
         // 住所変更テーブルのデータがあればそのIDを取得
         $shippingAddress = ShippingAddress::where('item_id', $item_id)->latest()->first();
-        $shipping_addresses_id = $shippingAddress ? $shippingAddress->id : null;
+        $shipping_Addresses_id = $shippingAddress ? $shippingAddress->id : null;
 
-        // 支払い情報の保存
-        $payment = new Payment();
-        $payment->item_id = $item_id;
-        $payment->amount = $item->price;
-        $payment->method = $request->input('payment_method');
-        $payment->status = 'completed'; // 支払いステータスを設定
-        $payment->save();
+    // 支払い情報の保存
+    $payment = new Payment();
+    $payment->item_id = $item_id;
+    $payment->amount = $item->price; // ここではアイテムの価格を支払い金額とする
+    $payment->method = $request->input('payment_method');
+    $payment->status = 'completed'; // 支払いステータスを設定（例: 'completed'）
+    $payment->save();
 
         // アイテムのステータス更新
-        $item->sold_user_id = $user_id;
+        $item->sold_user_id = $user_id; 
         $item->save();
 
-        // 処理が完了したらリダイレクトと成功メッセージの表示
-        return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
-    }
+    // 処理が完了したらリダイレクトと成功メッセージの表示
+    return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
+}
 
     public function show()
     {
@@ -86,26 +93,22 @@ class PaymentController extends Controller
 
         try {
             $paymentIntent = PaymentIntent::create([
-                'amount' => $amount, // 金額を適切に設定
+                'amount' => $amount,
                 'currency' => $currency,
                 'payment_method_types' => ['jp_bank_transfer'],
             ]);
 
-            return response()->json(['clientSecret' => $paymentIntent->client_secret]);
+            return response()->json([
+                'clientSecret' => $paymentIntent->client_secret,
+            ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function bankTransferReturn(Request $request)
-    {
-        // 銀行振込完了後の処理をここに記述
-        return view('payment-success');
-    }
-
     public function charge(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(config('services.stripe.secret'));
 
         try {
             // リクエストからアイテムのIDを取得し、アイテムを取得する
@@ -113,12 +116,11 @@ class PaymentController extends Controller
 
             // アイテムの価格をセント単位で計算
             $amount = $item->price;
-
             \Stripe\Charge::create([
                 "amount" => $amount,
                 "currency" => "jpy",
                 "source" => $request->stripeToken,
-                "description" => "購入処理: " . $item->name
+                "description" => "Test payment"
             ]);
 
             return back()->with('success_message', 'Payment successful!');

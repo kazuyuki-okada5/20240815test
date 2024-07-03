@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
-        //　大量代入の際に保護される属性リストを指定する
+        // 大量代入の際に保護される属性リストを指定する
     protected $guarded = ['id'];
-        //　バリデーションルールを適用
+        // バリデーションルールを適用
     public static $rules = [
         'user_id' => 'required',
         'condition_id' => 'required',

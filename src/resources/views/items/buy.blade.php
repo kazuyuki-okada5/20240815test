@@ -12,10 +12,10 @@
             </div>
         @endif
         @if (session('error'))
-    <div class="alert-danger-url">
-        {{ session('error') }}
-    </div>
-@endif
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <h1>商品購入</h1>
         <div class="content-container">
             <div class="left-container">
@@ -35,31 +35,28 @@
                             <option value="convenience_store">コンビニ</option>
                             <option value="bank_transfer">銀行振込</option>
                         </select>
-                @error('payment_method')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                        @error('payment_method')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="shipping-address">
                     <div class="form-group">
                         <label for="shipping_address">配送先を選択してください</label>
                         <select name="shipping_address" id="shipping_address" class="form-control" onchange="updateShippingAddress()">
-                            <!-- ユーザープロフィールの初期選択肢 -->
                             <option value="{{ $profile['post_code'] . ' ' . $profile['address'] . ' ' . $profile['building'] }}">
                                 郵便番号: {{ $profile['post_code'] }} - 住所: {{ $profile['address'] }} - 建物名: {{ $profile['building'] }}
                             </option>
-                            <!-- 登録された配送先の選択肢 -->
                             @foreach($shippingAddresses as $shipping)
                                 <option value="{{ $shipping->post_code . ' ' . $shipping->address . ' ' . $shipping->building }}">
                                     郵便番号: {{ $shipping->post_code }} - 住所: {{ $shipping->address }} - 建物名: {{ $shipping->building }}
                                 </option>
                             @endforeach
                         </select>
-                @error('shipping_address')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+                        @error('shipping_address')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <!-- 配送先変更ボタン -->
                     <form action="{{ route('shipping.address.show', $item->id) }}" method="GET">
                         @csrf
                         <button type="submit" class="btn btn-secondary">配送先を追加する</button>
@@ -67,7 +64,6 @@
                 </div>
             </div>
 
-            <!-- 確認コンテナ -->
             <div class="confirmation-container">
                 <h2>確認</h2>
                 <p>商品代金: ￥{{ $item->price }}</p>
@@ -119,88 +115,6 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-        var stripe = Stripe('{{ env('STRIPE_KEY') }}');
-        document.getElementById('konbini-button').addEventListener('click', function () {
-            fetch('{{ route('create.konbini.payment.intent') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ item_id: {{ $item->id }} }) // ここにitem_idを追加
-            })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (result) {
-                if (result.error) {
-                    var errorElement = document.getElementById('payment-message');
-                    errorElement.textContent = result.error;
-                    errorElement.style.display = 'block';
-                } else {
-                    stripe.confirmKonbiniPayment(result.clientSecret, {
-                        payment_method: {
-                            billing_details: {
-                                name: 'Taro Yamada',
-                                email: 'taro@example.com',
-                            },
-                        },
-                    }).then(function (result) {
-                        if (result.error) {
-                            var errorElement = document.getElementById('payment-message');
-                            errorElement.textContent = result.error.message;
-                            errorElement.style.display = 'block';
-                        } else {
-                            var successElement = document.getElementById('payment-message');
-                            successElement.textContent = 'Payment successful! Please proceed to the convenience store to complete your payment.';
-                            successElement.style.display = 'block';
-                        }
-                    });
-                }
-            });
-        });
-
-        document.getElementById('bank-transfer-button').addEventListener('click', function () {
-            fetch('{{ route('create.bank.transfer.payment.intent') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ item_id: {{ $item->id }} }) // ここにitem_idを追加
-            })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (result) {
-                if (result.error) {
-                    var errorElement = document.getElementById('payment-message');
-                    errorElement.textContent = result.error;
-                    errorElement.style.display = 'block';
-                } else {
-                    stripe.confirmBankTransferPayment(result.clientSecret, {
-                        payment_method: {
-                            billing_details: {
-                                name: '{{ auth()->user()->name }}',
-                                email: '{{ auth()->user()->email }}',
-                            },
-                        },
-                    }).then(function (result) {
-                        if (result.error) {
-                            var errorElement = document.getElementById('payment-message');
-                            errorElement.textContent = result.error.message;
-                            errorElement.style.display = 'block';
-                        } else {
-                            var successElement = document.getElementById('payment-message');
-                            successElement.textContent = 'Payment successful! Please complete the bank transfer.';
-                            successElement.style.display = 'block';
-                        }
-                    });
-                }
-            });
-        });
-        
-
         function updatePaymentMethod() {
             var paymentMethod = document.getElementById('payment_method').value;
             document.getElementById('selected_payment_method').innerText = paymentMethod;
@@ -215,15 +129,16 @@
             document.getElementById('confirmation_shipping_address').value = shippingAddress.join(' ');
         }
 
-        // 初期表示
         document.addEventListener('DOMContentLoaded', function() {
             updatePaymentMethod();
             updateShippingAddress();
         });
 
+        var stripe = Stripe('{{ env('STRIPE_KEY') }}');
         var elements = stripe.elements();
         var card = elements.create('card');
         card.mount('#card-element');
+
         card.on('change', function(event) {
             var displayError = document.getElementById('card-errors');
             if (event.error) {
@@ -246,18 +161,6 @@
             });
         });
 
-        document.getElementById('credit-card-button').addEventListener('click', function(event) {
-            event.preventDefault();
-            stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                } else {
-                    stripeTokenHandler(result.token);
-                }
-            });
-        });
-
         function stripeTokenHandler(token) {
             var form = document.getElementById('payment-form');
             var hiddenInput = document.createElement('input');
@@ -265,11 +168,84 @@
             hiddenInput.setAttribute('name', 'stripeToken');
             hiddenInput.setAttribute('value', token.id);
             form.appendChild(hiddenInput);
-
-            // カード決済後の購入フォーム送信
-            var purchaseForm = document.getElementById('purchase-form');
-            document.getElementById('confirmation_payment_method').value = 'credit_card';
-            purchaseForm.submit();
+            form.submit();
         }
+
+        document.getElementById('konbini-button').addEventListener('click', function () {
+            fetch('{{ route('create.konbini.payment.intent') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ item_id: {{ $item->id }} })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    var errorElement = document.getElementById('payment-message');
+                    errorElement.textContent = result.error;
+                    errorElement.style.display = 'block';
+                } else {
+                    stripe.confirmKonbiniPayment(result.clientSecret, {
+                        payment_method: {
+                            billing_details: {
+                                name: '{{ auth()->user()->name }}',
+                                email: '{{ auth()->user()->email }}',
+                            },
+                        },
+                    }).then(function (result) {
+                        if (result.error) {
+                            var errorElement = document.getElementById('payment-message');
+                            errorElement.textContent = result.error.message;
+                            errorElement.style.display = 'block';
+                        } else {
+                            var successElement = document.getElementById('payment-message');
+                            successElement.textContent = '支払いが成功しました！コンビニでの支払いを完了してください。';
+                            successElement.style.display = 'block';
+                        }
+                    });
+                }
+            });
+        });
+
+        document.getElementById('bank-transfer-button').addEventListener('click', function () {
+            fetch('{{ route('create.bank.transfer.payment.intent') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ item_id: {{ $item->id }} })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    var errorElement = document.getElementById('payment-message');
+                    errorElement.textContent = result.error;
+                    errorElement.style.display = 'block';
+                } else {
+                    stripe.confirmBankTransferPayment(result.clientSecret, {
+                        payment_method: {
+                            billing_details: {
+                                name: '{{ auth()->user()->name }}',
+                                email: '{{ auth()->user()->email }}',
+                            },
+                        },
+                    }).then(function (result) {
+                        if (result.error) {
+                            var errorElement = document.getElementById('payment-message');
+                            errorElement.textContent = result.error.message;
+                            errorElement.style.display = 'block';
+                        } else {
+                            var successElement = document.getElementById('payment-message');
+                            successElement.textContent = '支払いが成功しました！銀行振込を完了してください。';
+                            successElement.style.display = 'block';
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection
+

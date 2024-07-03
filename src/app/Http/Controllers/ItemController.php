@@ -47,7 +47,7 @@ class ItemController extends Controller
         }
     }
 
-    //　アイテム名を検索
+    // アイテム名を検索
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -62,29 +62,29 @@ class ItemController extends Controller
         $item = Item::with('categories', 'condition')->findOrFail($item_id);
         // IDでアイテムを出品したユーザーのnameを取得する
         $user = User::findOrFail($item->user_id)->name;
-        //　現在のユーザーがこのアイテムをお気に入りにしているかをチェック
+        // 現在のユーザーがこのアイテムをお気に入りにしているかをチェック
         $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item->id)->exists();
-        //　ユーザーが何人お気に入りしているかカウント
+        // ユーザーが何人お気に入りしているかカウント
         $likeCount = Like::where('item_id', $item_id)->count();
-        //　コメント数をカウント
+        // コメント数をカウント
         $commentCount = Comment::where('item_id',$item_id)->count();
 
         // items.detailビューを表示し、$item変数を渡す
         return view('items.detail', ['item' => $item, 'user' => $user, 'isLiked' => $isLiked, 'likeCount' => $likeCount, 'commentCount' => $commentCount ]);
     }
 
-    //　出品ページの表示
-public function showCreateForm(Request $request)
-{
+    // 出品ページの表示
+    public function showCreateForm(Request $request)
+    {
     $categories = Category::all();
     $conditions = Condition::all();
     $imageUrl = $request->session()->get('image_url', null);
 
     return view('items.create', compact('categories', 'conditions', 'imageUrl'));
-}
+    }
 
-public function create(ItemCreateRequest $request)
-{
+    public function create(ItemCreateRequest $request)
+    {
     $input = $request->validated();
     $userId = Auth::id();
 
@@ -127,16 +127,16 @@ public function create(ItemCreateRequest $request)
 
     $request->session()->forget('image_url');
     return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
-}
+    }
 
 
-// カテゴリーの重複チェックメソッド
-private function hasDuplicateCategories($categories)
-{
+    // カテゴリーの重複チェックメソッド
+    private function hasDuplicateCategories($categories)
+    {
     return count($categories) !== count(array_unique($categories));
-}
+    }
 
-    //　出品商品一覧ページを処理するメソッド
+    // 出品商品一覧ページを処理するメソッド
     public function selling()
     {
         $user = Auth::user();
@@ -145,7 +145,7 @@ private function hasDuplicateCategories($categories)
         return view('items.selling', ['items' => $items]);
     }
 
-    //　購入商品一覧ページを処理するメソッド
+    // 購入商品一覧ページを処理するメソッド
     public function purchased()
     {
         $user = Auth::user();
@@ -154,9 +154,9 @@ private function hasDuplicateCategories($categories)
         return view('items.purchased', ['items' => $items]);
     }
 
-    //　購入手続きページを処理するメソッド
-public function showBuyForm($id)
-{
+    // 購入手続きページを処理するメソッド
+    public function showBuyForm($id)
+    {
     // アイテムを取得します
     $item = Item::findOrFail($id);
 
@@ -184,13 +184,11 @@ public function showBuyForm($id)
         ];
     }
 
-
     // `shipping_changes`テーブルからユーザーの追加した配送先を取得
     $shippingAddresses = ShippingAddress::where('item_id', $item->id)->get();
-    
 
     return view('items.buy', compact('item', 'profile', 'shippingAddresses'));
-}
+    }
 
     public function showAddress($item_id)
     {
@@ -206,17 +204,16 @@ public function showBuyForm($id)
         ]);
     }
     public function showShippingAddressForm($item_id)
-{
+    {
     $item = Item::findOrFail($item_id);
     $user = auth()->user();
     $shipping = new ShippingAddress(); // 新しいShippingChangeモデルを作成
 
     return view('items.shipping_address', compact('item', 'shipping'));
-}
+    }
 
 // public function buy(PaymentRequest $request, $item_id)
 // {
-
 
 //     // 支払い方法と配送先をセッションやDBに保存する処理
 //     $paymentMethod = $request->input('payment_method');
