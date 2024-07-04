@@ -1,8 +1,8 @@
-# アプリケーション名
+アプリケーション名
 
 ### メルカリ風フリマアプリ
 
-    ![Alt text](image.png)
+![スクリーンショット 2024-07-04 20 18 47](https://github.com/kazuyuki-okada5/20230530okada-/assets/149482478/c89faceb-9425-4f85-b5eb-66675fd4f3f8)# 
 
 ### サービス名
 
