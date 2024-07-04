@@ -24,14 +24,6 @@ use App\Http\Controllers\AdminController;
 // トップページ
 Route::get('/', [ItemController::class, 'showItems'])->name('items.index');
 
-// ログイン画面表示
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');  // ここで 'login' という名前を付ける
-
-// ログイン処理
-Route::post('/login', [AuthController::class, 'login']);
-
 // 会員登録画面表示
 Route::get('/register', function () {
     return view('auth.register');
@@ -39,6 +31,14 @@ Route::get('/register', function () {
 
 // 会員登録処理
 Route::post('/register', [AuthController::class, 'register']);
+
+// ログイン画面表示
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');  // ここで 'login' という名前を付ける
+
+// ログイン処理
+Route::post('/login', [AuthController::class, 'login']);
 
 //　商品詳細ページ
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
@@ -49,20 +49,19 @@ Route::get('items/search', [ItemController::class, 'search'])->name('items.searc
 //　コメントページ表示
 Route::get('/items/{item}/comment', [CommentController::class, 'showCommentForm'])->name('comments.show');
 
-//　コメント投稿
-Route::post('/items/{item}/comment', [CommentController::class, 'storeComment'])->name('comments.store')->middleware('auth');
-
-
 //　ユーザー認証ミドルウェア
 Route::middleware('auth')->group(function () {
     //　プロフィール画面表示
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
     //　プロフィール新規作成・更新ページ
-    Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
     Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
+    Route::get('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    //　コメント投稿
+    Route::post('/items/{item}/comment', [CommentController::class, 'storeComment'])->name('comments.store')->middleware('auth');
 
     // アイテム作成フォームの表示
     Route::get('/items/create', [ItemController::class, 'showCreateForm'])->name('items.create_form');
@@ -77,7 +76,6 @@ Route::middleware('auth')->group(function () {
 
     // 購入手続きフォームの表示と購入処理
     Route::get('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
-    // Route::post('/items/{item_id}/buy', [ItemController::class, 'buy'])->name('items.buy.post');
 
     // 支払い方法変更ページの表示
     Route::get('/payment/{item_id}/update', [PaymentController::class, 'showUpdateForm'])->name('payment.update.show');
@@ -87,8 +85,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/items/{item_id}/shipping/address', [ShippingController::class, 'edit'])->name('shipping.address.show');
     Route::put('/items/{item_id}/update-shipping', [ShippingController::class, 'update'])->name('shipping.update');
 
-    // 購入完了ページの表示
-    Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');
+    // 支払い方法変更
+    Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
+    Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
+    Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
+    Route::post('/bank-transfer/payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
+
+     // 購入完了ページの表示
+    Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');   
 });
 
 // 管理者のみアクセス可能なルート
@@ -97,13 +101,11 @@ Route::middleware(['auth', 'checkrole:0'])->group(function() {
     Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
     // コメント削除用のルート
     Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+    // 管理者メール送信
     Route::post('/admin/users/send-email', [AdminController::class, 'sendEmail'])->name('admin.users.sendEmail');
 });
 
-Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
-Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
-Route::post('/create-bank-payment-intent', [PaymentController::class, 'createBankPaymentIntent'])->name('create.bank.payment.intent');
-Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
+
 
 // Route::get('/bank-transfer-return', [PaymentController::class, 'bankTransferReturn'])->name('bank.transfer.return');
 // Route::post('/confirm/konbini/payment', [PaymentController::class, 'confirmKonbiniPayment'])->name('confirm.konbini.payment');

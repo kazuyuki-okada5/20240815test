@@ -47,7 +47,7 @@ class ItemCreateRequest extends FormRequest
             'price.max' => '価格は9999999999以下で入力してください。',
             'comment.required' => '商品の説明は必須です。',
             'comment.string' => '商品の説明は文字列で入力してください。',
-            'comment.max' => 'コメントは255文字以内で入力してください。',
+            'comment.max' => '商品の説明は255文字以内で入力してください。',
             'comment.min' => '商品の説明は20文字以上で入力してください。',
             'brand.string' => 'ブランドは文字列で入力してください。',
             'brand.max' => 'ブランドは255文字以内で入力してください。',
