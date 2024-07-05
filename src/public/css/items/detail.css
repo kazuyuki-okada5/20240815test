@@ -1,12 +1,20 @@
 .item-container {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    /* 中央揃えにする */
-    gap: 20px;
-    /* アイテム画像と情報の間のスペースを調整 */
-    margin-top: 30px;
-    /* アイテムコンテナ自体を中央に配置 */
+
+    border: 1px solid #ccc;
+    /* 外枠の色と幅を設定 */
+    border-radius: 8px;
+    /* 角を丸くする */
+    padding: 10px;
+    /* 内側の余白を設定 */
+    max-width: 670px;
+    /* 最大幅を設定 */
+    margin: 20px auto;
+    /* 中央に配置 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* 影を付ける */
+    background-color: #fff;
+    /* 背景色を白に設定 */
 }
 
 .item-image {
@@ -166,3 +174,18 @@
     border-radius: 5px;
     /* ボタンの角を丸くする */
 }
+
+@media (max-width: 768px) {
+    .item-container {
+            display: block;
+            /* フレックスを無効にする */
+            margin: 20px auto;
+            /* 中央に配置 */
+
+        }
+    
+        .item-container>* {
+            margin: 0 auto;
+            /* 各要素を中央に配置 */
+        }
+    }

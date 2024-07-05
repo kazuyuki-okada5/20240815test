@@ -64,6 +64,9 @@
         <div class="register__link">
             <a class="register__button-submit" href="/register">会員登録はこちら</a>
         </div>
+                <div class="item__link">
+            <a class="item__button-submit" href="/">トップページへ戻る</a>
+        </div>
     </div>
 </body>
 </html>

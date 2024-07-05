@@ -91,4 +91,7 @@
   <div class="login__link">
     <a class="login__button-submit" href="/login">ログインの方はこちら</a>
   </div>
+  <div class="item__link">
+    <a class="item__button-submit" href="/">トップページへ戻る</a>
+  </div>
 </div>
