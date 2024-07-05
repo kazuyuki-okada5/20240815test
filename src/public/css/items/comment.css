@@ -3,7 +3,19 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 20px auto;
-    max-width: 840px;
+    max-width: 850px;
+    border: 1px solid #ccc;
+    /* 外枠の色と幅を設定 */
+    border-radius: 8px;
+    /* 角を丸くする */
+    padding: 10px;
+    /* 内側の余白を設定 */
+    margin: 20px auto;
+    /* 中央に配置 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* 影を付ける */
+    background-color: #fff;
+    /* 背景色を白に設定 */
 }
 
 .item-info {
@@ -51,7 +63,8 @@
     align-items: center;
     margin-top: 5px;
     margin-bottom: 0px;
-    max-width: 500px;
+    max-width: 400px;
+    margin: 5px auto 0;
 }
 
 .comment-left,
@@ -89,8 +102,8 @@
 
 .date-right {
     display: inline-block;
-    width: 175px;
-    margin: 0px 0px 0px 125px;
+    width: 120px;
+    margin: 0px 0px 0px 70px;
     font-size: 10px;
 }
 
@@ -138,7 +151,7 @@
 .form-group {
     margin-bottom: 20px;
     display: flex;
-        flex-direction: column;
+    flex-direction: column;
 }
 
 .btn-primary {
@@ -210,8 +223,6 @@
     /* リンクのホバー時の色を設定 */
 }
 
-
-
 .item-image-container {
     position: relative;
     max-width: 300px;
@@ -234,31 +245,31 @@
 }
 
 .sold-out-required-message {
-        color: #000000;
-            /* テキストの色を赤に設定 */
-            font-size: 1.2em;
-            /* フォントサイズを設定 */
-            margin-top: 20px;
-            /* 上部に余白を追加 */
-            text-align: center;
-            /* テキストを中央揃えに設定 */
-            background-color: #f9f9f9;
-            /* 背景色を設定 */
-            padding: 10px;
-            /* 内部余白を追加 */
-            border-radius: 5px;
-            /* 角を丸くする */
-            border: 1px solid #ccc;
-            /* 枠線を追加 */
+    color: #000000;
+    /* テキストの色を赤に設定 */
+    font-size: 1.2em;
+    /* フォントサイズを設定 */
+    margin-top: 20px;
+    /* 上部に余白を追加 */
+    text-align: center;
+    /* テキストを中央揃えに設定 */
+    background-color: #f9f9f9;
+    /* 背景色を設定 */
+    padding: 10px;
+    /* 内部余白を追加 */
+    border-radius: 5px;
+    /* 角を丸くする */
+    border: 1px solid #ccc;
+    /* 枠線を追加 */
 }
 
 .btn-danger {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: rgb(255, 0, 0);
-            font-size: 10px;
-            font-weight: bold;
-            padding: 0px 10px;
-            border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgb(255, 0, 0);
+    font-size: 10px;
+    font-weight: bold;
+    padding: 0px 10px;
+    border-radius: 20px;
 }
 
 @media (max-width: 980px) {
@@ -273,6 +284,19 @@
     }
 
     .item-comments {
-        max-width: 500px;;
-    }
+        flex: auto;
+        margin: 20px;
+        max-width: 500px;
+        }
+
+        .date-right {
+            display: inline-block;
+            width: 120px;
+            margin: 0px 0px 0px 70px;
+            font-size: 10px;
+        }
+
+        .item-detail {
+            width: 550px;
+        }
 }

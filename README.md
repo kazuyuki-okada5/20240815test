@@ -43,7 +43,7 @@ coachtechフリマ
 |  21  | メール送信        | アカウント登録者全員にメール送信           | 管理者                |
 |  22  | ユーザー一覧表示   | アカウント登録者全員を閲覧                | 管理者                |
 
-注記
+注記<br>
 　NO. 5：コメントはNO.4商品詳細閲覧画面何の吹き出しアイコンをクリックすると表示します。<br>
 　NO. 6：商品検索後も検索ワードは枠内で維持されたままになります。<br>
 　NO.15：出品時のカテゴリーは最大3つまで選択可能です。<br>
@@ -51,14 +51,10 @@ coachtechフリマ
 　　　　　※アカウント詳細を作成していない場合は未記載となります。
 
 参考画像
-認証画面
 | ![Register画像](./src/images/register-image.png) | ![login画像](./src/images/login-image.png) |
 |:------------------------------:|:------------------------------:|
 | 会員登録画面                        | ログイン画面                        |
 
-
-
-商品画面
-| ![Itemdetail画像](./src/images/itemdetail-image.png) | ![login画像](./src/images/login-image.png) | ![Image 3](path/to/image3.png) |
+| ![Itemdetail画像](./src/images/itemdetail-image.png) | ![comment画像](./src/images/comment-image.png) | ![comment-auth画像](./src/images/comment-auth-image.png)) |
 |:------------------------------:|:------------------------------:|:------------------------------:|
-| 商品詳細画面                        | ログイン画面                        | Image 3                        |
+| 商品詳細画面                        | コメント画面（認証前）                  | コメント画面（認証後）                        |
