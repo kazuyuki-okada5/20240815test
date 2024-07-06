@@ -95,24 +95,30 @@ class ProfileController extends Controller
 
     // プロフィールを新規作成するメソッド
     public function store(ProfileRequest $request)
-    {
-        // リクエストからデータを受け取り、新しいプロフィールを作成する
-        $profile = new Profile();
-        $profile->user_id = Auth::id();
-        $profile->post_code = $request->post_code;
-        $profile->address = $request->address;
-        $profile->building = $request->building;
+{
+    // リクエストからデータを受け取り、新しいプロフィールを作成する
+    $profile = new Profile();
+    $profile->user_id = Auth::id();
+    $profile->post_code = $request->post_code;
+    $profile->address = $request->address;
+    $profile->building = $request->building;
 
-        //　画像がアップロードされている場合の処理
-        if ($request->hasFile('img_url')) {
-            $imagePath = $request->file('img_url')->store('profiles', 'public');
-            $profile->img_url = $imagePath;
-        }
+    // ユーザー名の更新
+    $user = Auth::user();
+    $user->name = $request->name;
+    $user->save();
 
-        // プロフィールを保存する
-        $profile->save();
-
-        // プロフィール作成後にリダイレクトするなどの処理を行う
-        return redirect()->route('profile.show')->with('success', 'プロフィールが作成されました');
+    // 画像がアップロードされている場合の処理
+    if ($request->hasFile('img_url')) {
+        $imagePath = $request->file('img_url')->store('profiles', 'public');
+        $profile->img_url = $imagePath;
     }
+
+    // プロフィールを保存する
+    $profile->save();
+
+    // プロフィール作成後にリダイレクトするなどの処理を行う
+    return redirect()->route('profile.show')->with('success', 'プロフィールが作成されました');
+}
+
 }

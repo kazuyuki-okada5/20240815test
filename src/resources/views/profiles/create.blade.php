@@ -16,7 +16,14 @@
                 <div class="error-message">{{ $errors->first('img_url') }}</div>
             @endif
         </div>
-         <div class="form-group">
+        <div class="form-group">
+            <label for="name" class="form-label">名前</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', Auth::user()->name ) }}">
+            @if ($errors->has('name'))
+                <div class="error-message">{{ $errors->first('name') }}</div>
+            @endif
+        </div>
+        <div class="form-group">
             <label for="post_code" class="form-label">郵便番号（ハイフンなし）</label>
             <input type="text" class="form-control" id="post_code" name="post_code" value="{{ old('post_code') }}">
             @if ($errors->has('post_code'))

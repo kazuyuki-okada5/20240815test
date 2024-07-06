@@ -17,12 +17,13 @@
         @if ($profile->img_url)
             <img id="profile-image-preview" src="{{ asset('storage/' . $profile->img_url) }}" alt="Profile Image" class="profile-image">
         @else
-            <img id="profile-image-preview" class="profile-image" style="display: none;">
-            <div class="default-image" id="default-image"></div>
+            <div class="default-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
         @endif
     </div>
 </div>
-            <input type="file" class="form-control-file" id="img_url" name="img_url" onchange="previewImage(event)">
+<input type="file" class="form-control-file" id="img_url" name="img_url" onchange="previewImage(event)">
         </div>
         <div class="form-group">
             <label for="name" class="form-label">ユーザー名</label>

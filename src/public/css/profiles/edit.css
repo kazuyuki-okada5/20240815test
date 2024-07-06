@@ -40,6 +40,7 @@
     height: 150px;
     /* サイズは適宜調整してください */
     overflow: hidden;
+    margin: 20px auto;
 }
 
 .profile-image-container {
@@ -59,13 +60,18 @@
     object-fit: cover;
 }
 
-.default-image {
-    width: 200px;
-    height: 200px;
-    background-color: gray;
-    border-radius: 50%;
+.default-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    /* アイコンのサイズに応じて調整 */
+    height: 150px;
+    /* アイコンのサイズに応じて調整 */
+    font-size: 150px;
+    /* アイコンのサイズに応じて調整 */
+    color: #000000;
 }
-
 .btn-primary {
     background-color: #ff5a5f;
     border: none;
