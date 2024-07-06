@@ -88,12 +88,56 @@ coachtechフリマ
 
 1.GIT リポジトリをクローンして下さい。
 
-、、、
-git clone git@github.com:kazuyuki-okada5/20230530okada-.git
-、、、
+```
+git@github.com:kazuyuki-okada5/20230530okada-.git
+```
 
 2.Docker と Docker Composer をインストールして下さい。
 
 インストール済みの場合は省略して下さい。
 
 3.プロジェクトのルートディレクトリに移動して下さい。
+
+4.`.env.example`ファイルをコピーして`.env`ファイルを作成して下さい。
+
+```
+cd src
+cp .env.example .env
+```
+
+5.下記参照し、`.env`ファイルの環境変数を設定して下さい。
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel_db
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+
+MAIL_FROM_ADDRESS=your-email@example.com
+
+6.dockerを起動して下さい。
+
+```
+docker-compose up -d --build
+```
+
+7.phpコンテナに入りComposerをインストール後、暗号化キーを作成して下さい。
+
+```
+docker-compose exec php bash
+composer install
+php artisan key:generate
+```
+
+8.マイグレーション及びシーディング及びシンボリックリンクの設定をして下さい。
+
+```
+php artisan migrate:refresh --seed
+php artisan storage:link
+```
+
+9.ローカルへのアクセス
+
+1.〜８.までの作業が滞りなく終了したら下記リンク先からアプリケーションが開きます。
+[トップページ](http://localhost/)
