@@ -99,16 +99,15 @@
                 <div id="card-errors" role="alert"></div>
             </div>
 
-                
-                <div id="card-element">
+<div id="card-element">
     <label for="card-number">カード番号</label>
-    <div id="card-number-element" class="form-control"></div>
-    <div id="card-expiry-element" class="form-control"></div>
-    <div id="card-cvc-element" class="form-control"></div>
+    <div id="card-number-element" class="form-control" style="padding: 10px 12px;"></div>
+    <div id="card-expiry-element" class="form-control" style="padding: 10px 12px;"></div>
+    <div id="card-cvc-element" class="form-control" style="padding: 10px 12px;"></div>
+    <div id="postal-code-element" class="form-control" style="padding: 10px 12px;"></div> <!-- 郵便番号入力フィールド -->
     <!-- エラーメッセージ表示 -->
     <div id="card-errors" role="alert"></div>
 </div>
-
             <button class="btn btn-primary mt-3" id="credit-card-button">購入する</button>
         </form>
         <button id="konbini-button" class="btn btn-primary mt-3">購入する</button>
@@ -156,77 +155,72 @@
             updateShippingAddress();
         });
 
-        var stripe = Stripe('{{ env('STRIPE_KEY') }}');
-var elements = stripe.elements();
+    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+    var elements = stripe.elements();
 
-// スタイル設定
-var style = {
-    base: {
-        fontSize: '10px',
-        lineHeight: '16px',
-        color: '#32325d',
-        '::placeholder': {
-            color: '#aab7c4',
+    var style = {
+        base: {
+            fontSize: '16px',
+            color: '#32325d',
+            padding: '10px 12px' // パディングを追加
         },
-    },
-};
+    };
 
-// カード番号入力フィールドをマウント
-var cardNumberElement = elements.create('cardNumber', {
-    style: style,
-});
-cardNumberElement.mount('#card-number-element');
+    var cardNumberElement = elements.create('cardNumber', {
+        style: style,
+    });
+    cardNumberElement.mount('#card-number-element');
 
-// 有効期限入力フィールドをマウント
-var cardExpiryElement = elements.create('cardExpiry', {
-    style: style,
-});
-cardExpiryElement.mount('#card-expiry-element');
+    var cardExpiryElement = elements.create('cardExpiry', {
+        style: style,
+    });
+    cardExpiryElement.mount('#card-expiry-element');
 
-// CVCコード入力フィールドをマウント
-var cardCvcElement = elements.create('cardCvc', {
-    style: style,
-});
-cardCvcElement.mount('#card-cvc-element');
+    var cardCvcElement = elements.create('cardCvc', {
+        style: style,
+    });
+    cardCvcElement.mount('#card-cvc-element');
 
-// エラーメッセージ表示
-var displayError = document.getElementById('card-errors');
-cardNumberElement.on('change', function(event) {
-    if (event.error) {
-        displayError.textContent = event.error.message;
-    } else {
-        displayError.textContent = '';
-    }
-});
+    var postalCodeElement = elements.create('postalCode', {
+        style: style,
+    });
+    postalCodeElement.mount('#postal-code-element');
 
-// フォームのサブミット処理
-var form = document.getElementById('payment-form');
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    stripe.createToken(cardNumberElement).then(function(result) {
-        if (result.error) {
-            displayError.textContent = result.error.message;
+    var displayError = document.getElementById('card-errors');
+    cardNumberElement.on('change', function(event) {
+        if (event.error) {
+            displayError.textContent = event.error.message;
         } else {
-            stripeTokenHandler(result.token);
+            displayError.textContent = '';
         }
     });
-});
 
-function stripeTokenHandler(token) {
     var form = document.getElementById('payment-form');
-    var hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(cardNumberElement, {
+            address_zip: postalCodeElement.value,
+        }).then(function(result) {
+            if (result.error) {
+                displayError.textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
 
-    // フォームを送信
-    form.submit();
+    function stripeTokenHandler(token) {
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
 
-    // 支払い方法と配送先の情報を `purchase-form` にセットして送信
-    var purchaseForm = document.getElementById('purchase-form');
-    purchaseForm.submit();
-}
+        form.submit();
+    }
+
+
 
 
         document.getElementById('konbini-button').addEventListener('click', function () {
