@@ -79,68 +79,68 @@
                     <input type="hidden" name="shipping_address" id="confirmation_shipping_address">
                 </form>
 
+                <div class="container mt-5">
+                    @if (session('success_message'))
+                        <div class="alert alert-success">
+                            {{ session('success_message') }}
+                        </div>
+                    @endif
+                    @if (session('error_message'))
+                        <div class="alert alert-danger">
+                            {{ session('error_message') }}
+                        </div>
+                    @endif
 
-    <div class="container mt-5">
-        @if (session('success_message'))
-            <div class="alert alert-success">
-                {{ session('success_message') }}
-            </div>
-        @endif
-        @if (session('error_message'))
-            <div class="alert alert-danger">
-                {{ session('error_message') }}
-            </div>
-        @endif
+                    <form action="{{ route('charge') }}" class="credit-card-form" method="post" id="payment-form">
+                        @csrf
+                        <input type="hidden" name="item_id" value="{{ $item->id }}">
+                        <div class="form-row">
+                            <div id="card-errors" role="alert"></div>
+                        </div>
 
-        <form action="{{ route('charge') }}" class="credit-card-form" method="post" id="payment-form">
-            @csrf
-            <input type="hidden" name="item_id" value="{{ $item->id }}">
-            <div class="form-row">
-                <div id="card-errors" role="alert"></div>
-            </div>
-
-<div id="card-element">
-    <label for="card-number">カード番号</label>
-    <div id="card-number-element" class="form-control" style="padding: 10px 12px;"></div>
-    <div id="card-expiry-element" class="form-control" style="padding: 10px 12px;"></div>
-    <div id="card-cvc-element" class="form-control" style="padding: 10px 12px;"></div>
-    <div id="postal-code-element" class="form-control" style="padding: 10px 12px;"></div> <!-- 郵便番号入力フィールド -->
-    <!-- エラーメッセージ表示 -->
-    <div id="card-errors" role="alert"></div>
-</div>
-            <button class="btn btn-primary mt-3" id="credit-card-button">購入する</button>
-        </form>
-        <button id="konbini-button" class="btn btn-primary mt-3">購入する</button>
-        <button id="bank-transfer-button" class="btn btn-primary mt-3">購入する</button>
-        <div id="payment-message" class="alert alert-info" style="display: none;"></div>
-    </div>
+                        <div id="card-element">
+                            <label for="card-number">カード番号</label>
+                            <div id="card-number-element" class="form-control" style="padding: 10px 12px;"></div>
+                            <div id="card-expiry-element" class="form-control" style="padding: 10px 12px;"></div>
+                            <div id="card-cvc-element" class="form-control" style="padding: 10px 12px;"></div>
+                            <div id="postal-code-element" class="form-control" style="padding: 10px 12px;"></div> <!-- 郵便番号入力フィールド -->
+                            <!-- エラーメッセージ表示 -->
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                        <button class="btn btn-primary mt-3" id="credit-card-button">購入する</button>
+                    </form>
+                    <button id="konbini-button" class="btn btn-primary mt-3">購入する</button>
+                    <button id="bank-transfer-button" class="btn btn-primary mt-3">購入する</button>
+                    <div id="payment-message" class="alert alert-info" style="display: none;"></div>
+                </div>
             </div>
         </div>
     </div>
+
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         function updatePaymentMethod() {
-    var paymentMethod = document.getElementById('payment_method').value;
-    var paymentMethodName = '';
+            var paymentMethod = document.getElementById('payment_method').value;
+            var paymentMethodName = '';
 
-    switch(paymentMethod) {
-        case 'credit_card':
-            paymentMethodName = 'クレジットカード';
-            break;
-        case 'convenience_store':
-            paymentMethodName = 'コンビニ';
-            break;
-        case 'bank_transfer':
-            paymentMethodName = '銀行振込';
-            break;
-        default:
-            paymentMethodName = '未選択';
-            break;
-    }
+            switch(paymentMethod) {
+                case 'credit_card':
+                    paymentMethodName = 'クレジットカード';
+                    break;
+                case 'convenience_store':
+                    paymentMethodName = 'コンビニ';
+                    break;
+                case 'bank_transfer':
+                    paymentMethodName = '銀行振込';
+                    break;
+                default:
+                    paymentMethodName = '未選択';
+                    break;
+            }
 
-    document.getElementById('selected_payment_method').innerText = paymentMethodName;
-    document.getElementById('confirmation_payment_method').value = paymentMethod;
-}
+            document.getElementById('selected_payment_method').innerText = paymentMethodName;
+            document.getElementById('confirmation_payment_method').value = paymentMethod;
+        }
 
         function updateShippingAddress() {
             var shippingAddress = document.getElementById('shipping_address').value.split(' ');
@@ -155,186 +155,78 @@
             updateShippingAddress();
         });
 
-    var stripe = Stripe('{{ env('STRIPE_KEY') }}');
-    var elements = stripe.elements();
+        var stripe = Stripe('{{ env('STRIPE_KEY') }}');
+        var elements = stripe.elements();
 
-    var style = {
-        base: {
-            fontSize: '16px',
-            color: '#32325d',
-            padding: '10px 12px' // パディングを追加
-        },
-    };
+        var style = {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+                padding: '10px 12px' // パディングを追加
+            },
+        };
 
-    var cardNumberElement = elements.create('cardNumber', {
-        style: style,
-    });
-    cardNumberElement.mount('#card-number-element');
+        var cardNumberElement = elements.create('cardNumber', {
+            style: style,
+        });
+        cardNumberElement.mount('#card-number-element');
 
-    var cardExpiryElement = elements.create('cardExpiry', {
-        style: style,
-    });
-    cardExpiryElement.mount('#card-expiry-element');
+        var cardExpiryElement = elements.create('cardExpiry', {
+            style: style,
+        });
+        cardExpiryElement.mount('#card-expiry-element');
 
-    var cardCvcElement = elements.create('cardCvc', {
-        style: style,
-    });
-    cardCvcElement.mount('#card-cvc-element');
+        var cardCvcElement = elements.create('cardCvc', {
+            style: style,
+        });
+        cardCvcElement.mount('#card-cvc-element');
 
-    var postalCodeElement = elements.create('postalCode', {
-        style: style,
-    });
-    postalCodeElement.mount('#postal-code-element');
+        var postalCodeElement = elements.create('postalCode', {
+            style: style,
+        });
+        postalCodeElement.mount('#postal-code-element');
 
-    var displayError = document.getElementById('card-errors');
-    cardNumberElement.on('change', function(event) {
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        } else {
-            displayError.textContent = '';
-        }
-    });
-
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        stripe.createToken(cardNumberElement, {
-            address_zip: postalCodeElement.value,
-        }).then(function(result) {
-            if (result.error) {
-                displayError.textContent = result.error.message;
+        var displayError = document.getElementById('card-errors');
+        cardNumberElement.on('change', function(event) {
+            if (event.error) {
+                displayError.textContent = event.error.message;
             } else {
-                stripeTokenHandler(result.token);
+                displayError.textContent = '';
             }
         });
-    });
 
-    function stripeTokenHandler(token) {
         var form = document.getElementById('payment-form');
-        var hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'stripeToken');
-        hiddenInput.setAttribute('value', token.id);
-        form.appendChild(hiddenInput);
-
-        form.submit();
-    }
-
-
-
-
-        document.getElementById('konbini-button').addEventListener('click', function () {
-            fetch('{{ route('create.konbini.payment.intent') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ item_id: {{ $item->id }} })
-            })
-            .then(response => response.json())
-            .then(result => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            stripe.createToken(cardNumberElement, {
+                address_zip: postalCodeElement.value,
+            }).then(function(result) {
                 if (result.error) {
-                    var errorElement = document.getElementById('payment-message');
-                    errorElement.textContent = result.error;
-                    errorElement.style.display = 'block';
+                    displayError.textContent = result.error.message;
                 } else {
-                    stripe.confirmKonbiniPayment(result.clientSecret, {
-                        payment_method: {
-                            billing_details: {
-                                name: '{{ auth()->user()->name }}',
-                                email: '{{ auth()->user()->email }}',
-                            },
-                        },
-                    }).then(function (result) {
-                        if (result.error) {
-                            var errorElement = document.getElementById('payment-message');
-                            errorElement.textContent = result.error.message;
-                            errorElement.style.display = 'block';
-                        } else {
-                            var successElement = document.getElementById('payment-message');
-                            successElement.textContent = '支払いが成功しました！コンビニでの支払いを完了してください。';
-                            successElement.style.display = 'block';
-                            document.getElementById('purchase-form').submit(); // 購入フォームを送信
-                        }
-                    });
+                    stripeTokenHandler(result.token);
                 }
             });
         });
 
-        document.getElementById('bank-transfer-button').addEventListener('click', function () {
-            fetch('{{ route('create.bank.transfer.payment.intent') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ item_id: {{ $item->id }} })
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.error) {
-                    var errorElement = document.getElementById('payment-message');
-                    errorElement.textContent = result.error;
-                    errorElement.style.display = 'block';
-                } else {
-                    stripe.confirmBankTransferPayment(result.clientSecret, {
-                        payment_method: {
-                            billing_details: {
-                                name: '{{ auth()->user()->name }}',
-                                email: '{{ auth()->user()->email }}',
-                            },
-                        },
-                    }).then(function (result) {
-                        if (result.error) {
-                            var errorElement = document.getElementById('payment-message');
-                            errorElement.textContent = result.error.message;
-                            errorElement.style.display = 'block';
-                        } else {
-                            var successElement = document.getElementById('payment-message');
-                            successElement.textContent = '支払いが成功しました！銀行振込を完了してください。';
-                            successElement.style.display = 'block';
-                            document.getElementById('purchase-form').submit(); // 購入フォームを送信
-                        }
-                    });
-                }
-            });
+        function stripeTokenHandler(token) {
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+            form.submit();
+        }
+
+        document.getElementById('konbini-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('purchase-form').submit();
         });
-        document.addEventListener('DOMContentLoaded', function() {
-    // 初期表示時の設定
-    updatePaymentMethodDisplay();
 
-    // 支払い方法が選択された際のイベントリスナーを設定
-    document.getElementById('payment_method').addEventListener('change', function() {
-        updatePaymentMethodDisplay();
-    });
-});
-
-function updatePaymentMethodDisplay() {
-    var paymentMethod = document.getElementById('payment_method').value;
-
-    // クレジットカードフォームと他の支払い方法のボタンを取得
-    var creditCardForm = document.getElementById('payment-form');
-    var konbiniButton = document.getElementById('konbini-button');
-    var bankTransferButton = document.getElementById('bank-transfer-button');
-
-    // 初期化: 全て非表示にする
-    creditCardForm.style.display = 'none';
-    konbiniButton.style.display = 'none';
-    bankTransferButton.style.display = 'none';
-
-    // 支払い方法に応じて表示を切り替える
-    if (paymentMethod === 'credit_card') {
-        creditCardForm.style.display = 'block'; // クレジットカードフォームを表示
-    } else if (paymentMethod === 'convenience_store') {
-        konbiniButton.style.display = 'block'; // コンビニ支払いボタンを表示
-    } else if (paymentMethod === 'bank_transfer') {
-        bankTransferButton.style.display = 'block'; // 銀行振込ボタンを表示
-    }
-}
-
+        document.getElementById('bank-transfer-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('purchase-form').submit();
+        });
     </script>
 @endsection
-
-
-

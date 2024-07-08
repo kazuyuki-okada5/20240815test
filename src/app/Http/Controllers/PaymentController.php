@@ -17,6 +17,8 @@ class PaymentController extends Controller
 {
     public function purchase(PaymentRequest $request, $item_id)
     {
+            // バリデーション済みのリクエストデータを取得
+    $validated = $request->validated();
         // ログインユーザーの取得
         $user_id = auth()->user()->id;
 
@@ -27,11 +29,28 @@ class PaymentController extends Controller
         $shippingAddress = ShippingAddress::where('item_id', $item_id)->latest()->first();
         $shipping_Addresses_id = $shippingAddress ? $shippingAddress->id : null;
 
+        // 支払い方法の取得
+        $paymentMethod = $request->input('payment_method');
+
+        if ($paymentMethod === 'credit_card') {
+            // クレジットカード支払いの場合
+            return response()->json([
+                'client_select' => $item->price,
+            ]);
+        }
+
+        // クレジットカード以外の支払い方法の処理
+        if ($paymentMethod === 'convenience_store') {
+            // コンビニ支払処理
+        } elseif ($paymentMethod === 'bank_transfer') {
+
+        }
+
     // 支払い情報の保存
     $payment = new Payment();
     $payment->item_id = $item_id;
     $payment->amount = $item->price; // ここではアイテムの価格を支払い金額とする
-    $payment->method = $request->input('payment_method');
+    $payment->method = $paymentMethod;
     $payment->status = 'completed'; // 支払いステータスを設定（例: 'completed'）
     $payment->save();
 
