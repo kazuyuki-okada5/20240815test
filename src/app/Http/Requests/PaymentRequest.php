@@ -44,20 +44,7 @@ class PaymentRequest extends FormRequest
         ];
     }
 
-        /**
-     * Custom validation logic.
-     *
-     * @param \Illuminate\Validation\Validator $validator
-     * @return void
-     */
-    protected function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($this->payment_method !== $this->input('confirmation_payment_method')) {
-                $validator->errors()->add('payment_method', '選択された支払い方法と購入ボタンが一致していません。');
-            }
-        });
-    }
+    
 }
 
 

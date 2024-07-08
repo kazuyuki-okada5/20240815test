@@ -28,6 +28,7 @@ class ProfileController extends Controller
     public function showMypage()
     {
         $user = Auth::user();
+        
         $profile = Profile::where('user_id', $user->id)->first();
         
         return view('auth.maypage' , compact('user', 'profile'));
@@ -90,6 +91,12 @@ class ProfileController extends Controller
         // プロフィールを新規作成するフォームを表示するメソッド
     public function create()
     {
+            if (Auth::check()) {
+        $user = Auth::user();
+        return view('profiles.create', compact('user'));
+    } else {
+        return redirect()->route('login')->with('error');
+    }
         return view('profiles.create');
     }
 

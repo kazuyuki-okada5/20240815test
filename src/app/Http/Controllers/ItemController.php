@@ -76,6 +76,13 @@ class ItemController extends Controller
     // 出品ページの表示
     public function showCreateForm(Request $request)
     {
+            if (Auth::check()) {
+        $categories = Category::all();
+        $conditions = Condition::all();
+        return view('items.create', compact('categories', 'conditions'));
+    } else {
+        return redirect()->route('login')->with('error', 'ログインが必要です。');
+    }
     $categories = Category::all();
     $conditions = Condition::all();
     $imageUrl = $request->session()->get('image_url', null);
@@ -162,7 +169,7 @@ class ItemController extends Controller
 
     // 売り切れている場合の処理
     if ($item->sold_user_id !== null) {
-        return back()->with('error', 'URL上から移動しようとした商品は売り切れのため、購入フォームは表示できません。');
+        return back()->with('error', 'URL上から移動しようとした商品は売り切れです。');
     }
 
     // ユーザー情報を取得します

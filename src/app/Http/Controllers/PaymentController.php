@@ -17,8 +17,7 @@ class PaymentController extends Controller
 {
     public function purchase(PaymentRequest $request, $item_id)
     {
-            // バリデーション済みのリクエストデータを取得
-    $validated = $request->validated();
+        
         // ログインユーザーの取得
         $user_id = auth()->user()->id;
 
