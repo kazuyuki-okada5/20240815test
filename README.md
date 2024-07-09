@@ -138,7 +138,7 @@ php artisan key:generate
 8.マイグレーション及びシーディング及びシンボリックリンクの設定をして下さい。
 
 ```
-php artisan migrate:refresh --seed
+php artisan migrate --seed
 php artisan storage:link
 ```
 
@@ -157,6 +157,43 @@ php artisan storage:link
 管理者用 <br>
 メールアドレス:aa@ne.jp <br>
 パスワード:12345678
+
+※管理者用のパスワードを使用するとアプリ内新規プロフィール作成以外全ての認証必須ページを閲覧することが出来ます。
+
+11.PHPUnitを使用したテスト確認
+
+1）SRCディレクトリに`.env.testing`を作成して下さい。
+
+2）作成したファイル内に下記コードを記述して下さい。
+
+```
+APP_ENV=testing
+APP_DEBUG=true
+APP_KEY=base64:...
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=laravel_test
+DB_USERNAME=root
+DB_PASSWORD=root
+
+CACHE_DRIVER=array
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=array
+```
+
+3）テストベース用にマイグレーションを実施して下さい。
+
+```
+docker-compose exec php php artisan migrate --env=testing
+```
+
+4）テストを実行して下さい。
+
+```
+docker-compose exec php ./vendor/bin/phpunit
+```
 
 ## 参考
 

@@ -26,6 +26,9 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
 # Stripe CLIをインストール
 RUN npm install -g stripe
 
+# PHPUnitとLaravelのテスト環境を設定するための追加
+RUN composer require --dev phpunit/phpunit
+
 # コンテナが起動したらbashを実行する
 CMD ["php-fpm"]
 
