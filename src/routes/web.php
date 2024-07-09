@@ -11,6 +11,9 @@ use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StripeWebhookController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -91,6 +94,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
     Route::post('/bank-transfer/payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
 
+    Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
+
      // 購入完了ページの表示
     Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');   
 });
@@ -111,3 +116,39 @@ Route::middleware(['auth', 'checkrole:0'])->group(function() {
 
 
 // Route::get('/send-test-mail', [AdminController::class, 'sendTestMail']);
+
+
+
+Route::post('/webhook/stripe', function (Request $request) {
+    // StripeのWebhookシークレットを取得
+    $webhookSecret = env('STRIPE_WEBHOOK_SECRET');
+    
+    $signature = $request->header('Stripe-Signature');
+    $payload = $request->getContent();
+
+    try {
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        $event = \Stripe\Webhook::constructEvent(
+            $payload, $signature, $webhookSecret
+        );
+
+        // イベントの種類に応じて処理
+        if ($event->type == 'payment_intent.succeeded') {
+            $paymentIntent = $event->data->object;
+            // 支払い成功時の処理
+            Log::info('Payment Intent Succeeded: ' . $paymentIntent->id);
+        } elseif ($event->type == 'payment_intent.payment_failed') {
+            $paymentIntent = $event->data->object;
+            // 支払い失敗時の処理
+            Log::error('Payment Intent Failed: ' . $paymentIntent->id);
+        }
+
+        return response()->json(['status' => 'success']);
+    } catch (\UnexpectedValueException $e) {
+        // 無効なペイロード
+        return response()->json(['status' => 'invalid payload'], 400);
+    } catch (\Stripe\Exception\SignatureVerificationException $e) {
+        // 無効な署名
+        return response()->json(['status' => 'invalid signature'], 400);
+    }
+});
