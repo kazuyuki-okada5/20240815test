@@ -24,4 +24,3 @@ class ConditionsTableSeeder extends Seeder
         DB::table('conditions')->insert($conditions);
     }
 }
-

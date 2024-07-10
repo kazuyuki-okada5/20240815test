@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('23456789'),
                 'role' => 0,
             ],
-            
+
             // 一般ユーザー
             [
                 'name' => '一郎',
