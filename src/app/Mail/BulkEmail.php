@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -33,7 +32,7 @@ class BulkEmail extends Mailable
     public function build()
     {
         return $this->view('emails.bulk')
-                    ->subject($this->subject)
-                    ->with(['messageContent' => $this->messageContent]);
+            ->subject($this->subject)
+            ->with(['messageContent' => $this->messageContent]);
     }
 }
