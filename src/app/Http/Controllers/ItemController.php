@@ -23,7 +23,7 @@ class ItemController extends Controller
         // 認証が必要なメソッドにミドルウェアを適用
         $this->middleware('auth')->only(['showBuyForm', 'mypage', 'selling', 'purchased']);
     }
-    
+
     public function showItems()
     {
         $items = Item::all();

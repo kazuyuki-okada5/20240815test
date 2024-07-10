@@ -7,8 +7,6 @@ use App\Models\Item;
 use App\Models\Profile;
 use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ShippingAddressRequest;
-use Illuminate\Support\Facades\DB;  // ← これを追加します
 
 class ShippingController extends Controller
 {
@@ -29,7 +27,6 @@ class ShippingController extends Controller
         return view('items.shipping_address', compact('profile', 'shippingAddresses', 'item'));
     }
 
-    // 配送先情報の更新処理
     // 配送先情報の更新処理
     public function update(Request $request, $item_id)
     {
