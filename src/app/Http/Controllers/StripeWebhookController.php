@@ -20,7 +20,9 @@ class StripeWebhookController extends Controller
 
         try {
             $event = Webhook::constructEvent(
-                $payload, $sigHeader, $endpointSecret
+                $payload,
+                $sigHeader,
+                $endpointSecret
             );
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
@@ -43,4 +45,3 @@ class StripeWebhookController extends Controller
         return response('Webhook handled', Response::HTTP_OK);
     }
 }
-

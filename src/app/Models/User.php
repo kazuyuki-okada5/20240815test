@@ -49,7 +49,7 @@ class User extends Authenticatable
         return $this->hasMany(Item::class);
     }
 
-        //　Profilesテーブルにidカラムを取得させUsersテーブルのレコードを参照させる
+    //　Profilesテーブルにidカラムを取得させUsersテーブルのレコードを参照させる
     public function profile()
     {
         return $this->hasOne(Profile::class);
@@ -69,5 +69,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
-
 }

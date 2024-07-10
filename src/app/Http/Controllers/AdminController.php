@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Comment;
-// use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\BulkEmail;
 
@@ -52,5 +51,4 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'メールを送信しました。');
     }
-
 }

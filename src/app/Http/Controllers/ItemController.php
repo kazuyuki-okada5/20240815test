@@ -7,7 +7,6 @@ use App\Models\ShippingAddress;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Like;
-use App\Models\Profile;
 use App\Models\Category;
 use App\Models\Condition;
 use App\Models\CategoryItem;
@@ -15,15 +14,19 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        // 認証が必要なメソッドにミドルウェアを適用
+        $this->middleware('auth')->only(['showBuyForm', 'mypage', 'selling', 'purchased']);
+    }
+    
     public function showItems()
     {
-        $items = Item::all(); // すべてのアイテムを取得
-
+        $items = Item::all();
         $likes = collect(); // 空のコレクションを初期化
         if (Auth::check()) {
             $user = Auth::user();
@@ -37,12 +40,12 @@ class ItemController extends Controller
     {
         $items = Item::all();
 
-        if(Auth::check()) {
-            $user =Auth::user();
+        if (Auth::check()) {
+            $user = Auth::user();
             $items = Item::all(); // すべてのアイテム
             $likes = Like::where('user_id', $user->id)->get();
             return view('auth.mypage', compact('user', 'items', 'likes'));
-        }else{
+        } else {
             return view('auth.mypage', compact('items'));
         }
     }
@@ -67,80 +70,80 @@ class ItemController extends Controller
         // ユーザーが何人お気に入りしているかカウント
         $likeCount = Like::where('item_id', $item_id)->count();
         // コメント数をカウント
-        $commentCount = Comment::where('item_id',$item_id)->count();
+        $commentCount = Comment::where('item_id', $item_id)->count();
 
         // items.detailビューを表示し、$item変数を渡す
-        return view('items.detail', ['item' => $item, 'user' => $user, 'isLiked' => $isLiked, 'likeCount' => $likeCount, 'commentCount' => $commentCount ]);
+        return view('items.detail', ['item' => $item, 'user' => $user, 'isLiked' => $isLiked, 'likeCount' => $likeCount, 'commentCount' => $commentCount]);
     }
 
     // 出品ページの表示
     public function showCreateForm(Request $request)
     {
-            if (Auth::check()) {
+        if (Auth::check()) {
+            $categories = Category::all();
+            $conditions = Condition::all();
+            return view('items.create', compact('categories', 'conditions'));
+        } else {
+            return redirect()->route('login')->with('error', 'ログインが必要です。');
+        }
         $categories = Category::all();
         $conditions = Condition::all();
-        return view('items.create', compact('categories', 'conditions'));
-    } else {
-        return redirect()->route('login')->with('error', 'ログインが必要です。');
-    }
-    $categories = Category::all();
-    $conditions = Condition::all();
-    $imageUrl = $request->session()->get('image_url', null);
+        $imageUrl = $request->session()->get('image_url', null);
 
-    return view('items.create', compact('categories', 'conditions', 'imageUrl'));
+        return view('items.create', compact('categories', 'conditions', 'imageUrl'));
     }
 
     public function create(ItemCreateRequest $request)
     {
-    $input = $request->validated();
-    $userId = Auth::id();
+        $input = $request->validated();
+        $userId = Auth::id();
 
-    $condition = Condition::where('condition', $input['condition'])->first();
+        $condition = Condition::where('condition', $input['condition'])->first();
 
-    if (!$condition) {
-        return back()->withInput()->withErrors(['error' => '選択された条件が無効です']);
-    }
-
-    if ($this->hasDuplicateCategories($input['categories'])) {
-        return back()->withInput()->withErrors(['error' => '同じカテゴリーを複数選択することはできません。']);
-    }
-
-    $imagePath = $request->session()->get('image_url');
-    if ($request->hasFile('image_url')) {
-        $imagePath = $request->file('image_url')->store('images', 'public');
-        $request->session()->put('image_url', $imagePath);
-    }
-
-    DB::transaction(function () use ($input, $userId, $condition, $imagePath) {
-        $item = new Item([
-            'user_id' => $userId,
-            'name' => $input['name'],
-            'price' => $input['price'],
-            'comment' => $input['comment'],
-            'image_url' => $imagePath,
-            'brand' => $input['brand'] ?? null,
-            'condition_id' => $condition->id,
-        ]);
-
-        $item->save();
-
-        foreach ($input['categories'] as $category) {
-            CategoryItem::create([
-                'item_id' => $item->id,
-                'category_id' => $category,
-            ]);
+        if (!$condition) {
+            return back()->withInput()->withErrors(['error' => '選択された条件が無効です']);
         }
-    });
 
-    $request->session()->forget('image_url');
-    return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
+        if ($this->hasDuplicateCategories($input['categories'])) {
+            return back()->withInput()->withErrors(['error' => '同じカテゴリーを複数選択することはできません。']);
+        }
+
+        $imagePath = $request->session()->get('image_url');
+        if ($request->hasFile('image_url')) {
+            $imagePath = $request->file('image_url')->store('images', 'public');
+            $request->session()->put('image_url', $imagePath);
+        }
+
+        DB::transaction(function () use ($input, $userId, $condition, $imagePath) {
+            $item = new Item([
+                'user_id' => $userId,
+                'name' => $input['name'],
+                'price' => $input['price'],
+                'comment' => $input['comment'],
+                'image_url' => $imagePath,
+                'brand' => $input['brand'] ?? null,
+                'condition_id' => $condition->id,
+            ]);
+
+            $item->save();
+
+            foreach ($input['categories'] as $category) {
+                CategoryItem::create([
+                    'item_id' => $item->id,
+                    'category_id' => $category,
+                ]);
+            }
+        });
+
+        $request->session()->forget('image_url');
+        return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
     }
 
 
     // カテゴリーの重複チェックメソッド
     private function hasDuplicateCategories($categories)
     {
-    return count($categories) !== count(array_unique($categories));
+        return count($categories) !== count(array_unique($categories));
     }
 
     // 出品商品一覧ページを処理するメソッド
@@ -164,37 +167,37 @@ class ItemController extends Controller
     // 購入手続きページを処理するメソッド
     public function showBuyForm($id)
     {
-    // アイテムを取得します
-    $item = Item::findOrFail($id);
+        // アイテムを取得します
+        $item = Item::findOrFail($id);
 
-    // 売り切れている場合の処理
-    if ($item->sold_user_id !== null) {
-        return back()->with('error', 'URL上から移動しようとした商品は売り切れです。');
-    }
+        // 売り切れている場合の処理
+        if ($item->sold_user_id !== null) {
+            return back()->with('error', 'URL上から移動しようとした商品は売り切れです。');
+        }
 
-    // ユーザー情報を取得します
-    $user = auth()->user();
+        // ユーザー情報を取得します
+        $user = auth()->user();
 
-    // ユーザーがプロフィール情報を持っているか確認
-    if ($user->profile) {
-        $profile = [
-            'post_code' => $user->profile->post_code,
-            'address' => $user->profile->address,
-            'building' => $user->profile->building
-        ];
-    } else {
-        // プロフィール情報が存在しない場合の処理
-        $profile = [
-            'post_code' => '',
-            'address' => '',
-            'building' => ''
-        ];
-    }
+        // ユーザーがプロフィール情報を持っているか確認
+        if ($user->profile) {
+            $profile = [
+                'post_code' => $user->profile->post_code,
+                'address' => $user->profile->address,
+                'building' => $user->profile->building
+            ];
+        } else {
+            // プロフィール情報が存在しない場合の処理
+            $profile = [
+                'post_code' => '',
+                'address' => '',
+                'building' => ''
+            ];
+        }
 
-    // `shipping_changes`テーブルからユーザーの追加した配送先を取得
-    $shippingAddresses = ShippingAddress::where('item_id', $item->id)->get();
+        // `shipping_changes`テーブルからユーザーの追加した配送先を取得
+        $shippingAddresses = ShippingAddress::where('item_id', $item->id)->get();
 
-    return view('items.buy', compact('item', 'profile', 'shippingAddresses'));
+        return view('items.buy', compact('item', 'profile', 'shippingAddresses'));
     }
 
     public function showAddress($item_id)
@@ -212,34 +215,34 @@ class ItemController extends Controller
     }
     public function showShippingAddressForm($item_id)
     {
-    $item = Item::findOrFail($item_id);
-    $user = auth()->user();
-    $shipping = new ShippingAddress(); // 新しいShippingChangeモデルを作成
+        $item = Item::findOrFail($item_id);
+        $user = auth()->user();
+        $shipping = new ShippingAddress(); // 新しいShippingChangeモデルを作成
 
-    return view('items.shipping_address', compact('item', 'shipping'));
+        return view('items.shipping_address', compact('item', 'shipping'));
     }
 
-// public function buy(PaymentRequest $request, $item_id)
-// {
+    // public function buy(PaymentRequest $request, $item_id)
+    // {
 
-//     // 支払い方法と配送先をセッションやDBに保存する処理
-//     $paymentMethod = $request->input('payment_method');
-//     $shippingAddress = $request->input('shipping_address');
+    //     // 支払い方法と配送先をセッションやDBに保存する処理
+    //     $paymentMethod = $request->input('payment_method');
+    //     $shippingAddress = $request->input('shipping_address');
 
-//     // 支払い方法に応じた処理
-//     if ($paymentMethod === 'credit_card') {
-//         // クレジットカードの処理
-//         // Stripe決済処理の追加
-//         $this->processCreditCardPayment($item, $user);
-//     } elseif ($paymentMethod === 'convenience_store') {
-//         // コンビニ決済処理
-//         $this->processConvenienceStorePayment($item, $user);
-//     } elseif ($paymentMethod === 'bank_transfer'){
-//         // 銀行振込処理
-//         $this->processBankTransfer($item, $user);
-//     }
+    //     // 支払い方法に応じた処理
+    //     if ($paymentMethod === 'credit_card') {
+    //         // クレジットカードの処理
+    //         // Stripe決済処理の追加
+    //         $this->processCreditCardPayment($item, $user);
+    //     } elseif ($paymentMethod === 'convenience_store') {
+    //         // コンビニ決済処理
+    //         $this->processConvenienceStorePayment($item, $user);
+    //     } elseif ($paymentMethod === 'bank_transfer'){
+    //         // 銀行振込処理
+    //         $this->processBankTransfer($item, $user);
+    //     }
 
-//     // 購入処理後のリダイレクト
-//     return redirect()->route('items.index')->with('success', '購入が完了しました。');
-// }
+    //     // 購入処理後のリダイレクト
+    //     return redirect()->route('items.index')->with('success', '購入が完了しました。');
+    // }
 }

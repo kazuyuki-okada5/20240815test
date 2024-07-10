@@ -43,8 +43,4 @@ class PaymentRequest extends FormRequest
             'shipping_address.string' => '配送先は文字列で入力してください。',
         ];
     }
-
-    
 }
-
-

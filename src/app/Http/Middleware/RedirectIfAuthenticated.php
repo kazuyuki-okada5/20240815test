@@ -24,7 +24,7 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);
-            }elseif($request->expectsJson()) {
+            } elseif ($request->expectsJson()) {
                 return response()->json(['message' => 'Unauthorzed'], 401);
             }
         }
@@ -32,4 +32,3 @@ class RedirectIfAuthenticated
         return redirect()->route('login');
     }
 }
-

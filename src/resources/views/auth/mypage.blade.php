@@ -7,8 +7,8 @@
 @section('content')
 <div class="container">
     <div class="profile-header">
-        @if ($user->profile && $user->profile->img_url)
-            <img class="profile-img" src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}" ">
+        @if ($user && $user->profile && $user->profile->img_url)
+            <img class="profile-img" src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}">
         @else
             <div class="default-avatar">
                 <i class="fas fa-user-circle"></i>
@@ -20,9 +20,9 @@
             <div class="alert alert-warning" role="alert">
                 プロフィールが存在しません。<br>プロフィールを作成してください。
             </div>
-                <a href="{{ route('profile.create') }}" class="btn btn-primary">プロフィールを作成</a>
+            <a href="{{ route('profile.create') }}" class="btn btn-primary">プロフィールを作成</a>
         @else
-                <a href="{{ route('profile.show') }}" class="btn btn-secondary">プロフィールを表示</a>
+            <a href="{{ route('profile.show') }}" class="btn btn-secondary">プロフィールを表示</a>
         @endif
     </div>
 
@@ -64,8 +64,7 @@
     </div>
 </div>
 
-
     <script src="{{ asset('js/mypage.js') }}"></script>
-
 @endsection
+
 

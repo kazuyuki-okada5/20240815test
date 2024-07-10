@@ -47,10 +47,14 @@
         </div>
 
         @if ($item->sold_user_id === null)
-            <form method="GET" action="{{ route('items.buy', $item->id) }}">
-                @csrf
-                <button type="submit" class="btn btn-primary">購入手続きへ</button>
-            </form>
+            @if (Auth::check())
+                <form method="GET" action="{{ route('items.buy', $item->id) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">購入手続きへ</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-primary">購入手続きへ</a>
+            @endif
         @else
             <button class="btn btn-secondary" disabled>売り切れました</button>
         @endif

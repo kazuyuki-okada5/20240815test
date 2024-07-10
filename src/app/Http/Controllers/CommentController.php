@@ -12,7 +12,7 @@ use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
 {
-    //　コメント作成
+    // コメント作成
     public function create($itemId)
     {
         $item = Item::findOrFail($itemId);
@@ -28,21 +28,21 @@ class CommentController extends Controller
         $comment->save();
 
         return redirect()->route('comments.show', ['item' => $item->id])
-                         ->with('success', 'コメントが投稿されました。');
+            ->with('success', 'コメントが投稿されました。');
     }
 
-    //　コメント表示
+    // コメント表示
     public function showCommentForm($item_id)
     {
         $item = Item::findOrFail($item_id);
         $comments = Comment::where('item_id', $item_id)->with('user')->get();
 
-        //　ユーザーのプロフィール情報を取得
+        // ユーザーのプロフィール情報を取得
         foreach ($comments as $comment) {
             $comment->userProfile = Profile::where('user_id', $comment->user_id)->first();
         }
 
-        //　お気に入り情報とコメント数を取得
+        //お気に入り情報とコメント数を取得
         $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item_id)->exists();
         $likeCount = Like::where('item_id', $item_id)->count();
         $commentCount = Comment::where('item_id', $item_id)->count();
@@ -58,8 +58,8 @@ class CommentController extends Controller
 
         // 直近のコメントを取得
         $lastComment = Comment::where('user_id', Auth::id())
-                              ->orderBy('created_at', 'desc')
-                              ->first();
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         // 直近のコメントがあり、かつ30秒以内ならエラーを返す
         if ($lastComment && $lastComment->created_at->diffInSeconds(now()) < 3) {
@@ -71,7 +71,7 @@ class CommentController extends Controller
         $comment->item_id = $item_id;
         $comment->comment = $request->comment;
         $comment->save();
-        
+
         return redirect()->route('comments.show', ['item' => $item_id])->with('success', 'コメントを投稿しました');
     }
 }

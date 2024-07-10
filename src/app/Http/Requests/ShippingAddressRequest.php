@@ -44,9 +44,9 @@ class ShippingAddressRequest extends FormRequest
             $post_code = $this->input('post_code');
 
             $existingShipping = ShippingAddress::where('item_id', $item_id)
-                                              ->where('address', $address)
-                                              ->where('post_code', $post_code)
-                                              ->first();
+                ->where('address', $address)
+                ->where('post_code', $post_code)
+                ->first();
 
             if ($existingShipping) {
                 $validator->errors()->add('address', 'この配送先は既に登録されています。');

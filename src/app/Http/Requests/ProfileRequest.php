@@ -40,7 +40,7 @@ class ProfileRequest extends FormRequest
      */
     public function messages()
     {
-        return[
+        return [
             'name.required' => '名前は必須です。',
             'name.string' => '名前は文字列で入力してください。',
             'name.max' => '名前は255文字以内で入力してください。',

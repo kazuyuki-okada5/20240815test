@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Payment;
-use Illuminate\Support\Facades\Auth;
 use App\Models\ShippingAddress;
 use Stripe\Stripe;
 use App\Http\Requests\PaymentRequest;
@@ -17,11 +16,9 @@ class PaymentController extends Controller
 {
     public function purchase(PaymentRequest $request, $item_id)
     {
-        
-        // ログインユーザーの取得
+
         $user_id = auth()->user()->id;
 
-        // アイテムの取得
         $item = Item::findOrFail($item_id);
 
         // 住所変更テーブルのデータがあればそのIDを取得
@@ -42,24 +39,23 @@ class PaymentController extends Controller
         if ($paymentMethod === 'convenience_store') {
             // コンビニ支払処理
         } elseif ($paymentMethod === 'bank_transfer') {
-
         }
 
-    // 支払い情報の保存
-    $payment = new Payment();
-    $payment->item_id = $item_id;
-    $payment->amount = $item->price; // ここではアイテムの価格を支払い金額とする
-    $payment->method = $paymentMethod;
-    $payment->status = 'completed'; // 支払いステータスを設定（例: 'completed'）
-    $payment->save();
+        // 支払い情報の保存
+        $payment = new Payment();
+        $payment->item_id = $item_id;
+        $payment->amount = $item->price; // ここではアイテムの価格を支払い金額とする
+        $payment->method = $paymentMethod;
+        $payment->status = 'completed'; // 支払いステータスを設定（例: 'completed'）
+        $payment->save();
 
         // アイテムのステータス更新
-        $item->sold_user_id = $user_id; 
+        $item->sold_user_id = $user_id;
         $item->save();
 
-    // 処理が完了したらリダイレクトと成功メッセージの表示
-    return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
-}
+        // 処理が完了したらリダイレクトと成功メッセージの表示
+        return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
+    }
 
     public function show()
     {

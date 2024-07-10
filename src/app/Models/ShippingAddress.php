@@ -21,7 +21,7 @@ class ShippingAddress extends Model
         return $this->belongsTo(item::class);
     }
 
-        public function payments()
+    public function payments()
     {
         return $this->hasMany(Payment::class);
     }

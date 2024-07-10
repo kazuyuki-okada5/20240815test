@@ -7,12 +7,12 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Like;
+// use App\Models\Like;
 
 class AuthController extends Controller
 {
     // ユーザーがこのコンローラーの’login’アクションにアクセスした時、resources/views/auth/login.blade.phpファイルが表示される
-        public function login(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -27,7 +27,7 @@ class AuthController extends Controller
         ])->withInput();
     }
 
-        public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
         $validated = $request->validated();
 
@@ -45,11 +45,10 @@ class AuthController extends Controller
         return redirect()->intended('/');
     }
 
-        public function mypage()
-        {
-            $user = Auth::user();
+    public function mypage()
+    {
+        $user = Auth::user();
 
-            return view('Auth.mypage', compact('user'));
-        }
-
+        return view('Auth.mypage', compact('user'));
+    }
 }

@@ -16,7 +16,7 @@ class ShippingController extends Controller
     public function edit($item_id)
     {
         $user = Auth::user();
-        
+
         // ユーザーのプロフィール情報を取得
         $profile = Profile::where('user_id', $user->id)->first();
 
@@ -30,7 +30,7 @@ class ShippingController extends Controller
     }
 
     // 配送先情報の更新処理
- // 配送先情報の更新処理
+    // 配送先情報の更新処理
     public function update(Request $request, $item_id)
     {
         // アイテム情報を取得
@@ -38,9 +38,9 @@ class ShippingController extends Controller
 
         // 同じ住所と郵便番号が既に存在するか確認
         $existingShipping = ShippingAddress::where('item_id', $item->id)
-                                          ->where('address', $request->address)
-                                          ->where('post_code', $request->post_code)
-                                          ->first();
+            ->where('address', $request->address)
+            ->where('post_code', $request->post_code)
+            ->first();
 
         if ($existingShipping) {
             return redirect()->back()->withErrors(['address' => 'この配送先は既に登録されています。']);
