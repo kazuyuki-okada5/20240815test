@@ -7,26 +7,26 @@
 @section('content')
 <div class="container">
     <h1 class="title">ユーザー管理</h1>
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
     <div class="mail-form">
         <form action="{{ route('admin.users.sendEmail') }}" method="POST">
-        @csrf
-            <div class="form-group">
-                <label class="form-group-label" for="subject">件名</label>
-                <input type="text" name="subject" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label class="form-group-label" for="message">本文</label>
-                <textarea name="message" class="form-control" rows="5" required></textarea>
-            </div>
-            <div class="form-group button-right">
-                <button type="submit" class="btn btn-primary">全員にメールを送信</button>
-            </div>
+            @csrf
+                <div class="form-group">
+                    <label class="form-group-label" for="subject">件名</label>
+                    <input type="text" name="subject" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-group-label" for="message">本文</label>
+                    <textarea name="message" class="form-control" rows="5" required></textarea>
+                </div>
+                <div class="form-group button-right">
+                    <button type="submit" class="btn btn-primary">全員にメールを送信</button>
+                </div>
         </form>
     </div>
     <table class="table table-striped">
@@ -49,9 +49,9 @@
                     <td class="table-cell-button">
                         @if($user->role != 0) <!-- 管理者は削除出来ない-->
                             <form class="delete-form" action="{{ route('admin.users.delete', $user->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
-                            @csrf
+                                @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">削除</button>
+                                    <button type="submit" class="btn btn-danger">削除</button>
                             </form>
                         @endif
                     </td>
