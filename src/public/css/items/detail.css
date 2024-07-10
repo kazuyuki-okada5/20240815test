@@ -178,12 +178,9 @@
 @media (max-width: 768px) {
     .item-container {
             display: block;
-            /* フレックスを無効にする */
             margin: 20px auto;
-            /* 中央に配置 */
-
         }
-    
+
         .item-container>* {
             margin: 0 auto;
             /* 各要素を中央に配置 */
