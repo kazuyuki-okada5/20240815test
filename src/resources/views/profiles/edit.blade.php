@@ -12,18 +12,18 @@
         @method('PUT')
         <div class="form-group">
             <label for="img_url" class="form-label">プロフィール画像</label>
-<div class="profile-image-parent">
-    <div class="profile-image-container">
-        @if ($profile->img_url)
-            <img id="profile-image-preview" src="{{ asset('storage/' . $profile->img_url) }}" alt="Profile Image" class="profile-image">
-        @else
-            <div class="default-avatar">
-                <i class="fas fa-user-circle"></i>
+            <div class="profile-image-parent">
+                <div class="profile-image-container">
+                    @if ($profile->img_url)
+                        <img id="profile-image-preview" src="{{ asset('storage/' . $profile->img_url) }}" alt="Profile Image" class="profile-image">
+                    @else
+                        <div class="default-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    @endif
+                </div>
             </div>
-        @endif
-    </div>
-</div>
-<input type="file" class="form-control-file" id="img_url" name="img_url" onchange="previewImage(event)">
+            <input type="file" class="form-control-file" id="img_url" name="img_url" onchange="previewImage(event)">
         </div>
         <div class="form-group">
             <label for="name" class="form-label">ユーザー名</label>

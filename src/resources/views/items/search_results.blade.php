@@ -18,7 +18,7 @@
                             <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
                         </a>
                         <p class="card-text"><span>{{ $item->price }}円</span></p>
-                            <div class="card-body">
+                        <div class="card-body">
                             <p class="card-title">{{ $item->name }}</p>
                         </div>
                     </div>

@@ -14,7 +14,6 @@
                 <i class="fas fa-user-circle"></i>
             </div>
         @endif
-
         <h1 class="name">{{ $user->name }}</h1>
         @if (!$user->profile)
             <div class="alert alert-warning" role="alert">
@@ -25,7 +24,6 @@
             <a href="{{ route('profile.show') }}" class="btn btn-secondary">プロフィールを表示</a>
         @endif
     </div>
-
     <div class="item-history">
         <button class="btn btn-secondary active" id="show-selling">出品した商品</button>
         <button class="btn btn-secondary" id="show-purchased">購入した商品</button>

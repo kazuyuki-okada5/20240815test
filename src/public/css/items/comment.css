@@ -58,6 +58,11 @@
     width: 500px;
 }
 
+.far-fa-star ,
+.fas-fa-star {
+    font-size: 2rem;
+}
+
 .comment {
     display: flex;
     align-items: center;

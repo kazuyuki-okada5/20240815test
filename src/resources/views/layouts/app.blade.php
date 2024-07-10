@@ -27,35 +27,35 @@
                     <ul class="header-nav__list">
                         @if (Auth::check())
                         @if (Auth::user()->role == 0)
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="{{ route('admin.users') }}">管理者ページ</a>
-                        </li>
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="{{ route('admin.users') }}">管理者ページ</a>
+                            </li>
                         @endif
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="{{ route('items.create') }}">出品</a>
-                        </li>
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="/">トップページ</a>
-                        </li>
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="{{ route('mypage') }}">マイページ</a>
-                        </li>
-                        <li class="header-nav__item">
-                            <form class="form" action='/logout' method="post">
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="{{ route('items.create') }}">出品</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="/">トップページ</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="{{ route('mypage') }}">マイページ</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <form class="form" action='/logout' method="post">
                                 @csrf
-                                <button class="header-nav__button">ログアウト</button>
-                            </form>
-                        </li>
-                        @else
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="/">トップページ</a>
-                        </li>
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="/login">ログイン</a>
-                        </li>
-                        <li class="header-nav__item">
-                            <a class="header-nav__link" href="/register">会員登録</a>
-                        </li>
+                                    <button class="header-nav__button">ログアウト</button>
+                                </form>
+                            </li>
+                            @else
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="/">トップページ</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="/login">ログイン</a>
+                            </li>
+                            <li class="header-nav__item">
+                                <a class="header-nav__link" href="/register">会員登録</a>
+                            </li>
                         @endif
                     </ul>
                 </nav>

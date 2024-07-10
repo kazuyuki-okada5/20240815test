@@ -63,11 +63,12 @@
                     </form>
                 </div>
             </div>
-
             <div class="confirmation-container">
                 <h2 class="form-list">確認</h2>
                 <p>商品代金: ￥{{ $item->price }}</p>
-                <p>選択された支払い方法: <br> <span id="selected_payment_method"></span></p>
+                <p>選択された支払い方法: <br>
+                    <span id="selected_payment_method"></span>
+                </p>
                 <p>選択された配送先:</p>
                 <p>〒: <span id="selected_shipping_postcode"></span></p>
                 <p>住所: <span id="selected_shipping_address"></span></p>
@@ -78,7 +79,6 @@
                     <input type="hidden" name="payment_method" id="confirmation_payment_method">
                     <input type="hidden" name="shipping_address" id="confirmation_shipping_address">
                 </form>
-
                 <div class="container mt-5">
                     @if (session('success_message'))
                         <div class="alert alert-success">
@@ -90,20 +90,18 @@
                             {{ session('error_message') }}
                         </div>
                     @endif
-
                     <form action="{{ route('charge') }}" class="credit-card-form" method="post" id="payment-form">
                         @csrf
                         <input type="hidden" name="item_id" value="{{ $item->id }}">
                         <div class="form-row">
                             <div id="card-errors" role="alert"></div>
                         </div>
-
                         <div id="card-element">
                             <label for="card-number">カード番号</label>
-                            <div id="card-number-element" class="form-control" style="padding: 10px 12px;"></div>
-                            <div id="card-expiry-element" class="form-control" style="padding: 10px 12px;"></div>
-                            <div id="card-cvc-element" class="form-control" style="padding: 10px 12px;"></div>
-                            <div id="postal-code-element" class="form-control" style="padding: 10px 12px;"></div> <!-- 郵便番号入力フィールド -->
+                            <div id="card-number-element" class="form-control"></div>
+                            <div id="card-expiry-element" class="form-control"></div>
+                            <div id="card-cvc-element" class="form-control"></div>
+                            <div id="postal-code-element" class="form-control"></div>
                             <!-- エラーメッセージ表示 -->
                             <div id="card-errors" role="alert"></div>
                         </div>

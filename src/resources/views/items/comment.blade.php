@@ -17,7 +17,7 @@
         <p class="brand">{{ $item->brand }}</p>
         <p class="price">{{ $item->sold_user_id ? '売り切れ' : '価格:￥' .$item->price . '(税込)' }}</p>
         <div class="like-container">
-            <form id="like-form" method="POST" action="{{ route('likes.like', $item->id )}}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
+            <form id="like-form"  method="POST" action="{{ route('likes.like', $item->id )}}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
                 @csrf
                 <button type="submit" class="btn btn-link p-0 like-button">
                     <i class="far fa-star" style="font-size: 2rem;"></i>
@@ -39,7 +39,6 @@
             <p class="comment-count">{{ $commentCount }}</p>
         </div>
     </div>
-
     <div class="item-comments">
         <h2 class="comment-list">コメント一覧</h2>
         @foreach($comments as $comment)
@@ -50,7 +49,7 @@
                             <img src="{{ asset('storage/' . $comment->userProfile->img_url) }}" class="comment-avatar-right" alt="{{ $comment->userProfile->name }}">
                         @else
                             <div class="default-avatar">
-                                <i class="fas fa-user-circle"></i><!-- 代替えアイコン -->
+                                <i class="fas fa-user-circle"></i>
                             </div>
                         @endif
                         <p class="date-right">（{{ $comment->created_at->format('Y-m-d H:i') }}）</p>
@@ -89,7 +88,6 @@
                 @endif
             </div>
         @endforeach
-
         @auth
             @if(is_null($item->sold_user_id))
             <form method="POST" action="{{ route('comments.store', ['item' => $item->id]) }}" class="comment-form">
