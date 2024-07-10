@@ -162,34 +162,13 @@ php artisan storage:link
 
 11.PHPUnitを使用したテスト確認
 
-1）SRCディレクトリに`.env.testing`を作成して下さい。
-
-2）作成したファイル内に下記コードを記述して下さい。
-
-```
-APP_ENV=testing
-APP_DEBUG=true
-APP_KEY=base64:...
-
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=laravel_test
-DB_USERNAME=root
-DB_PASSWORD=root
-
-CACHE_DRIVER=array
-QUEUE_CONNECTION=sync
-SESSION_DRIVER=array
-```
-
-3）テストベース用にマイグレーションを実施して下さい。
+1）テストベース用にマイグレーションを実施して下さい。
 
 ```
 docker-compose exec php php artisan migrate --env=testing
 ```
 
-4）テストを実行して下さい。
+2）テストを実行して下さい。
 
 ```
 docker-compose exec php ./vendor/bin/phpunit
