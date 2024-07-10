@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/auth/mypage.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/auth/mypage.css') }}">
 @endsection
 
 @section('content')
@@ -15,14 +15,14 @@
             </div>
         @endif
 
-        <h2 class="name">{{ $user->name }}</h2>
+        <h1 class="name">{{ $user->name }}</h1>
         @if (!$user->profile)
             <div class="alert alert-warning" role="alert">
                 プロフィールが存在しません。<br>プロフィールを作成してください。
             </div>
-            <a href="{{ route('profile.create') }}" class="btn btn-primary">プロフィールを作成</a>
+                <a href="{{ route('profile.create') }}" class="btn btn-primary">プロフィールを作成</a>
         @else
-            <a href="{{ route('profile.show') }}" class="btn btn-secondary">プロフィールを表示</a>
+                <a href="{{ route('profile.show') }}" class="btn btn-secondary">プロフィールを表示</a>
         @endif
     </div>
 
