@@ -64,27 +64,8 @@
     </div>
 </div>
 
-<script>
-    // ボタンのクリックイベントを設定
-    document.getElementById('show-selling').addEventListener('click', function() {
-        // 出品した商品ボタンのactiveクラスを付け替える
-        document.getElementById('show-selling').classList.add('active');
-        document.getElementById('show-purchased').classList.remove('active');
 
-        // 出品した商品を表示し、購入した商品を非表示にする
-        document.getElementById('selling-items').classList.remove('hidden');
-        document.getElementById('purchased-items').classList.add('hidden');
-    });
+    <script src="{{ asset('js/mypage.js') }}"></script>
 
-    document.getElementById('show-purchased').addEventListener('click', function() {
-        // 購入した商品ボタンのactiveクラスを付け替える
-        document.getElementById('show-selling').classList.remove('active');
-        document.getElementById('show-purchased').classList.add('active');
-
-        // 購入した商品を表示し、出品した商品を非表示にする
-        document.getElementById('selling-items').classList.add('hidden');
-        document.getElementById('purchased-items').classList.remove('hidden');
-    });
-</script>
 @endsection
 
