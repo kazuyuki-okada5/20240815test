@@ -40,7 +40,7 @@ class CreateItemsTable extends Migration
             $table->dropForeign(['condition_id']);
             $table->dropForeign(['sold_user_id']);
         });
-        
+
         Schema::dropIfExists('items');
     }
 }

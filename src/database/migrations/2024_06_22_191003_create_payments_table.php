@@ -17,8 +17,8 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->foreignId('item_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->string('method' , 20);
-            $table->string('status' , 20);
+            $table->string('method', 20);
+            $table->string('status', 20);
             $table->timestamps();
         });
     }
