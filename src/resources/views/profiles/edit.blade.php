@@ -23,7 +23,7 @@
                     @endif
                 </div>
             </div>
-            <input type="file" class="form-control-file" id="img_url" name="img_url" onchange="previewImage(event)">
+        <input type="file" class="form-control-file" id="img_url" name="img_url" onchange="previewImage(event)">
         </div>
         <div class="form-group">
             <label for="name" class="form-label">ユーザー名</label>
@@ -46,20 +46,3 @@
 </div>
 @endsection
 
-@section('js')
-<script>
-function previewImage(event) {
-    var reader = new FileReader();
-    reader.onload = function(){
-        var output = document.getElementById('profile-image-preview');
-        output.src = reader.result;
-        output.style.display = 'block'; // プレビュー画像を表示する
-        var defaultImage = document.getElementById('default-image');
-        if (defaultImage) {
-            defaultImage.style.display = 'none'; // デフォルト画像を非表示にする
-        }
-    };
-    reader.readAsDataURL(event.target.files[0]);
-}
-</script>
-@endsection
