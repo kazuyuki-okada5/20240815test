@@ -113,44 +113,4 @@
 </div>
 @endsection
 
-@section('js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var isLiked = @json($isLiked);
-        var likeForm = document.getElementById('like-form');
-        var unlikeForm = document.getElementById('unlike-form');
-
-        likeForm.addEventListener('submit', function(e) {
-            if (!@json(Auth::check())) {
-                e.preventDefault();
-                alert('この操作を行うにはログインが必要です。');
-                return false;
-            }
-
-            e.preventDefault();
-            if (!isLiked) {
-                likeForm.submit();
-                likeForm.style.display = 'none';
-                unlikeForm.style.display = 'inline';
-                isLiked = true;
-            }
-        });
-
-        unlikeForm.addEventListener('submit', function(e) {
-            if (!@json(Auth::check())) {
-                alert('この操作を行うにはログインが必要です。');
-                return false;
-            }
-
-            e.preventDefault();
-            if (isLiked) {
-                unlikeForm.submit();
-                unlikeForm.style.display = 'none';
-                likeForm.style.display = 'inline';
-                isLiked = false;
-            }
-        });
-    });
-</script>
-@endsection
 
