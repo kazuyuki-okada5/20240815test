@@ -10,7 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // ユーザーがこのコンローラーの’login’アクションにアクセスした時、resources/views/auth/login.blade.phpファイルが表示される
+    // ログイン画面表示
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+    // ログイン処理
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -19,13 +25,19 @@ class AuthController extends Controller
             // 認証に成功した場合の処理
             return redirect()->intended('/');
         }
-
-        // 認証に失敗した場合の処理
-        return back()->withErrors([
+            // 認証に失敗した場合の処理
+            return back()->withErrors([
             'email' => 'メールアドレスまたはパスワードが間違っています。',
         ])->withInput();
     }
 
+    // 会員登録画面表示
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
+    // 会員登録処理
     public function register(RegisterRequest $request)
     {
         $validated = $request->validated();
@@ -44,6 +56,7 @@ class AuthController extends Controller
         return redirect()->intended('/');
     }
 
+    // 認証ユーザーのマイページ表示
     public function mypage()
     {
         $user = Auth::user();

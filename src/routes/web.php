@@ -26,17 +26,13 @@ use Illuminate\Support\Facades\Log;
 Route::get('/', [ItemController::class, 'showItems'])->name('items.index');
 
 // 会員登録画面表示
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 
 // 会員登録処理
 Route::post('/register', [AuthController::class, 'register']);
 
 // ログイン画面表示
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');  // ここで 'login' という名前を付ける
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
 // ログイン処理
 Route::post('/login', [AuthController::class, 'login']);
@@ -105,7 +101,7 @@ Route::middleware(['auth', 'checkrole:0'])->group(function() {
 
     // 管理者メール送信
     Route::post('/admin/users/send-email', [AdminController::class, 'sendEmail'])->name('admin.users.sendEmail');
-    
+
     // コメント削除用のルート
     Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
 
