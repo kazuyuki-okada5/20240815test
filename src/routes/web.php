@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
     Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
     Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
+
     Route::post('/bank-transfer/payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
 
     Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);

@@ -105,11 +105,11 @@
                             <!-- エラーメッセージ表示 -->
                             <div id="card-errors" role="alert"></div>
                         </div>
-                        <button class="btn btn-primary mt-3" id="credit-card-button">購入する</button>
+                        <button class="btn btn-primary mt-3" id="credit-card-button">クレジットカードで購入する</button>
                     </form>
-                    <button id="konbini-button" class="btn btn-primary mt-3">購入する</button>
-                    <button id="bank-transfer-button" class="btn btn-primary mt-3">購入する</button>
-                    <div id="payment-message" class="alert alert-info" style="display: none;"></div>
+                        <button id="konbini-button" class="btn btn-primary mt-3">コンビニで購入する</button>
+                        <button id="bank-transfer-button" class="btn btn-primary mt-3">銀行振込で購入する</button>
+                    <div id="payment-message" class="alert alert-danger" style="display: none;"></div>
                 </div>
             </div>
         </div>
@@ -207,20 +207,52 @@
             });
         });
 
-        function stripeTokenHandler(token) {
-            var form = document.getElementById('payment-form');
+        document.getElementById('konbini-button').addEventListener('click', function () {
+            fetch('{{ route('create.konbini.payment.intent') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ item_id: '{{ $item->id }}' })
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('payment-message');
+                    errorElement.textContent = result.error;
+                    errorElement.style.display = 'block';
+                } else {
+                    stripe.confirmKonbiniPayment(result.clientSecret, {
+                        payment_method: {
+                            billing_details: {
+                                name: 'Taro Yamada',
+                                email: 'taro@example.com',
+                            },
+                        },
+                    }).then(function(result) {
+                        if (result.error) {
+                            var displayError = document.getElementById('payment-message');
+                            displayError.textContent = result.error.message;
+                        } else {
+                            stripeTokenHandler(result.paymentIntent);
+                        }
+                    });
+                }
+            });
+        });
+
+        function stripeTokenHandler(paymentIntent) {
+            var form = document.getElementById('purchase-form');
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripeToken');
-            hiddenInput.setAttribute('value', token.id);
+            hiddenInput.setAttribute('name', 'stripePaymentIntentId');
+            hiddenInput.setAttribute('value', paymentIntent.id);
             form.appendChild(hiddenInput);
             form.submit();
         }
-
-        document.getElementById('konbini-button').addEventListener('click', function(event) {
-            event.preventDefault();
-            document.getElementById('purchase-form').submit();
-        });
 
         document.getElementById('bank-transfer-button').addEventListener('click', function(event) {
             event.preventDefault();
@@ -228,3 +260,5 @@
         });
     </script>
 @endsection
+
+

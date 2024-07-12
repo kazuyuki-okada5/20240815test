@@ -14,47 +14,56 @@ use Stripe\PaymentIntent;
 
 class PaymentController extends Controller
 {
-    public function purchase(PaymentRequest $request, $item_id)
+    // 決済処理
+    public function purchase(PaymentRequest $request, $itemId)
     {
 
-        $user_id = auth()->user()->id;
+        $userId = auth()->user()->id;
 
-        $item = Item::findOrFail($item_id);
+        $item = Item::findOrFail($itemId);
 
         // 住所変更テーブルのデータがあればそのIDを取得
-        $shippingAddress = ShippingAddress::where('item_id', $item_id)->latest()->first();
-        $shipping_Addresses_id = $shippingAddress ? $shippingAddress->id : null;
+        // $shippingAddress = ShippingAddress::where('item_id', $item_id)->latest()->first();
+        // $shippingAddressesId = $shippingAddress ? $shippingAddress->id : null;
 
         // 支払い方法の取得
         $paymentMethod = $request->input('payment_method');
 
+        Stripe::setApiKey(config('services.stripe.secret'));
+        
         if ($paymentMethod === 'credit_card') {
             // クレジットカード支払いの場合
-            return response()->json([
-                'client_select' => $item->price,
-            ]);
-        }
+            // リクエストからアイテムのIDを取得し、アイテムを取得する
+            $item = Item::findOrFail($request->item_id);
 
-        // クレジットカード以外の支払い方法の処理
-        if ($paymentMethod === 'convenience_store') {
-            // コンビニ支払処理
+            // アイテムの価格をセント単位で計算
+            $amount = $item->price;
+            \Stripe\Charge::create([
+                "amount" => $amount,
+                "currency" => "jpy",
+                "source" => $request->stripeToken,
+                "description" => "Test payment"
+            ]);
+        } elseif ($paymentMethod === 'convenience_store') {
+            // コンビニ支払いの場合
         } elseif ($paymentMethod === 'bank_transfer') {
+            // 銀行支払いの場合
         }
 
         // 支払い情報の保存
         $payment = new Payment();
-        $payment->item_id = $item_id;
+        $payment->item_id = $itemId;
         $payment->amount = $item->price; // ここではアイテムの価格を支払い金額とする
         $payment->method = $paymentMethod;
         $payment->status = 'completed'; // 支払いステータスを設定（例: 'completed'）
         $payment->save();
 
         // アイテムのステータス更新
-        $item->sold_user_id = $user_id;
+        $item->sold_user_id = $userId;
         $item->save();
 
         // 処理が完了したらリダイレクトと成功メッセージの表示
-        return redirect()->route('items.show', ['item_id' => $item_id])->with('success', '商品を購入しました！');
+        return redirect()->route('items.show', ['item_id' => $itemId])->with('success', '商品を購入しました！');
     }
 
     public function show()
