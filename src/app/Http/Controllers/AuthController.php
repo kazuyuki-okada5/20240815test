@@ -55,12 +55,4 @@ class AuthController extends Controller
         // リダイレクト先
         return redirect()->intended('/');
     }
-
-    // 認証ユーザーのマイページ表示
-    public function mypage()
-    {
-        $user = Auth::user();
-
-        return view('Auth.mypage', compact('user'));
-    }
 }
