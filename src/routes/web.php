@@ -99,12 +99,16 @@ Route::middleware('auth')->group(function () {
 
 // 管理者のみアクセス可能なルート
 Route::middleware(['auth', 'checkrole:0'])->group(function() {
+    // ユーザー管理ページの表示
     Route::get('/admin/users', [AdminController::class, 'showUsers'])->name('admin.users');
     Route::delete('admin/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
-    // コメント削除用のルート
-    Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+
     // 管理者メール送信
     Route::post('/admin/users/send-email', [AdminController::class, 'sendEmail'])->name('admin.users.sendEmail');
+    
+    // コメント削除用のルート
+    Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+
 });
 
 // Route::get('/send-test-mail', [AdminController::class, 'sendTestMail']);

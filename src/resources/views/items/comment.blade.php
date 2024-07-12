@@ -41,6 +41,7 @@
     </div>
     <div class="item-comments">
         <h2 class="comment-list">コメント一覧</h2>
+            <div class="alert alert-success">{{ session('success') }}</div>
         @foreach($comments as $comment)
             <div class="comment">
                 @if($comment->user_id === $item->user_id)
