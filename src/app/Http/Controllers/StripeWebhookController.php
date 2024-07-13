@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class StripeWebhookController extends Controller
 {
+    // 銀行振込処理
     public function handleWebhook(Request $request)
     {
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET');

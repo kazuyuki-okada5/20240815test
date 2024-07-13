@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Payment;
-use App\Models\ShippingAddress;
+// use App\Models\ShippingAddress;
 use Stripe\Stripe;
 use App\Http\Requests\PaymentRequest;
 use Stripe\PaymentIntent;
@@ -21,10 +21,6 @@ class PaymentController extends Controller
         $userId = auth()->user()->id;
 
         $item = Item::findOrFail($itemId);
-
-        // 住所変更テーブルのデータがあればそのIDを取得
-        // $shippingAddress = ShippingAddress::where('item_id', $item_id)->latest()->first();
-        // $shippingAddressesId = $shippingAddress ? $shippingAddress->id : null;
 
         // 支払い方法の取得
         $paymentMethod = $request->input('payment_method');
@@ -65,12 +61,32 @@ class PaymentController extends Controller
         // 処理が完了したらリダイレクトと成功メッセージの表示
         return redirect()->route('items.show', ['item_id' => $itemId])->with('success', '商品を購入しました！');
     }
-
-    public function show()
+    
+    // カードstripe決済
+    public function charge(Request $request)
     {
-        return view('payment');
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        try {
+            // リクエストからアイテムのIDを取得し、アイテムを取得する
+            $item = Item::findOrFail($request->item_id);
+
+            // アイテムの価格をセント単位で計算
+            $amount = $item->price;
+            \Stripe\Charge::create([
+                "amount" => $amount,
+                "currency" => "jpy",
+                "source" => $request->stripeToken,
+                "description" => "Test payment"
+            ]);
+
+            return back()->with('success_message', 'Payment successful!');
+        } catch (\Exception $e) {
+            return back()->with('error_message', 'Error: ' . $e->getMessage());
+        }
     }
 
+    // コンビニstripe決済
     public function createKonbiniPaymentIntent(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -97,6 +113,7 @@ class PaymentController extends Controller
         }
     }
 
+    // 銀行振込stripe決済
     public function createBankTransferPaymentIntent(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -123,26 +140,5 @@ class PaymentController extends Controller
         }
     }
 
-    public function charge(Request $request)
-    {
-        Stripe::setApiKey(config('services.stripe.secret'));
 
-        try {
-            // リクエストからアイテムのIDを取得し、アイテムを取得する
-            $item = Item::findOrFail($request->item_id);
-
-            // アイテムの価格をセント単位で計算
-            $amount = $item->price;
-            \Stripe\Charge::create([
-                "amount" => $amount,
-                "currency" => "jpy",
-                "source" => $request->stripeToken,
-                "description" => "Test payment"
-            ]);
-
-            return back()->with('success_message', 'Payment successful!');
-        } catch (\Exception $e) {
-            return back()->with('error_message', 'Error: ' . $e->getMessage());
-        }
-    }
 }

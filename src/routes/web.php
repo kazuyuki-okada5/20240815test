@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
     //　マイページの表示
     Route::get('/mypage', [LikeController::class, 'mypage'])->name('mypage');
 
-    // 購入手続きフォームの表示と購入処理
+    // 購入手続きフォームの表示
     Route::get('/items/{item_id}/buy', [ItemController::class, 'showBuyForm'])->name('items.buy');
 
     // 支払い方法変更ページの表示
@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/items/{item_id}/update-shipping', [ShippingController::class, 'update'])->name('shipping.update');
 
     // 支払い方法変更
-    Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
+    // Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'show']);
     Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
     Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
     Route::post('/bank-transfer/payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');

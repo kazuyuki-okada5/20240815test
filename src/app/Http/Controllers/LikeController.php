@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
+    // お気に入り追加
     public function like($itemId)
     {
         $userId = Auth::id();
@@ -30,6 +31,7 @@ class LikeController extends Controller
         }
     }
 
+    // お気に入り削除
     public function unlike($itemId)
     {
         $userId = Auth::id();
@@ -46,16 +48,7 @@ class LikeController extends Controller
         }
     }
 
-
-
-    public function index()
-    {
-        $user = Auth::user(); //　現在のユーザー情報を取得
-        $likes = Like::where('user_id', Auth::id())->with('item')->get(); //　ユーザーのお気に入りを取得
-
-        return view('likes.index', ['user' => $user, 'likes' => $likes]);
-    }
-
+    // マイページ表示
     public function mypage()
     {
         $user = Auth::user();

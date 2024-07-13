@@ -75,7 +75,7 @@ class ItemController extends Controller
         }
     }
 
-
+    // 出品する商品の作成
     public function create(ItemCreateRequest $request)
     {
         $input = $request->validated();
@@ -125,7 +125,7 @@ class ItemController extends Controller
         return count($categories) !== count(array_unique($categories));
     }
 
-    // 購入手続きを処理
+    // 購入手続きページを表示
     public function showBuyForm($id)
     {
         // アイテムを取得します
