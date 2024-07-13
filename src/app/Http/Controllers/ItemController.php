@@ -15,39 +15,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
 class ItemController extends Controller
 {
+    // 認証が必要なメソッドにミドルウェアを適用
     public function __construct()
     {
-        // 認証が必要なメソッドにミドルウェアを適用
-        $this->middleware('auth')->only(['showBuyForm', 'mypage', 'selling', 'purchased']);
+        $this->middleware('auth')->only(['showBuyForm', 'selling', 'purchased']);
     }
 
+    // 商品一覧ページ表示_(トップページ）
     public function showItems()
     {
         $items = Item::all();
-        $likes = collect(); // 空のコレクションを初期化
+        $likes = collect();
         if (Auth::check()) {
             $user = Auth::user();
-            $likes = Like::where('user_id', $user->id)->with('item')->get(); // ユーザーのお気に入り
+            $likes = Like::where('user_id', $user->id)->with('item')->get();
         }
 
         return view('items.item', compact('items', 'likes'));
-    }
-
-    public function mypage()
-    {
-        $items = Item::all();
-
-        if (Auth::check()) {
-            $user = Auth::user();
-            $items = Item::all(); // すべてのアイテム
-            $likes = Like::where('user_id', $user->id)->get();
-            return view('auth.mypage', compact('user', 'items', 'likes'));
-        } else {
-            return view('auth.mypage', compact('items'));
-        }
     }
 
     // アイテム名を検索
@@ -59,19 +45,19 @@ class ItemController extends Controller
         return view('items.search_results', ['items' => $items]);
     }
 
+    // 商品詳細ページ表示
     public function show($item_id)
     {
         // IDでアイテムを取得
         $item = Item::with('categories', 'condition')->findOrFail($item_id);
         // IDでアイテムを出品したユーザーのnameを取得する
         $user = User::findOrFail($item->user_id)->name;
-        // 現在のユーザーがこのアイテムをお気に入りにしているかをチェック
+        // ユーザーがこのアイテムをお気に入りにしているかをチェック
         $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item->id)->exists();
-        // ユーザーが何人お気に入りしているかカウント
+        // 何人のユーザーがお気に入りしているかカウント
         $likeCount = Like::where('item_id', $item_id)->count();
         // コメント数をカウント
         $commentCount = Comment::where('item_id', $item_id)->count();
-
         // items.detailビューを表示し、$item変数を渡す
         return view('items.detail', ['item' => $item, 'user' => $user, 'isLiked' => $isLiked, 'likeCount' => $likeCount, 'commentCount' => $commentCount]);
     }
@@ -82,23 +68,21 @@ class ItemController extends Controller
         if (Auth::check()) {
             $categories = Category::all();
             $conditions = Condition::all();
-            return view('items.create', compact('categories', 'conditions'));
+            $imageUrl = $request->session()->get('image_url', null);
+            return view('items.create', compact('categories', 'conditions', 'imageUrl'));
         } else {
             return redirect()->route('login')->with('error', 'ログインが必要です。');
         }
-        $categories = Category::all();
-        $conditions = Condition::all();
-        $imageUrl = $request->session()->get('image_url', null);
-
-        return view('items.create', compact('categories', 'conditions', 'imageUrl'));
     }
+
 
     public function create(ItemCreateRequest $request)
     {
         $input = $request->validated();
         $userId = Auth::id();
 
-        $condition = Condition::where('condition', $input['condition'])->first();
+        // 条件のチェック
+        $condition = Condition::where('condition', $input['condition'])->firstOrFail();
 
         if (!$condition) {
             return back()->withInput()->withErrors(['error' => '選択された条件が無効です']);
@@ -108,14 +92,16 @@ class ItemController extends Controller
             return back()->withInput()->withErrors(['error' => '同じカテゴリーを複数選択することはできません。']);
         }
 
+        // 画像の処理
         $imagePath = $request->session()->get('image_url');
         if ($request->hasFile('image_url')) {
             $imagePath = $request->file('image_url')->store('images', 'public');
             $request->session()->put('image_url', $imagePath);
         }
 
+        // アイテム登録中にエラーが発生した場合ロールバック
         DB::transaction(function () use ($input, $userId, $condition, $imagePath) {
-            $item = new Item([
+            $item = Item::create([
                 'user_id' => $userId,
                 'name' => $input['name'],
                 'price' => $input['price'],
@@ -125,20 +111,13 @@ class ItemController extends Controller
                 'condition_id' => $condition->id,
             ]);
 
-            $item->save();
-
-            foreach ($input['categories'] as $category) {
-                CategoryItem::create([
-                    'item_id' => $item->id,
-                    'category_id' => $category,
-                ]);
-            }
+            // カテゴリーの関連付け
+            $item->categories()->attach($input['categories']);
         });
 
         $request->session()->forget('image_url');
         return redirect()->route('items.create')->with('success', 'アイテムが追加されました！');
     }
-
 
     // カテゴリーの重複チェックメソッド
     private function hasDuplicateCategories($categories)
@@ -146,25 +125,7 @@ class ItemController extends Controller
         return count($categories) !== count(array_unique($categories));
     }
 
-    // 出品商品一覧ページを処理するメソッド
-    public function selling()
-    {
-        $user = Auth::user();
-        $items = Item::where('user_id', $user->id)->get();
-
-        return view('items.selling', ['items' => $items]);
-    }
-
-    // 購入商品一覧ページを処理するメソッド
-    public function purchased()
-    {
-        $user = Auth::user();
-        $items = Item::where('sold_user_id', $user->id)->get();
-
-        return view('items.purchased', ['items' => $items]);
-    }
-
-    // 購入手続きページを処理するメソッド
+    // 購入手続きを処理
     public function showBuyForm($id)
     {
         // アイテムを取得します
@@ -199,50 +160,4 @@ class ItemController extends Controller
 
         return view('items.buy', compact('item', 'profile', 'shippingAddresses'));
     }
-
-    public function showAddress($item_id)
-    {
-        $item = Item::find($item_id);
-        $user = auth()->user();
-        $profile = $user->profile;
-        $shippingChanges = ShippingAddress::where('item_id', $item->id)->get();
-
-        return view('items.buy', [
-            'item' => $item,
-            'profile' => $profile,
-            'shippingAddresses' => $shippingChanges,
-        ]);
-    }
-    public function showShippingAddressForm($item_id)
-    {
-        $item = Item::findOrFail($item_id);
-        $user = auth()->user();
-        $shipping = new ShippingAddress(); // 新しいShippingChangeモデルを作成
-
-        return view('items.shipping_address', compact('item', 'shipping'));
-    }
-
-    // public function buy(PaymentRequest $request, $item_id)
-    // {
-
-    //     // 支払い方法と配送先をセッションやDBに保存する処理
-    //     $paymentMethod = $request->input('payment_method');
-    //     $shippingAddress = $request->input('shipping_address');
-
-    //     // 支払い方法に応じた処理
-    //     if ($paymentMethod === 'credit_card') {
-    //         // クレジットカードの処理
-    //         // Stripe決済処理の追加
-    //         $this->processCreditCardPayment($item, $user);
-    //     } elseif ($paymentMethod === 'convenience_store') {
-    //         // コンビニ決済処理
-    //         $this->processConvenienceStorePayment($item, $user);
-    //     } elseif ($paymentMethod === 'bank_transfer'){
-    //         // 銀行振込処理
-    //         $this->processBankTransfer($item, $user);
-    //     }
-
-    //     // 購入処理後のリダイレクト
-    //     return redirect()->route('items.index')->with('success', '購入が完了しました。');
-    // }
 }

@@ -196,18 +196,24 @@
         var form = document.getElementById('payment-form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
+            console.log(5)
             stripe.createToken(cardNumberElement, {
                 address_zip: postalCodeElement.value,
             }).then(function(result) {
+                console.log(6)
                 if (result.error) {
                     displayError.textContent = result.error.message;
                 } else {
-                    stripeTokenHandler(result.token);
+                    console.log(7)
+                    stripeTokenHandlerCredit(result.token);
                 }
             });
         });
 
         document.getElementById('konbini-button').addEventListener('click', function () {
+
+            // *JavaScript上でバリデーションを実装する（PHP上でチェックしている項目全て）
+
             fetch('{{ route('create.konbini.payment.intent') }}', {
                 method: 'POST',
                 headers: {
@@ -217,9 +223,11 @@
                 body: JSON.stringify({ item_id: '{{ $item->id }}' })
             })
             .then(function (response) {
+                console.log(1)
                 return response.json();
             })
             .then(function (result) {
+                console.log(2)
                 if (result.error) {
                     var errorElement = document.getElementById('payment-message');
                     errorElement.textContent = result.error;
@@ -237,19 +245,30 @@
                             var displayError = document.getElementById('payment-message');
                             displayError.textContent = result.error.message;
                         } else {
-                            stripeTokenHandler(result.paymentIntent);
+                            console.log(3)
+                            stripeTokenHandlerKonbini(result.paymentIntent);
                         }
                     });
                 }
             });
         });
 
-        function stripeTokenHandler(paymentIntent) {
+        function stripeTokenHandlerCredit(token) {
+            var form = document.getElementById('purchase-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripeToken');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+            form.submit();
+        }
+
+        function stripeTokenHandlerKonbini(token) {
             var form = document.getElementById('purchase-form');
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('type', 'hidden');
             hiddenInput.setAttribute('name', 'stripePaymentIntentId');
-            hiddenInput.setAttribute('value', paymentIntent.id);
+            hiddenInput.setAttribute('value', token.id);
             form.appendChild(hiddenInput);
             form.submit();
         }

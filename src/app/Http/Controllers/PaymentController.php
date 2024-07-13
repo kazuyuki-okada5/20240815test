@@ -9,7 +9,7 @@ use App\Models\ShippingAddress;
 use Stripe\Stripe;
 use App\Http\Requests\PaymentRequest;
 use Stripe\PaymentIntent;
-
+use Illuminate\Support\Facades\Log;
 
 
 class PaymentController extends Controller
@@ -30,7 +30,7 @@ class PaymentController extends Controller
         $paymentMethod = $request->input('payment_method');
 
         Stripe::setApiKey(config('services.stripe.secret'));
-        
+        Log::info('エラーログ');
         if ($paymentMethod === 'credit_card') {
             // クレジットカード支払いの場合
             // リクエストからアイテムのIDを取得し、アイテムを取得する

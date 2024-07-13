@@ -56,7 +56,7 @@ class ItemsTableSeeder extends Seeder
                 'user_id' => 3,
                 'condition_id' => 5,
                 'name' => 'ネックレス',
-                'price' => 20,
+                'price' => 200,
                 'comment' => 'ボロボロ',
                 'image_url' => '/images/スクリーンショット 2024-05-24 16.32.05.png',
                 'brand' => 'ノーブランド',
