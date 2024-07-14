@@ -12,6 +12,10 @@ class LikeController extends Controller
     public function like($itemId)
     {
         $userId = Auth::id();
+        // ユーザー認証されていない場合はログイン画面にリダイレクト
+        if(!Auth::check()) {
+            return redirect()->route('login')->with('error', 'ログインが必要です。');
+        }
 
         // ユーザーが既にお気に入りに追加しているか確認する
         $existingLike = Like::where('user_id', $userId)

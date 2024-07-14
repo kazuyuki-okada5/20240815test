@@ -23,19 +23,25 @@
         @endif
         <div class="buttons-container">
             <div class="like-container">
-                <form id="like-form" method="POST" action="{{ route('likes.like', $item->id) }}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
-                    @csrf
-                    <button type="submit" class="btn btn-link like-button">
+                @if (Auth::check())
+                    <form id="like-form" method="POST" action="{{ route('likes.like', $item->id) }}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
+                        @csrf
+                        <button type="submit" class="btn btn-link like-button">
+                            <i class="far fa-star" style="font-size: 2rem;"></i>
+                        </button>
+                    </form>
+                    <form id="unlike-form" method="POST" action="{{ route('likes.unlike', $item->id) }}" style="display: {{ $isLiked ? 'inline' : 'none' }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-link like-button">
+                            <i class="fas fa-star" style="font-size: 2rem;"></i>
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-link like-button">
                         <i class="far fa-star" style="font-size: 2rem;"></i>
-                    </button>
-                </form>
-                <form id="unlike-form" method="POST" action="{{ route('likes.unlike', $item->id) }}" style="display: {{ $isLiked ? 'inline' : 'none' }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-link like-button" {{ Auth::check() ? '' : 'disabled' }}>
-                        <i class="fas fa-star" style="font-size: 2rem;"></i>
-                    </button>
-                </form>
+                    </a>
+                @endif
                 <p class="count">{{ $likeCount }}</p>
             </div>
             <div class="comment-container">
@@ -45,7 +51,6 @@
                 <p class="count">{{ $commentCount ?? '' }}</p>
             </div>
         </div>
-
         @if ($item->sold_user_id === null)
             @if (Auth::check())
                 <form method="GET" action="{{ route('items.buy', $item->id) }}">

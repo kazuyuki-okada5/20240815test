@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Models\Like;
 use App\Models\Category;
 use App\Models\Condition;
-use App\Models\CategoryItem;
+// use App\Models\CategoryItem;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
