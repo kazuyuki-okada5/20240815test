@@ -13,7 +13,6 @@ class StripeWebhookController extends Controller
     public function handleWebhook(Request $request)
     {
         $endpointSecret = env('STRIPE_WEBHOOK_SECRET');
-
         $payload = @file_get_contents('php://input');
         $sigHeader = $request->header('Stripe-Signature');
         $event = null;
