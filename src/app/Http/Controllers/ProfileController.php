@@ -58,7 +58,7 @@ class ProfileController extends Controller
         // ビューにデータを渡して表示
         return view('profiles.edit', compact('profile'));
     }
-
+    // プロフィールフォーム更新
     public function update(ProfileRequest $request)
     {
         $user = Auth::user();
