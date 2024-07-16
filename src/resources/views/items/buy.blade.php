@@ -97,7 +97,7 @@
                         <div class="form-row">
                             <div id="card-errors" role="alert"></div>
                         </div>
-                        <div id="card-element">
+                        <div id="card-element" class="hidden">
                             <label for="card-number">カード番号</label>
                             <div id="card-number-element" class="form-control"></div>
                             <div id="card-expiry-element" class="form-control"></div>
@@ -106,10 +106,10 @@
                             <!-- エラーメッセージ表示 -->
                             <div id="card-errors" role="alert"></div>
                         </div>
-                        <button class="btn btn-primary mt-3" id="credit-card-button">クレジットカードで購入する</button>
+                        <button class="btn btn-primary mt-3 hidden" id="credit-card-button">クレジットカードで購入する</button>
                     </form>
-                        <button id="konbini-button" class="btn btn-primary mt-3">コンビニで購入する</button>
-                        <button id="bank-transfer-button" class="btn btn-primary mt-3">銀行振込で購入する</button>
+                        <button class="btn btn-primary mt-3 hidden" id="konbini-button">コンビニで購入する</button>
+                        <button class="btn btn-primary mt-3 hidden" id="bank-transfer-button">銀行振込で購入する</button>
                     <div id="payment-message" class="alert alert-danger" style="display: none;"></div>
                 </div>
             </div>
@@ -121,21 +121,37 @@
         function updatePaymentMethod() {
             var paymentMethod = document.getElementById('payment_method').value;
             var paymentMethodName = '';
+                // ボタンを非表示にする
+            document.getElementById('credit-card-button').classList.add('hidden');
+            document.getElementById('konbini-button').classList.add('hidden');
+            document.getElementById('bank-transfer-button').classList.add('hidden');
 
-            switch(paymentMethod) {
-                case 'credit_card':
-                    paymentMethodName = 'クレジットカード';
-                    break;
-                case 'convenience_store':
-                    paymentMethodName = 'コンビニ';
-                    break;
-                case 'bank_transfer':
-                    paymentMethodName = '銀行振込';
-                    break;
-                default:
-                    paymentMethodName = '未選択';
-                    break;
-            }
+            // カード情報の表示・非表示
+    var cardElement = document.getElementById('card-element');
+    if (paymentMethod === 'credit_card') {
+        cardElement.classList.remove('hidden');
+        document.getElementById('credit-card-button').classList.remove('hidden');
+    } else {
+        cardElement.classList.add('hidden');
+    }
+
+    switch(paymentMethod) {
+        case 'credit_card':
+            paymentMethodName = 'クレジットカード';
+            document.getElementById('credit-card-button').classList.remove('hidden');
+            break;
+        case 'convenience_store':
+            paymentMethodName = 'コンビニ';
+            document.getElementById('konbini-button').classList.remove('hidden');
+            break;
+        case 'bank_transfer':
+            paymentMethodName = '銀行振込';
+            document.getElementById('bank-transfer-button').classList.remove('hidden');
+            break;
+        default:
+            paymentMethodName = '未選択';
+            break;
+    }
 
             document.getElementById('selected_payment_method').innerText = paymentMethodName;
             document.getElementById('confirmation_payment_method').value = paymentMethod;
@@ -212,8 +228,13 @@
                 return;
             }
 
-            var form = document.getElementById('payment-form');
-            form.submit();
+                // カード番号のエラーチェック
+            var displayError = document.getElementById('card-errors').textContent;
+            if (displayError) {
+                alert('カード番号に不備があります');
+                return;
+            }
+
 
             stripe.createToken(cardNumberElement, {
                 address_zip: postalCodeElement.value,

@@ -145,3 +145,7 @@
     background-color: #c16400;
     border-color: #000000;
 }
+
+.hidden {
+    display: none;
+}
