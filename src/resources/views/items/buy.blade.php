@@ -44,6 +44,7 @@
                     <div class="form-group">
                         <label for="shipping_address">配送先を選択してください</label>
                         <select name="shipping_address" id="shipping_address" class="form-control" onchange="updateShippingAddress()">
+                            <option value="" disabled selected>配送先を選択してください</option>
                             <option value="{{ $profile['post_code'] . ' ' . $profile['address'] . ' ' . $profile['building'] }}">
                                 郵便番号: {{ $profile['post_code'] }} - 住所: {{ $profile['address'] }} - 建物名: {{ $profile['building'] }}
                             </option>
@@ -197,6 +198,23 @@
         form.addEventListener('submit', function(event) {
             event.preventDefault();
             console.log(5)
+            // 支払い方法が選択されているかチェック
+            var paymentMethod = document.getElementById('payment_method').value;
+            if (!paymentMethod) {
+                alert('支払い方法を選択してください');
+                return;
+            }
+
+            // 配送先が選択されているかチェック
+            var shippingAddress = document.getElementById('shipping_address').value;
+            if (!shippingAddress) {
+                alert('配送先を選択してください');
+                return;
+            }
+
+            var form = document.getElementById('payment-form');
+            form.submit();
+
             stripe.createToken(cardNumberElement, {
                 address_zip: postalCodeElement.value,
             }).then(function(result) {
@@ -210,9 +228,22 @@
             });
         });
 
-        document.getElementById('konbini-button').addEventListener('click', function () {
+        document.getElementById('konbini-button').addEventListener('click', function (event) {
+            event.preventDefault();
 
-            // *JavaScript上でバリデーションを実装する（PHP上でチェックしている項目全て）
+            // 支払い方法が選択されているかチェック
+            var paymentMethod = document.getElementById('payment_method').value;
+            if (!paymentMethod) {
+                alert('支払い方法を選択してください');
+                return;
+            }
+
+            // 配送先が選択されているかチェック
+            var shippingAddress = document.getElementById('shipping_address').value;
+            if (!shippingAddress) {
+                alert('配送先を選択してください');
+                return;
+            }
 
             fetch('{{ route('create.konbini.payment.intent') }}', {
                 method: 'POST',
@@ -275,7 +306,22 @@
 
         document.getElementById('bank-transfer-button').addEventListener('click', function(event) {
             event.preventDefault();
+
+             // 支払い方法が選択されているかチェック
+            var paymentMethod = document.getElementById('payment_method').value;
+            if (!paymentMethod) {
+                alert('支払い方法を選択してください');
+                return;
+            }
+
+            // 配送先が選択されているかチェック
+            var shippingAddress = document.getElementById('shipping_address').value;
+            if (!shippingAddress) {
+                alert('配送先を選択してください');
+                return;
+            }
             document.getElementById('purchase-form').submit();
+
         });
     </script>
 @endsection
