@@ -162,13 +162,24 @@ php artisan storage:link
 
 11.PHPUnitを使用したテスト確認
 
-1）テストベース用にマイグレーションを実施して下さい。
+1）テスト用のデータベースを作成します。<br>
+まだdockerコンテナ内にいる場合は'exit'で出た後にターミナルで以下コマンドを実行して下さい。
 
 ```
-docker-compose exec php php artisan migrate --env=testing
+docker-compose exec mysql mysql -u root -p
+CREATE DATABASE laravel_test;
+EXIT;
 ```
 
-2）テストを実行して下さい。
+　※パスワードは`.env.testing`より確認下さい
+
+3）`.env.testing`ファイル用のKEYを作成して下さい。
+
+```
+docker-compose exec php php artisan key:generate --env=testing
+```
+
+3）テストを実行して下さい。
 
 ```
 docker-compose exec php ./vendor/bin/phpunit
