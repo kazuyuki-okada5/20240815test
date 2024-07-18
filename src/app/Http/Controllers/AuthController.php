@@ -52,7 +52,13 @@ class AuthController extends Controller
         // ユーザーの自動ログイン
         Auth::login($user);
 
-        // リダイレクト先
         return redirect()->intended('/');
+    }
+
+    // 認証前ユーザーがログアウトリクエストした時のリダイレクト先
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/login');
     }
 }

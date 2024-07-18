@@ -10,8 +10,7 @@ use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StripeWebhookController;
-// use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Log;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +35,9 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
 // ログイン処理
 Route::post('/login', [AuthController::class, 'login']);
+
+// 認証前ユーザーがログアウトリクエストした時のリダイレクト先
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //　商品詳細ページ
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show');
@@ -106,5 +108,3 @@ Route::middleware(['auth', 'checkrole:0'])->group(function() {
     Route::delete('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
 
 });
-
-// Route::get('/send-test-mail', [AdminController::class, 'sendTestMail']);
