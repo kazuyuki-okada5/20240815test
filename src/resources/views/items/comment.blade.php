@@ -55,7 +55,7 @@
                 @if($comment->user_id === $item->user_id)
                     <div class="comment-right">
                         @if($comment->userProfile && $comment->userProfile->img_url)
-                            <img src="{{ asset('storage/' . $comment->userProfile->img_url) }}" class="comment-avatar-right" alt="{{ $comment->userProfile->name }}">
+                             <img src="{{ $comment->userProfile->img_url }}" class="comment-avatar-right" alt="{{ $comment->userProfile->name }}">
                         @else
                             <div class="default-avatar">
                                 <i class="fas fa-user-circle"></i>
@@ -76,7 +76,7 @@
                 @else
                     <div class="comment-left">
                         @if($comment->userProfile && $comment->userProfile->img_url)
-                            <img src="{{ asset('storage/' . $comment->userProfile->img_url) }}" class="comment-avatar-left" alt="{{ $comment->userProfile->name }}">
+                             <img src="{{ $comment->userProfile->img_url }}" class="comment-avatar-right" alt="{{ $comment->userProfile->name }}">
                         @else
                             <div class="default-avatar">
                                 <i class="fas fa-user-circle"></i><!-- 代替えアイコン -->
