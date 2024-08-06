@@ -8,7 +8,7 @@
 <div class="item-detail">
     <div class="item-info">
         <div class="item-image-container">
-            <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="item-image">
+            <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
             @if($item->sold_user_id)
                 <div class="sold-out-overlay">SOLD-OUT</div>
             @endif

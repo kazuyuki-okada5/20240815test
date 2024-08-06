@@ -8,7 +8,7 @@
 <div class="listtype__content"></div>
 <div class="item-container">
     <div class="item-image">
-        <img class="img" src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image">
+        <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
         @if ($item->sold_user_id !== null)
             <div class="sold-out-overlay">SOLD-OUT</div>
         @endif
