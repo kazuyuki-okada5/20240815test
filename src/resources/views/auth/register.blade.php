@@ -16,7 +16,7 @@
       <header class="header">
         <div class="header__inner">
            <div class="header__logo">
-              <img src="{{ asset('storage/logo (1).svg') }}" alt="Flea Market App Logo" class="logo">
+              <img src="https://flea-baket.s3.ap-northeast-1.amazonaws.com/public/logo+(1).svg" alt="Flea Market App Logo" class="logo">
             </div>
           </div>
     </header>
