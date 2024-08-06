@@ -9,11 +9,11 @@ use App\Models\User;
 use App\Models\Like;
 use App\Models\Category;
 use App\Models\Condition;
-// use App\Models\CategoryItem;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
@@ -93,20 +93,25 @@ class ItemController extends Controller
         }
 
         // 画像の処理
-        $imagePath = $request->session()->get('image_url');
+        $imageUrl = null;
         if ($request->hasFile('image_url')) {
-            $imagePath = $request->file('image_url')->store('images', 'public');
-            $request->session()->put('image_url', $imagePath);
+            $path = $request->file('image_url')->store('images', 's3');
+            Storage::disk('s3')->setVisibility($path, 'public');
+            $imageUrl = Storage::disk('s3')->url($path); // URLを取得
+        } else {
+            // セッションから画像URLを取得
+            $imageUrl = $request->session()->get('image_url');
         }
 
+
         // アイテム登録中にエラーが発生した場合ロールバック
-        DB::transaction(function () use ($input, $userId, $condition, $imagePath) {
+        DB::transaction(function () use ($input, $userId, $condition, $imageUrl) {
             $item = Item::create([
                 'user_id' => $userId,
                 'name' => $input['name'],
                 'price' => $input['price'],
                 'comment' => $input['comment'],
-                'image_url' => $imagePath,
+                'image_url' => $imageUrl,
                 'brand' => $input['brand'] ?? null,
                 'condition_id' => $condition->id,
             ]);
@@ -161,3 +166,4 @@ class ItemController extends Controller
         return view('items.buy', compact('item', 'profile', 'shippingAddresses'));
     }
 }
+

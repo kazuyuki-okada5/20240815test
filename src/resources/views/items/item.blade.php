@@ -28,7 +28,7 @@
         @foreach($items as $item)
         <div class="item">
             <a href="{{ route('items.show', $item->id )}}">
-                <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                 @if($item->sold_user_id)
                 <div class="sold-out">SOLD-OUT</div>
                 @endif
@@ -50,7 +50,7 @@
         @foreach ($likes as $like)
         <div class="item">
             <a href="{{ route('items.show', $like->item->id )}}">
-                <img src="{{ asset('storage/' . $like->item->image_url) }}" class="card-img-top" alt="{{ $like->item->name }}">
+                <img src="{{ $like->item->image_url }}" class="card-img-top" alt="{{ $like->item->name }}">
                 @if($like->item->sold_user_id)
                     <div class="sold-out">SOLD-OUT</div>
                 @endif
@@ -73,7 +73,7 @@
         @if (!$item->sold_user_id)
             <div class="item">
                 <a href="{{ route('items.show', $item->id )}}">
-                    <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                    <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                 </a>
                 <p class="card-text">
                     <span>{{ $item->price }}円</span>
