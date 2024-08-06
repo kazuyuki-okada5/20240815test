@@ -12,7 +12,7 @@
             <div class="profile-image-parent">
                 <div class="profile-image-container">
                     @if ($profile->img_url)
-                        <img id="profile-image-preview" src="{{ asset('storage/' . $profile->img_url) }}" alt="Profile Image" class="profile-image">
+                        <img id="profile-image-preview" src="{{ $profile->img_url }}" alt="Profile Image" class="profile-image">
                     @else
                         <div class="default-avatar">
                             <i class="fas fa-user-circle"></i>

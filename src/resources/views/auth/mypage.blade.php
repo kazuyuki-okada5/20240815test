@@ -8,7 +8,7 @@
 <div class="container">
     <div class="profile-header">
         @if ($user && $user->profile && $user->profile->img_url)
-            <img class="profile-img" src="{{ asset('storage/' . $user->profile->img_url) }}" alt="{{ $user->name }}">
+            <img class="profile-img" src="{{ $user->profile->img_url }}" alt="{{ $user->name }}">
         @else
             <div class="default-avatar">
                 <i class="fas fa-user-circle"></i>
@@ -36,7 +36,7 @@
                 <div class="item">
                     <div class="card-body">
                         <a href="{{ route('items.show', $item->id) }}">
-                            <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                            <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                         </a>
                         <p class="card-text"><span>{{ $item->price }}円</span></p>
                         <p class="card-title">{{ $item->name }}</p>
@@ -51,8 +51,7 @@
                 <div class="item">
                     <div class="card-body">
                         <a href="{{ route('items.show', $item->id) }}">
-                            <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
-                        </a>
+                            <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                         <p class="card-text"><span>{{ $item->price }}円</span></p>
                         <p class="card-title">{{ $item->name }}</p>
                     </div>

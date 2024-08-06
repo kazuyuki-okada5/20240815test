@@ -20,7 +20,7 @@
         <div class="content-container">
             <div class="left-container">
                 <div class="item-image">
-                    <img src="{{ asset('storage/' . $item->image_url) }}" alt="Item Image" class="item-image-element">
+                    <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                 </div>
                 <div class="item-info">
                     <h2>商品名: {{ $item->name }}</h2>

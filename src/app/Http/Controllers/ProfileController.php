@@ -38,7 +38,9 @@ class ProfileController extends Controller
         $profileData['user_id'] = Auth::id();
 
         if ($request->hasFile('img_url')) {
-            $profileData['img_url'] = $request->file('img_url')->store('profiles', 'public');
+            // S3に画像をアップロードし、そのURLを取得
+            $path = $request->file('img_url')->store('profiles', 's3');
+            $profileData['img_url'] = Storage::disk('s3')->url($path);
         }
 
         Profile::create($profileData);
@@ -77,17 +79,22 @@ class ProfileController extends Controller
         return redirect()->route('profile.show')->with('success', 'プロフィールが更新されました');
     }
 
-        // プロフィール画像の更新
+    // プロフィール画像の更新
     private function updateProfileImage($profile, $file)
     {
-        // 古い画像のパス取得と新しい画像の保存
+        // 古い画像のURL取得と新しい画像の保存
         $oldImagePath = $profile->img_url;
-        $newImagePath = $file->storeAs('public/profiles', time() . '_' . $file->getClientOriginalName());
+
+        // S3に新しい画像をアップロードし、そのURLを取得
+        $path = $file->store('profiles', 's3');
+        $newImageUrl = Storage::disk('s3')->url($path);
 
         // プロフィールを更新し古いファイルを削除
-        $profile->update(['img_url' => 'profiles/' . basename($newImagePath)]);
+        $profile->update(['img_url' => $newImageUrl]);
         if ($oldImagePath) {
-            Storage::delete('public/' . $oldImagePath);
+            // 古い画像のパスを取得して削除
+            $oldPath = str_replace(env('AWS_URL') . '/', '', $oldImagePath);
+            Storage::disk('s3')->delete($oldPath);
         }
     }
 }
