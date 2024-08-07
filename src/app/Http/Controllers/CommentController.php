@@ -8,7 +8,6 @@ use App\Models\Comment;
 use App\Models\Profile;
 use App\Models\Item;
 use App\Models\Like;
-
 use App\Http\Requests\CommentRequest;
 
 class CommentController extends Controller
@@ -18,13 +17,9 @@ class CommentController extends Controller
     {
         $item = Item::findOrFail($item_id);
         $comments = Comment::where('item_id', $item_id)->with('user')->get();
-
-        // ユーザーのプロフィール情報を取得
         foreach ($comments as $comment) {
             $comment->userProfile = Profile::where('user_id', $comment->user_id)->first();
         }
-
-        //お気に入り情報とコメント数を取得
         $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item_id)->exists();
         $likeCount = Like::where('item_id', $item_id)->count();
         $commentCount = Comment::where('item_id', $item_id)->count();
@@ -36,13 +31,9 @@ class CommentController extends Controller
     public function storeComment(CommentRequest $request, $item_id)
     {
         $validated = $request->validated();
-
-        // 直近のコメントを取得
         $lastComment = Comment::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->first();
-
-        // 直近のコメントがあり、かつ3秒以内ならエラーを返す
         if ($lastComment && $lastComment->created_at->diffInSeconds(now()) < 3) {
             return redirect()->back()->withErrors(['comment' => '短時間での連続投稿はできません。']);
         }

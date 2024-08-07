@@ -20,12 +20,9 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials)) {
-            // 認証に成功した場合の処理
             return redirect()->intended('/');
         }
-            // 認証に失敗した場合の処理
             return back()->withErrors([
             'email' => 'メールアドレスまたはパスワードが間違っています。',
         ])->withInput();
@@ -41,15 +38,11 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $validated = $request->validated();
-
-        // ユーザーの作成
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
-
-        // ユーザーの自動ログイン
         Auth::login($user);
 
         return redirect()->intended('/');

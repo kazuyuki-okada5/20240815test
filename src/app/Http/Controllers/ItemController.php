@@ -48,17 +48,11 @@ class ItemController extends Controller
     // 商品詳細ページ表示
     public function show($item_id)
     {
-        // IDでアイテムを取得
         $item = Item::with('categories', 'condition')->findOrFail($item_id);
-        // IDでアイテムを出品したユーザーのnameを取得する
         $user = User::findOrFail($item->user_id)->name;
-        // ユーザーがこのアイテムをお気に入りにしているかをチェック
         $isLiked = Auth::check() && Auth::user()->likes()->where('item_id', $item->id)->exists();
-        // 何人のユーザーがお気に入りしているかカウント
         $likeCount = Like::where('item_id', $item_id)->count();
-        // コメント数をカウント
         $commentCount = Comment::where('item_id', $item_id)->count();
-        // items.detailビューを表示し、$item変数を渡す
         return view('items.detail', ['item' => $item, 'user' => $user, 'isLiked' => $isLiked, 'likeCount' => $likeCount, 'commentCount' => $commentCount]);
     }
 
@@ -80,31 +74,22 @@ class ItemController extends Controller
     {
         $input = $request->validated();
         $userId = Auth::id();
-
-        // 条件のチェック
         $condition = Condition::where('condition', $input['condition'])->firstOrFail();
-
         if (!$condition) {
             return back()->withInput()->withErrors(['error' => '選択された条件が無効です']);
         }
-
         if ($this->hasDuplicateCategories($input['categories'])) {
             return back()->withInput()->withErrors(['error' => '同じカテゴリーを複数選択することはできません。']);
         }
-
-        // 画像の処理
         $imageUrl = null;
         if ($request->hasFile('image_url')) {
             $path = $request->file('image_url')->store('images', 's3');
             Storage::disk('s3')->setVisibility($path, 'public');
-            $imageUrl = Storage::disk('s3')->url($path); // URLを取得
+            $imageUrl = Storage::disk('s3')->url($path);
         } else {
-            // セッションから画像URLを取得
             $imageUrl = $request->session()->get('image_url');
         }
 
-
-        // アイテム登録中にエラーが発生した場合ロールバック
         DB::transaction(function () use ($input, $userId, $condition, $imageUrl) {
             $item = Item::create([
                 'user_id' => $userId,
@@ -115,8 +100,6 @@ class ItemController extends Controller
                 'brand' => $input['brand'] ?? null,
                 'condition_id' => $condition->id,
             ]);
-
-            // カテゴリーの関連付け
             $item->categories()->attach($input['categories']);
         });
 
@@ -133,18 +116,11 @@ class ItemController extends Controller
     // 購入手続きページを表示
     public function showBuyForm($id)
     {
-        // アイテムを取得します
         $item = Item::findOrFail($id);
-
-        // 売り切れている場合の処理
         if ($item->sold_user_id !== null) {
             return back()->with('error', 'URL上から移動しようとした商品は売り切れです。');
         }
-
-        // ユーザー情報を取得します
         $user = auth()->user();
-
-        // ユーザーがプロフィール情報を持っているか確認
         if ($user->profile) {
             $profile = [
                 'post_code' => $user->profile->post_code,
@@ -152,15 +128,12 @@ class ItemController extends Controller
                 'building' => $user->profile->building
             ];
         } else {
-            // プロフィール情報が存在しない場合の処理
             $profile = [
                 'post_code' => '',
                 'address' => '',
                 'building' => ''
             ];
         }
-
-        // `shipping_changes`テーブルからユーザーの追加した配送先を取得
         $shippingAddresses = ShippingAddress::where('item_id', $item->id)->get();
 
         return view('items.buy', compact('item', 'profile', 'shippingAddresses'));

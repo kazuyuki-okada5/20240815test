@@ -14,6 +14,7 @@ class AdminController extends Controller
     public function showUsers()
     {
         $users = User::all();
+
         return view('admin.users', compact('users'));
     }
 
@@ -21,13 +22,12 @@ class AdminController extends Controller
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
-
         if ($user->role == 0) {
             return redirect()->route('admin.users')->with('error', '管理者は削除できません。');
         }
-
         $user->delete();
-        return redirect()->route('admin.users')->with('succes', 'ユーザーが削除されました。');
+
+        return redirect()->route('admin.users')->with('success', 'ユーザーが削除されました。');
     }
 
     // 商品コメントを削除する
@@ -46,7 +46,6 @@ class AdminController extends Controller
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
-
         $users = User::all();
         foreach ($users as $user) {
             Mail::to($user->email)->send(new BulkEmail($request->subject, $request->message));

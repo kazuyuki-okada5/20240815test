@@ -12,16 +12,12 @@ class LikeController extends Controller
     public function like($itemId)
     {
         $userId = Auth::id();
-        // ユーザー認証されていない場合はログイン画面にリダイレクト
         if(!Auth::check()) {
             return redirect()->route('login')->with('error', 'ログインが必要です。');
         }
-
-        // ユーザーが既にお気に入りに追加しているか確認する
         $existingLike = Like::where('user_id', $userId)
             ->where('item_id', $itemId)
             ->first();
-
         if (!$existingLike) {
             $like = new Like([
                 'user_id' => $userId,
@@ -30,8 +26,6 @@ class LikeController extends Controller
             $like->save();
 
             return redirect()->back()->with('success', 'お気に入りに追加しました');
-        } else {
-            return redirect()->back()->with('error', 'すでにお気に入りに追加されています');
         }
     }
 
@@ -39,16 +33,14 @@ class LikeController extends Controller
     public function unlike($itemId)
     {
         $userId = Auth::id();
-
         $like = Like::where('user_id', $userId)
             ->where('item_id', $itemId)
             ->first();
-
         if ($like) {
             $like->delete();
             return redirect()->back()->with('success', 'お気に入りを削除しました');
         } else {
-            return redirect()->back()->with('error', 'いいねが見つかりませんでした');
+            return redirect()->back()->with('error', 'お気に入りが見つかりませんでした');
         }
     }
 
@@ -59,7 +51,7 @@ class LikeController extends Controller
         $likes = Like::where('user_id', $user->id)->with('item')->get();
         $itemsSelling = Item::where('user_id', $user->id)->get();
         $itemsPurchased = Item::where('sold_user_id', $user->id)->get();
-
+        
         return view('auth.mypage', [
             'user' => $user,
             'likes' => $likes,
