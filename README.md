@@ -186,11 +186,19 @@ docker-compose exec php ./vendor/bin/phpunit
 ```
 
 12.AWS（本番環境）
+
 1）下記よりアクセスして下さい。
 
 ```
 http://54.168.115.123
 ```
+
+2）メール（MailHog）
+
+```
+http://54.168.115.123:8025/
+```
+
 
 ## 参考
 
