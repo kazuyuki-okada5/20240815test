@@ -185,6 +185,13 @@ docker-compose exec php php artisan key:generate --env=testing
 docker-compose exec php ./vendor/bin/phpunit
 ```
 
+12.AWS（本番環境）
+1）下記よりアクセスして下さい。
+
+```
+http://54.168.115.123
+```
+
 ## 参考
 
 [岡田和幸さんWeb開発生徒様用案件シート メルカリ風アプリ](https://docs.google.com/spreadsheets/d/1v1wj7750I53n69JBmRWZaRPEAu80r2nPLbNLKORSkJo/edit?gid=1113232830#gid=1113232830)
