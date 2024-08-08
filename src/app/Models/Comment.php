@@ -11,11 +11,13 @@ class Comment extends Model
 
     protected $fillable = ['user_id', 'item_id', 'comment'];
 
+    // commentsテーブルのuser_idカラムを使用して関連付けを行う。
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    // commentsテーブルのitem_idカラムを使用して関連付けを行う。
     public function item()
     {
         return $this->belongsTo(Item::class);

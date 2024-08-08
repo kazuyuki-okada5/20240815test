@@ -8,17 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Profile extends Model
 {
     use HasFactory;
-    // マスアサインメント（編集）可能な属性を定義する
+
+    // 大量代入で許可される属性リストを指定。
     protected $fillable = ['user_id', 'img_url', 'post_code', 'address', 'building',];
 
+    // profilesテーブルのuser_idカラムを使用して、usersテーブルのレコードを参照。
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function profileImage()
-    {
-        // プロフィール画像の URL を返す
-        return $this->img_url ? asset('storage/' . $this->img_url) : null;
     }
 }

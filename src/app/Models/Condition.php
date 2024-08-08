@@ -9,6 +9,7 @@ class Condition extends Model
 {
     use HasFactory;
 
+    // conditionsテーブルのidカラムを使用して関連付けを行いアイテムに対する状態を取得。
     public function item()
     {
         return $this->hasOne(Item::class);
