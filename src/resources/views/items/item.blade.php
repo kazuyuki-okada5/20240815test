@@ -44,6 +44,7 @@
         </div>
         @endforeach
     </div>
+
     <!-- お気に入り一覧 -->
     @if (Auth::check())
     <div id="likes-list" class="item-container hidden">
@@ -67,6 +68,7 @@
         @endforeach
     </div>
     @endif
+
     <!-- 販売中リスト -->
     <div id="available-list" class="item-container hidden">
         @foreach($items as $item)

@@ -103,7 +103,6 @@
                             <div id="card-expiry-element" class="form-control"></div>
                             <div id="card-cvc-element" class="form-control"></div>
                             <div id="postal-code-element" class="form-control"></div>
-                            <!-- エラーメッセージ表示 -->
                             <div id="card-errors" role="alert"></div>
                         </div>
                         <button class="btn btn-primary mt-3 hidden" id="credit-card-button">クレジットカードで購入する</button>
@@ -177,7 +176,7 @@
             base: {
                 fontSize: '16px',
                 color: '#32325d',
-                padding: '10px 12px' // パディングを追加
+                padding: '10px 12px'
             },
         };
 

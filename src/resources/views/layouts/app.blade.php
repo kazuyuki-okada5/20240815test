@@ -17,7 +17,6 @@
             <div class="header__inner">
                 <div class="header__logo">
                     <img src="https://flea-baket.s3.ap-northeast-1.amazonaws.com/public/logo+(1).svg" alt="Flea Market App Logo" class="logo">
-
                 </div>
                 <div class="header__search">
                     <form class="form" action="{{ route('items.search') }}" method="get">

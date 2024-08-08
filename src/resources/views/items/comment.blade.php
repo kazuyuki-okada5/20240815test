@@ -79,7 +79,7 @@
                              <img src="{{ $comment->userProfile->img_url }}" class="comment-avatar-left" alt="{{ $comment->userProfile->name }}">
                         @else
                             <div class="default-avatar">
-                                <i class="fas fa-user-circle"></i><!-- 代替えアイコン -->
+                                <i class="fas fa-user-circle"></i>
                             </div>
                         @endif
                         <p class="date-left">（{{ $comment->created_at->format('Y-m-d H:i') }}）</p>
