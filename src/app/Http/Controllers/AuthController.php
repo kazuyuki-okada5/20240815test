@@ -43,6 +43,7 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
+
         Auth::login($user);
 
         return redirect()->intended('/');

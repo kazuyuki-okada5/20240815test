@@ -9,7 +9,6 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\StripeWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +35,7 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 // ログイン処理
 Route::post('/login', [AuthController::class, 'login']);
 
-// 認証前ユーザーがログアウトリクエストした時のリダイレクト先
+// ログアウトリクエストした時のリダイレクト先
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // 商品詳細ページ
@@ -89,7 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
 
      // 購入完了ページの表示
-    Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');   
+    Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');
 });
 
 // 管理者のみアクセス可能なルート
