@@ -87,8 +87,6 @@ Route::middleware('auth')->group(function () {
     // 支払い方法変更
     Route::post('/charge', [App\Http\Controllers\PaymentController::class, 'charge'])->name('charge');
     Route::post('/create-konbini-payment-intent', [PaymentController::class, 'createKonbiniPaymentIntent'])->name('create.konbini.payment.intent');
-    Route::post('/bank-transfer/payment-intent', [PaymentController::class, 'createBankTransferPaymentIntent'])->name('create.bank.transfer.payment.intent');
-    Route::post('/webhook/stripe', [StripeWebhookController::class, 'handleWebhook']);
 
      // 購入完了ページの表示
     Route::post('/items/{item_id}/purchase', [PaymentController::class, 'purchase'])->name('items.purchase');   
