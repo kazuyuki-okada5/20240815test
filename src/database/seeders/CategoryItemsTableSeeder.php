@@ -138,7 +138,7 @@ class CategoryItemsTableSeeder extends Seeder
         ];
 
         foreach ($categoryItems as $categoryItem) {
-            $categoryIdArray = (array) $categoryItem['category_id']; // カテゴリーIDが単一でも配列に統一する
+            $categoryIdArray = (array) $categoryItem['category_id'];
             $itemId = $categoryItem['item_id'];
 
             foreach ($categoryIdArray as $categoryId) {
