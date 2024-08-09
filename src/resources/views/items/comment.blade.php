@@ -1,45 +1,44 @@
-@extends('layouts.app')
 
+@extends('layouts.app')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/items/comment.css') }}?v={{ time() }}">
 @endsection
 
 @section('content')
-<div class="item-detail">
-    <div class="item-info">
-        <div class="item-image-container">
-            <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
-            @if($item->sold_user_id)
-                <div class="sold-out-overlay">SOLD-OUT</div>
+    <h1>商品コメント〜Item Comment〜</h1>
+    <div class="item-detail">
+        <div class="item-info">
+            <div class="item-image-container">
+                <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
+                @if($item->sold_user_id)
+                    <div class="sold-out-overlay">SOLD-OUT</div>
+                @endif
+            </div>
+            <p class="name">{{ $item->name }}</p>
+            <p class="brand">{{ $item->brand }}</p>
+            <p class="price">{{ $item->sold_user_id ? '売り切れ' : '価格:￥' .$item->price . '(税込)' }}</p>
+        <div class="like-container">
+            @if (Auth::check())
+                <form id="like-form" method="POST" action="{{ route('likes.like', $item->id) }}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
+                    @csrf
+                    <button type="submit" class="btn btn-link like-button">
+                        <i class="far fa-star" style="font-size: 2rem;"></i>
+                    </button>
+                </form>
+                <form id="unlike-form" method="POST" action="{{ route('likes.unlike', $item->id) }}" style="display: {{ $isLiked ? 'inline' : 'none' }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-link like-button">
+                        <i class="fas fa-star" style="font-size: 2rem;"></i>
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-link like-button">
+                    <i class="far fa-star" style="font-size: 2rem;"></i>
+                </a>
             @endif
+            <p class="count">{{ $likeCount }}</p>
         </div>
-        <p class="name">{{ $item->name }}</p>
-        <p class="brand">{{ $item->brand }}</p>
-        <p class="price">{{ $item->sold_user_id ? '売り切れ' : '価格:￥' .$item->price . '(税込)' }}</p>
-<div class="like-container">
-    @if (Auth::check())
-        <form id="like-form" method="POST" action="{{ route('likes.like', $item->id) }}" style="display: {{ $isLiked ? 'none' : 'inline' }}">
-            @csrf
-            <button type="submit" class="btn btn-link like-button">
-                <i class="far fa-star" style="font-size: 2rem;"></i>
-            </button>
-        </form>
-        <form id="unlike-form" method="POST" action="{{ route('likes.unlike', $item->id) }}" style="display: {{ $isLiked ? 'inline' : 'none' }}">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-link like-button">
-                <i class="fas fa-star" style="font-size: 2rem;"></i>
-            </button>
-        </form>
-    @else
-        <a href="{{ route('login') }}" class="btn btn-link like-button">
-            <i class="far fa-star" style="font-size: 2rem;"></i>
-        </a>
-
-    @endif
-    <p class="count">{{ $likeCount }}</p>
-</div>
-
         <div class="comment-container">
             <a href="{{ route('comments.show', ['item' => $item->id]) }}" class="btn btn-link p-0 comment-button" {{ Auth::check() ? '' : 'disabled' }}>
                 <i class="fas fa-comment" style="font-size: 2rem;"></i>

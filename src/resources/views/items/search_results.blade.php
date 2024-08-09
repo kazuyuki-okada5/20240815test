@@ -15,7 +15,7 @@
                 <div class="conteneres">
                     <div class="list">
                         <a href="{{ route('items.show', $item->id) }}">
-                            <img src="{{ asset('storage/' . $item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+                             <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                         </a>
                         <p class="card-text"><span>{{ $item->price }}円</span></p>
                         <div class="card-body">

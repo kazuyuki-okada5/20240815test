@@ -23,7 +23,7 @@
                     <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                 </div>
                 <div class="item-info">
-                    <h2>商品名: {{ $item->name }}</h2>
+                    <p>商品名: {{ $item->name }}</p>
                     <p>価格: ￥{{ $item->price }}</p>
                 </div>
                 <div class="payment-method">

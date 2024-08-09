@@ -29,6 +29,11 @@
     /* 中央揃えに設定 */
 }
 
+.item-img {
+    font-size: 20px;
+    color: #878787;
+}
+
 .main {
     font-size: 30px;
     margin-top: 0px;
@@ -79,12 +84,6 @@
 
 .form-group {
     margin-bottom: 25px;
-}
-
-.item-font {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0px;
 }
 
 .form-control, .btn-primary {

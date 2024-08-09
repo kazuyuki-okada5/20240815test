@@ -27,7 +27,7 @@
         </div>
         <button class="btn btn-primary mt-3">支払いを送信</button>
     </form>
-    
+
     <!-- コンビニ支払いボタン -->
     <button id="konbini-button" class="btn btn-primary mt-3">コンビニで支払う</button>
     <!-- 銀行振込支払いボタン -->

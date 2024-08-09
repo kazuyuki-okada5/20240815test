@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<h1>商品の詳細〜Item Deteail〜</h1>
 <div class="listtype__content"></div>
 <div class="item-container">
     <div class="item-image">
@@ -14,7 +15,7 @@
         @endif
     </div>
     <div class="item-info">
-        <h2 class="name">{{ $item->name }}</h2>
+        <p class="name">{{ $item->name }}</p>
         <p class="brand">{{ $item->brand }}</p>
         @if ($item->sold_user_id !== null)
             <p class="price">売り切れ</p>
