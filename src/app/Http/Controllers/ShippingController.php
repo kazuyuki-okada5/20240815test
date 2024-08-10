@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Profile;
 use App\Models\ShippingAddress;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ShippingAddressRequest;
 
 class ShippingController extends Controller
 {
@@ -22,9 +22,11 @@ class ShippingController extends Controller
     }
 
     // 配送先情報の更新処理
-    public function update(Request $request, $item_id)
+    public function update(ShippingAddressRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
+
+        // バリデーションは ShippingAddressRequest で行われるため、ここでは必要ない
         if (ShippingAddress::where([
             ['item_id', $item->id],
             ['address', $request->address],
@@ -43,3 +45,4 @@ class ShippingController extends Controller
         return redirect()->route('items.buy', $item_id)->with('success', '配送先を追加しました。');
     }
 }
+

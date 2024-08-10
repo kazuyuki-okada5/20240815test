@@ -42,6 +42,7 @@ class ShippingAddressRequest extends FormRequest
             $user = Auth::user();
             $address = $this->input('address');
             $post_code = $this->input('post_code');
+            $item_id = $this->route('item_id');
 
             $existingShipping = ShippingAddress::where('item_id', $item_id)
                 ->where('address', $address)

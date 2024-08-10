@@ -85,3 +85,10 @@
 .btn-primary:hover {
     background-color: #ff787b;
 }
+
+.error-message {
+    color: red;
+    /* エラーメッセージの色を赤に設定 */
+    font-weight: bold;
+    /* エラーメッセージを太字に設定 */
+}
