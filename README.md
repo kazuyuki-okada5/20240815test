@@ -37,17 +37,18 @@ coachtechフリマ
 |  17  | 商品コメント作成   | 商品に対してコメントを追加                | 会員登録者+管理者       |
 |  18  | 支払い方法変更     | クレジットカード、コンビニ、銀行振込から選択 | 会員登録者+管理者       |
 |  19  | 配送先変更        | 任意の配送先に変更することができる          | 会員登録者+管理者       |
-|  18  | お気に入り登録/削除 | 商品をマイリストに登録/削除               | 会員登録者+管理者      |
-|  19  | 商品コメント削除   | コメントを削除                          | 管理者                |
-|  20  | ユーザー削除       | アカウントを削除                        | 管理者                |
-|  21  | メール送信        | アカウント登録者全員にメール送信           | 管理者                |
-|  22  | ユーザー一覧表示   | アカウント登録者全員を閲覧                | 管理者                |
+|  20  | お気に入り登録/削除 | 商品をマイリストに登録/削除               | 会員登録者+管理者      |
+|  21  | 商品コメント削除   | コメントを削除                          | 管理者                |
+|  22  | ユーザー削除       | アカウントを削除                        | 管理者                |
+|  23  | メール送信        | アカウント登録者全員にメール送信           | 管理者                |
+|  24  | ユーザー一覧表示   | アカウント登録者全員を閲覧                | 管理者                |
 
 注記<br>
 　NO. 5：コメントはNO.4商品詳細閲覧画面内右上側付近にある吹き出しアイコンをクリックすると表示します。他画面の吹き出しアイコンも同様に機能します。<br>
 　NO. 6：商品名の一部を入力すると該当する商品のみを表示します。また、商品検索後も検索ワードは枠内で維持されたままになります。<br>
 　NO.15：出品時のカテゴリーは最大3つまで選択可能です。<br>
-　No.18：お気に入り登録/削除はコメント吹き出しアイコン左側にある星型アイコンをクリックすると登録されます。星型が黒塗り潰し状態が「お気に入り登録中」で解除したい場合は再度クリックすると黒塗り潰しの解除と同時に「お気に入りから削除」されます。<br>
+　No.18：銀行振り込みはWebhook未実装の為、stripe決済出来ません。<br>
+　No.20：お気に入り登録/削除はコメント吹き出しアイコン左側にある星型アイコンをクリックすると登録されます。星型が黒塗り潰し状態が「お気に入り登録中」で解除したい場合は再度クリックすると黒塗り潰しの解除と同時に「お気に入りから削除」されます。<br>
 　NO.19：配送先はデフォルトでアカウントの住所が入力されています。変更する場合は変更先住所登録後、配送先を指定し直してから購入して下さい。<br>
 　　　　　※アカウント詳細を作成していない場合は未記載となります。
 
@@ -139,7 +140,6 @@ php artisan key:generate
 
 ```
 php artisan migrate --seed
-php artisan storage:link
 ```
 
 9.ローカルへのアクセス
@@ -163,7 +163,8 @@ php artisan storage:link
 11.PHPUnitを使用したテスト確認
 
 1）テスト用のデータベースを作成します。<br>
-まだdockerコンテナ内にいる場合は'exit'で出た後にターミナルで以下コマンドを実行して下さい。
+まだdockerコンテナ内にいる場合は'exit'で退出した後にターミナルで以下コマンドを実行して下さい。<br>
+　※mysqlコンテナ内への許可パスワードは`.env.testing`より確認下さい。<br>
 
 ```
 docker-compose exec mysql mysql -u root -p
@@ -171,9 +172,7 @@ CREATE DATABASE laravel_test;
 EXIT;
 ```
 
-　※パスワードは`.env.testing`より確認下さい
-
-3）`.env.testing`ファイル用のKEYを作成して下さい。
+2）`.env.testing`ファイル用のKEYを作成して下さい。
 
 ```
 docker-compose exec php php artisan key:generate --env=testing
@@ -197,6 +196,49 @@ http://54.168.115.123
 
 ```
 http://54.168.115.123:8025/
+```
+
+3）本番環境用.env（セキュリティ上で公開できる範囲のみ）
+
+```
+APP_NAME=Laravel
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=http://54.168.115.123
+
+LOG_CHANNEL=stack
+LOG_DEPRECATIONS_CHANNEL=null
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_PORT=3306
+DB_DATABASE=flea
+
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+FILESYSTEM_DRIVER=local
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
+
+MEMCACHED_HOST=127.0.0.1
+
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+MAIL_MAILER=smtp
+MAIL_HOST=127.0.0.1
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=your-email@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+
+AWS_DEFAULT_REGION=ap-northeast-1
+AWS_BUCKET=flea-baket
+AWS_USE_PATH_STYLE_ENDPOINT=false
 ```
 
 
