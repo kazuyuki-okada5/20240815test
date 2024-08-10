@@ -20,7 +20,7 @@
                 </div>
                 <div class="header__search">
                     <form class="form" action="{{ route('items.search') }}" method="get">
-                        <input type="text" name="query" class="search-input" placeholder="なにをお探しですか？" value="{{ request('query') }}">>
+                        <input type="text" name="query" class="search-input" placeholder="なにをお探しですか？" value="{{ request('query') }}">
                     </form>
                 </div>
                 <nav class="header-nav">
