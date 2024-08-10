@@ -88,26 +88,30 @@ coachtechフリマ
 
 以下の手順に従って環境構築をして下さい。
 
-1.GIT リポジトリをクローンして下さい。
+### 1.GIT リポジトリをクローンして下さい。
 
 ```
-git@github.com:kazuyuki-okada5/20230530okada-.git
+git clone git@github.com:kazuyuki-okada5/20230530okada-.git
 ```
 
-2.Docker と Docker Composer をインストールして下さい。
+### 2.Docker と Docker Composer をインストールして下さい。
 
 インストール済みの場合は省略して下さい。
 
-3.プロジェクトのルートディレクトリに移動して下さい。
+### 3.プロジェクトのルートディレクトリに移動して下さい。
 
-4.`.env.example`ファイルをコピーして`.env`ファイルを作成して下さい。
+```
+cd 20230530okada-
+```
+
+### 4.`.env.example`ファイルをコピーして`.env`ファイルを作成して下さい。
 
 ```
 cd src
 cp .env.example .env
 ```
 
-5.下記参照し、`.env`ファイルの環境変数を設定して下さい。
+### 5..env ファイルを開き、以下の環境変数を設定して下さい。
 
 ```
 DB_CONNECTION=mysql
@@ -122,13 +126,13 @@ DB_PASSWORD=laravel_pass
 MAIL_FROM_ADDRESS=your-email@example.com
 ```
 
-6.dockerを起動して下さい。
+### 6.dockerを起動しビルドして下さい。
 
 ```
 docker-compose up -d --build
 ```
 
-7.phpコンテナに入りComposerをインストール後、暗号化キーを作成して下さい。
+### 7.phpコンテナに入りComposerをインストール後、暗号化キーを作成して下さい。
 
 ```
 docker-compose exec php bash
@@ -136,19 +140,21 @@ composer install
 php artisan key:generate
 ```
 
-8.マイグレーション及びシーディング及びシンボリックリンクの設定をして下さい。
+### 8.マイグレーション及びシーディングを実行して下さい。
 
 ```
 php artisan migrate --seed
 ```
 
-9.ローカルへのアクセス
+※ダミーデータのコメントはアイテムID、1と2のみに入れてあります。
+
+### 9.ローカルへのアクセス
 
 1.〜８.までの作業が滞りなく終了したら下記リンク先からアプリケーションが開きます。<br>
 [トップページ](http://localhost/) <br>
 [MailHog](http://localhost:8025/)
 
-10.ログインパスワード
+### 10.ログインパスワード
 
 ユーザー用 <br>
 メールアドレス:a@ne.jp <br>
@@ -160,7 +166,7 @@ php artisan migrate --seed
 
 ※管理者用のパスワードを使用するとアプリ内新規プロフィール作成以外全ての認証必須ページを閲覧することが出来ます。
 
-11.PHPUnitを使用したテスト確認
+### 11.PHPUnitを使用したテスト確認
 
 1）テスト用のデータベースを作成します。<br>
 まだdockerコンテナ内にいる場合は'exit'で退出した後にターミナルで以下コマンドを実行して下さい。<br>
@@ -184,7 +190,7 @@ docker-compose exec php php artisan key:generate --env=testing
 docker-compose exec php ./vendor/bin/phpunit
 ```
 
-12.AWS（本番環境）
+### 12.AWS（本番環境）
 
 1）下記よりアクセスして下さい。
 
