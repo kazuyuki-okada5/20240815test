@@ -1,20 +1,24 @@
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin-top: 130px;
+    align-items: flex-start;
+    /* 上に揃える */
+    min-height: calc(100vh - 100px);
+    /* 画面全体の高さからヘッダーの高さを引いた値 */
+    margin-top: 10px;
+    /* 必要に応じて調整 */
 }
 
 .justify-content-center {
     width: 600px;
+    height: 1000px;
     margin-top: 10px;
 }
 
 .card {
     width: 100%;
     max-width: 600px;
-    margin: 180px 20px 20px 20px;
+    margin: 50px 20px 20px 20px;
     padding: 20px;
 }
 

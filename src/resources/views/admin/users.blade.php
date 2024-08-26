@@ -7,12 +7,12 @@
 @section('content')
 <div class="container">
     <h1 class="title">ユーザー管理</h1>
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+    @endif
     <div class="mail-form">
         <form action="{{ route('admin.users.sendEmail') }}" method="POST">
             @csrf
